@@ -14,5 +14,5 @@ app.use((req, res, next) => {
 // routes
 app.use(require('./routes/index'))
 
-app.listen(2000)
-console.log('Server on port 2000')
+app.listen(process.env.PORT || 3000,
+  () => console.log('Server is running...'))

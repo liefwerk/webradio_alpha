@@ -38,7 +38,7 @@ export default {
     }
     try {
       const instance = axios.create({
-        baseURL: 'http://localhost:3000'
+        baseURL: 'http://45.33.98.225:4000'
       }, config)
       const res = await instance.get('/playlists-ids')
       this.idList = await res.data

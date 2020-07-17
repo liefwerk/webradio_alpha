@@ -32,13 +32,14 @@ export default {
     const config = {
       headers: {
         Accept: 'application/json',
-        crossdomain: true,
-        AccessControlAllowOrigin: '*'
+        AccessControlAllowOrigin: '*',
+        crossdomain: true
       }
     }
     try {
+      const PORT = process.env.PORT || 3000
       const instance = axios.create({
-        baseURL: 'http://localhost:2000'
+        baseURL: `http://localhost:${PORT}`
       }, config)
       const res = await instance.get('/playlists-ids')
       this.idList = await res.data

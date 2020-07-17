@@ -1,8 +1,9 @@
 <template>
   <div class="container">
     <div id="btns-parent">
-      <button v-for="id in idList" :key="id.id" @click="changeId(id.playlist_id)">{{id.playlist_name}}</button>
+      <button v-for="id in idList" :key="id.id" @click="changePlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
     </div>
+    <h2>{{this.currentName}}</h2>
     <iframe width="560" height="315" :src="`https://www.youtube-nocookie.com/embed/videoseries?list=`+ this.currentId" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
   </div>
 </template>
@@ -15,22 +16,18 @@ export default {
   data () {
     return {
       idList: '',
-      currentId: ''
+      currentId: '',
+      currentName: ''
       // fullLink: 'https://www.youtube-nocookie.com/embed/videoseries?list=' + this.currentId
     }
   },
   methods: {
-    changeId: function (id) {
+    changePlaylist: function (id, name) {
       this.currentId = id
-      console.log(this.currentId)
+      this.currentName = name
     }
   },
-  watch: {
-    // changeId: function (id) {
-    //   this.currentId = id
-    //   console.log(this.currentId)
-    // }
-  },
+  watch: {},
   async created () {
     const config = {
       headers: {
@@ -58,6 +55,10 @@ export default {
     flex-flow: row wrap;
     justify-content: center;
     padding: 1.5em;
+  }
+
+  h2 {
+    color: blue;
   }
 
   .container {

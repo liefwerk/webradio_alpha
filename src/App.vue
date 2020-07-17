@@ -25,4 +25,8 @@ body {
   position: absolute;
   right: 2em;
 }
+
+p {
+  color: #dfdfdf;
+}
 </style>

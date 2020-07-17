@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-  <h1>Hola</h1>
+  <Header />
   <YoutubePlayer />
   </div>
 </template>
@@ -8,10 +8,12 @@
 <script>
 // @ is an alias to /src
 import YoutubePlayer from '../components/YoutubePlayer'
+import Header from '../components/Header'
 
 export default {
   components: {
-    YoutubePlayer
+    YoutubePlayer,
+    Header
   }
 }
 </script>

@@ -1,41 +1,342 @@
-[
-  {
-    "playlistId": "PLHuOWVWiXeRF3mu2Z5qM0e0t19vJQ6_Sl"
+{
+  "kind": "youtube#playlistListResponse",
+  "etag": "96Lb4IRbF1WzUTK3PS6te-iXVFg",
+  "pageInfo": {
+    "totalResults": 13,
+    "resultsPerPage": 30
   },
-  {
-    "playlistId": "PLHuOWVWiXeRF-khJYxrxvA6fDx7uXVRvv"
-  },
-  {
-    "playlistId": "PLHuOWVWiXeRGA87EKvI9vun9U59Y5kcER"
-  },
-  {
-    "playlistId": "PLHuOWVWiXeRFloDZcpx5QCiy6dhfmToAS"
-  },
-  {
-    "playlistId": "PLHuOWVWiXeRGEtrr-i3IR0C0fWd_fuVB5"
-  },
-  {
-    "playlistId": "PLHuOWVWiXeRFuhiNrsupshf6W434h7tQ6"
-  },
-  {
-    "playlistId": "PLHuOWVWiXeRFPYaD47LbmyhPJOf00Ph0D"
-  },
-  {
-    "playlistId": "PLHuOWVWiXeRE0X_jTXwsAZsAHRQUfnVfi"
-  },
-  {
-    "playlistId": "PLHuOWVWiXeRE1XvMBPFpjuuqYHdqab2JX"
-  },
-  {
-    "playlistId": "PLHuOWVWiXeRH2FQrPKxh5wV8iIclos3v7"
-  },
-  {
-    "playlistId": "PLHuOWVWiXeRGBUcQ7zBRvPwKDYMTa1kHg"
-  },
-  {
-    "playlistId": "PLHuOWVWiXeRHvKnuQUv0jUbKbLsgRwooW"
-  },
-  {
-    "playlistId": "PLHuOWVWiXeRET7Ih1G0ns90lEkFqW5NRE"
-  }
-]
+  "items": [
+    {
+      "kind": "youtube#playlist",
+      "etag": "Nkh4w8Rk56RyxTwtZCCQfcWfgGE",
+      "id": "PLHuOWVWiXeRF3mu2Z5qM0e0t19vJQ6_Sl",
+      "snippet": {
+        "publishedAt": "2020-07-10T21:10:02Z",
+        "channelId": "UCYnQ_5gtRv33rcRdOoQP6yg",
+        "title": "TECH TRANCE (1998)",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/hH3qj6Kfxfw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/hH3qj6Kfxfw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/hH3qj6Kfxfw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/hH3qj6Kfxfw/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/hH3qj6Kfxfw/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Biko.",
+        "localized": {
+          "title": "TECH TRANCE (1998)",
+          "description": ""
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlist",
+      "etag": "ug_QdnspY1RERTr2BEiFh0tBUG0",
+      "id": "PLHuOWVWiXeRF-khJYxrxvA6fDx7uXVRvv",
+      "snippet": {
+        "publishedAt": "2020-07-10T21:06:20Z",
+        "channelId": "UCYnQ_5gtRv33rcRdOoQP6yg",
+        "title": "TECH HOUSE (1996)",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/8rXD2Vnll0E/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/8rXD2Vnll0E/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/8rXD2Vnll0E/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/8rXD2Vnll0E/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          }
+        },
+        "channelTitle": "Biko.",
+        "localized": {
+          "title": "TECH HOUSE (1996)",
+          "description": ""
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlist",
+      "etag": "k0E2oVNiQWlZWA4YfhsQTFXtb_A",
+      "id": "PLHuOWVWiXeRGA87EKvI9vun9U59Y5kcER",
+      "snippet": {
+        "publishedAt": "2020-07-09T20:36:03Z",
+        "channelId": "UCYnQ_5gtRv33rcRdOoQP6yg",
+        "title": "MINIMAL TECHNO (1994)",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/CipwzA52tvA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/CipwzA52tvA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/CipwzA52tvA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/CipwzA52tvA/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/CipwzA52tvA/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Biko.",
+        "localized": {
+          "title": "MINIMAL TECHNO (1994)",
+          "description": ""
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlist",
+      "etag": "sbex5ZaEPp5YUTHQDSTU8Ld2Txg",
+      "id": "PLHuOWVWiXeRFloDZcpx5QCiy6dhfmToAS",
+      "snippet": {
+        "publishedAt": "2020-07-09T20:29:17Z",
+        "channelId": "UCYnQ_5gtRv33rcRdOoQP6yg",
+        "title": "INDUSTRIAL TECHNO & SCHRANZ (1994)",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/fSwI2AFlki4/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/fSwI2AFlki4/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/fSwI2AFlki4/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "Biko.",
+        "localized": {
+          "title": "INDUSTRIAL TECHNO & SCHRANZ (1994)",
+          "description": ""
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlist",
+      "etag": "oZoWXXIgTq6K_UsggfzwS-QvUPQ",
+      "id": "PLHuOWVWiXeRGEtrr-i3IR0C0fWd_fuVB5",
+      "snippet": {
+        "publishedAt": "2020-07-09T20:23:23Z",
+        "channelId": "UCYnQ_5gtRv33rcRdOoQP6yg",
+        "title": "AMBIANT TECHNO & IDM (1992)",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/tQ_ylWgiRqA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/tQ_ylWgiRqA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/tQ_ylWgiRqA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/tQ_ylWgiRqA/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          }
+        },
+        "channelTitle": "Biko.",
+        "localized": {
+          "title": "AMBIANT TECHNO & IDM (1992)",
+          "description": ""
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlist",
+      "etag": "j9AD_OodGjqLvjZsNSOuA5vMgTQ",
+      "id": "PLHuOWVWiXeRFuhiNrsupshf6W434h7tQ6",
+      "snippet": {
+        "publishedAt": "2020-07-09T20:16:26Z",
+        "channelId": "UCYnQ_5gtRv33rcRdOoQP6yg",
+        "title": "(FREE) TEK(K)NO / HARDTEK (1991)",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/NUoEHt63ryI/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/NUoEHt63ryI/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/NUoEHt63ryI/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "Biko.",
+        "localized": {
+          "title": "(FREE) TEK(K)NO / HARDTEK (1991)",
+          "description": ""
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlist",
+      "etag": "Dzjp6a8eBBPHNEwW2PAYsITd-pw",
+      "id": "PLHuOWVWiXeRFPYaD47LbmyhPJOf00Ph0D",
+      "snippet": {
+        "publishedAt": "2020-07-09T19:49:54Z",
+        "channelId": "UCYnQ_5gtRv33rcRdOoQP6yg",
+        "title": "HARDCORE TECHNO / RAVE (1990)",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/-dohzrXT09w/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/-dohzrXT09w/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/-dohzrXT09w/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "Biko.",
+        "localized": {
+          "title": "HARDCORE TECHNO / RAVE (1990)",
+          "description": ""
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlist",
+      "etag": "f58p_B9JLh3-L2iSYVXvBFfRo9s",
+      "id": "PLHuOWVWiXeRE0X_jTXwsAZsAHRQUfnVfi",
+      "snippet": {
+        "publishedAt": "2020-07-09T19:42:12Z",
+        "channelId": "UCYnQ_5gtRv33rcRdOoQP6yg",
+        "title": "NEW BEAT (1987)",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/-FDy-RVeI-A/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/-FDy-RVeI-A/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/-FDy-RVeI-A/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/-FDy-RVeI-A/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          }
+        },
+        "channelTitle": "Biko.",
+        "localized": {
+          "title": "NEW BEAT (1987)",
+          "description": ""
+        }
+      }
+    },
+    {
+      "kind": "youtube#playlist",
+      "etag": "c-mCBxyY7jVJIBYJpTvFlG1vbE4",
+      "id": "PLHuOWVWiXeRE1XvMBPFpjuuqYHdqab2JX",
+      "snippet": {
+        "publishedAt": "2020-07-09T19:33:53Z",
+        "channelId": "UCYnQ_5gtRv33rcRdOoQP6yg",
+        "title": "DETROIT TECHNO (1982)",
+        "description": "",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/yxWzoYQb5gU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/yxWzoYQb5gU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/yxWzoYQb5gU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "Biko.",
+        "localized": {
+          "title": "DETROIT TECHNO (1982)",
+          "description": ""
+        }
+      }
+    }
+  ]
+}

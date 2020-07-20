@@ -41,7 +41,7 @@ export default {
       const instance = axios.create({
         baseURL: `http://localhost:${PORT}`
       }, config)
-      const res = await instance.get('/playlists-ids')
+      const res = await instance.get('/db')
       this.idList = await res.data
     } catch (err) {
       console.log(err)

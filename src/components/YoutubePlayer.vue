@@ -1,10 +1,12 @@
 <template>
-  <div class="container">
+  <div class="container parent-flex">
+    <div class="wrap-element">
+      <h2>{{this.currentName}}</h2>
+      <iframe class="wrapped-iframe" width="560" height="315" :src="`https://www.youtube-nocookie.com/embed/videoseries?list=`+ this.currentId" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
     <div id="btns-parent">
       <button v-for="id in idList" :key="id.id" @click="changePlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
     </div>
-    <h2>{{this.currentName}}</h2>
-    <iframe width="560" height="315" :src="`https://www.youtube-nocookie.com/embed/videoseries?list=`+ this.currentId" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
   </div>
 </template>
 
@@ -51,20 +53,46 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
+  .parent-flex {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+
+  .container {
+    margin: 0 auto;
+    max-width: 80vw;
+  }
+
+  /* Responsive Iframe */
+
+  .wrap-element {
+    position: relative;
+    overflow: hidden;
+    order: 1;
+    flex-basis: 75%;
+  }
+
+  .wrapped-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
   #btns-parent {
     display: flex;
     flex-flow: row wrap;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 1.5em;
+    order: 0;
+    flex-basis: 50%;
   }
 
   h2 {
     color: blue;
-  }
-
-  .container {
-    max-width: 1000px;
-    margin: 0 auto;
   }
 
   button {
@@ -78,6 +106,25 @@ export default {
 
   button:focus {
     border: 2px solid black;
+  }
+
+  @media all and (max-width: 893px){
+    .parent-flex {
+      flex-flow: column nowrap;
+    }
+    .container {
+      max-width: 100%;
+    }
+    .wrap-element {
+      padding: 15%;
+    }
+    button {
+      font-size: .8em;
+      padding: .2em .4em;
+    }
+    #btns-parent {
+      justify-content: center;
+    }
   }
 
 </style>

@@ -1,11 +1,13 @@
 <template>
-  <div class="container parent-flex">
-    <div class="wrap-element">
-      <h2>{{this.currentName}}</h2>
-      <iframe class="wrapped-iframe" width="560" height="315" :src="`https://www.youtube-nocookie.com/embed/videoseries?list=`+ this.currentId" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-    <div id="btns-parent">
-      <button v-for="id in idList" :key="id.id" @click="changePlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
+  <div class="container">
+    <h2>{{this.currentName}}</h2>
+    <div class="parent-flex">
+      <div class="wrap-element">
+        <iframe class="wrapped-iframe" width="560" height="315" :src="`https://www.youtube-nocookie.com/embed/videoseries?list=`+ this.currentId" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div id="btns-parent">
+        <button v-for="id in idList" :key="id.id" @click="changePlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
+      </div>
     </div>
   </div>
 </template>

@@ -12,7 +12,7 @@ export default {
 
 <style lang="css" scoped>
   h1 {
-    padding: 1.5em 0;
+    padding: 1.5em 0 0 0;
     color: #dfdfdf;
   }
 </style>

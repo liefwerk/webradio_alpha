@@ -39,9 +39,9 @@ export default {
     try {
       const PORT = process.env.PORT || 3000
       const instance = axios.create({
-        baseURL: `http://localhost:${PORT}`
+        baseURL: `https://webradio-alpha-db.herokuapp.com:${PORT}`
       }, config)
-      const res = await instance.get('/db')
+      const res = await instance.get('/playlists')
       this.idList = await res.data
     } catch (err) {
       console.log(err)

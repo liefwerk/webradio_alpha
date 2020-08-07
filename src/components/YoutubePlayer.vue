@@ -1,12 +1,14 @@
 <template>
   <div class="container">
-    <h2>{{this.currentName}}</h2>
-    <div class="parent-flex">
-      <div class="wrap-element">
-        <iframe class="wrapped-iframe" width="560" height="315" :src="`https://www.youtube-nocookie.com/embed/videoseries?list=`+ this.currentId" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div id="flex-btn-iframe">
+      <div id="titre-btn">
+        <h2>{{this.currentName}}</h2>
+        <div id="btns-parent">
+          <button v-for="id in idList" :key="id.id" @click="changePlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
+        </div>
       </div>
-      <div id="btns-parent">
-        <button v-for="id in idList" :key="id.id" @click="changePlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
+      <div class="wrap-element">
+        <iframe class="wrapped-iframe" width="500" height="500" :src="`https://www.youtube-nocookie.com/embed/videoseries?list=`+ this.currentId" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
     </div>
   </div>
@@ -56,28 +58,29 @@ export default {
 
 <style lang="css" scoped>
 
-  .parent-flex {
-    display: flex;
-    flex-flow: row nowrap;
-  }
-
   .container {
     margin: 0 auto;
     max-width: 80vw;
   }
 
+  #flex-btn-iframe {
+    display: flex;
+    flex-flow: column;
+  }
+
   /* Responsive Iframe */
 
   .wrap-element {
-    position: relative;
+    position: absolute;
     overflow: hidden;
-    order: 1;
-    flex-basis: 75%;
+    width: 100%;
+    height: 50%;
+    bottom: 0;
+    left: 0;
   }
 
   .wrapped-iframe {
-    position: absolute;
-    top: 0;
+    position: inherit;
     left: 0;
     width: 100%;
     height: 100%;
@@ -87,10 +90,11 @@ export default {
   #btns-parent {
     display: flex;
     flex-flow: row wrap;
-    justify-content: flex-start;
-    padding: 1.5em;
-    order: 0;
-    flex-basis: 50%;
+    justify-content: center;
+    margin: 0 auto;
+    position: relative;
+    width: 90%;
+    left: 0;
   }
 
   h2 {
@@ -100,10 +104,13 @@ export default {
   button {
     background: red;
     font-family: Courier New;
+    font-weight: bold;
+    height: 2em;
     border: 2px dotted black;
     margin: .3em;
     padding: .3em .9em;
     color: #dfdfdf;
+    cursor: pointer;
   }
 
   button:focus {
@@ -111,21 +118,12 @@ export default {
   }
 
   @media all and (max-width: 893px){
-    .parent-flex {
-      flex-flow: column nowrap;
-    }
     .container {
       max-width: 100%;
-    }
-    .wrap-element {
-      padding: 15%;
     }
     button {
       font-size: .8em;
       padding: .2em .4em;
-    }
-    #btns-parent {
-      justify-content: center;
     }
   }
 

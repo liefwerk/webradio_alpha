@@ -12,7 +12,10 @@ export default {
 
 <style lang="css" scoped>
   h1 {
-    padding: 1.5em 0 0 0;
+    padding: 0;
     color: #dfdfdf;
+    text-align: left;
+    font-size: 1.6em;
+    font-family: Courier New;
   }
 </style>

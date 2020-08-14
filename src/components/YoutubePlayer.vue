@@ -1,16 +1,14 @@
 <template>
   <div class="container">
-    <div id="flex-btn-iframe">
-      <div id="titre-btn">
-        <h2>{{this.currentName}}</h2>
-        <div id="btns-parent">
-          <button v-for="id in idList" :key="id.id" @click="changePlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
-        </div>
+    <div class="sub-container">
+      <div id="btns-parent">
+        <button v-for="id in idList" :key="id.id" @click="changePlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
       </div>
       <div class="wrap-element">
         <iframe class="wrapped-iframe" width="500" height="500" :src="`https://www.youtube-nocookie.com/embed/videoseries?list=`+ this.currentId" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
     </div>
+    <div id="titre-footer"><h2>{{this.currentName}}</h2></div>
   </div>
 </template>
 
@@ -58,25 +56,22 @@ export default {
 
 <style lang="css" scoped>
 
-  .container {
+  .sub-container {
     margin: 0 auto;
-    max-width: 80vw;
-  }
-
-  #flex-btn-iframe {
-    display: flex;
-    flex-flow: column;
+    display: grid;
+    grid-template-columns: [row1-start] 25% [line2] auto [end];
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    overflow: hidden;
   }
 
   /* Responsive Iframe */
 
   .wrap-element {
-    position: absolute;
-    overflow: hidden;
-    width: 100%;
-    height: 50%;
-    bottom: 0;
-    left: 0;
+    padding: .3em 2em;
   }
 
   .wrapped-iframe {
@@ -89,23 +84,30 @@ export default {
 
   #btns-parent {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column nowrap;
     justify-content: center;
     margin: 0 auto;
     position: relative;
-    width: 90%;
-    left: 0;
+  }
+
+  #titre-footer {
+    padding: 0;
+    margin: .3em 1em;
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
   }
 
   h2 {
     color: blue;
+    margin: 0;
   }
 
   button {
     background: red;
     font-family: Courier New;
     font-weight: bold;
-    height: 2em;
+    height: 2.5em;
     border: 2px dotted black;
     margin: .3em;
     padding: .3em .9em;
@@ -121,6 +123,7 @@ export default {
     .container {
       max-width: 100%;
     }
+
     button {
       font-size: .8em;
       padding: .2em .4em;

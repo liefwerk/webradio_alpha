@@ -29,4 +29,11 @@ body {
 p {
   color: #dfdfdf;
 }
+
+@media all and (max-width: 985px){
+  #nav {
+    display: none;
+  }
+}
+
 </style>

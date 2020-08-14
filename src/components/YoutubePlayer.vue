@@ -101,6 +101,7 @@ export default {
   h2 {
     color: blue;
     margin: 0;
+    font-size: 1em;
   }
 
   button {
@@ -119,14 +120,33 @@ export default {
     border: 2px solid black;
   }
 
-  @media all and (max-width: 893px){
-    .container {
-      max-width: 100%;
+  @media all and (max-width: 985px){
+    .sub-container {
+      grid-template-columns: none;
+      grid-template-rows: [rows1-start] auto [line2] 1fr [end];
+    }
+
+    #btns-parent {
+      flex-flow: row nowrap;
+      margin: 0 1.7em;
+      overflow: scroll;
+      justify-content: flex-start;
     }
 
     button {
-      font-size: .8em;
-      padding: .2em .4em;
+      height: 5em;
+      min-width: 15em;
+    }
+
+    .wrap-element {
+      height: 50vh;
+    }
+  }
+
+  @media all and (min-width: 986px) and (max-width: 1280px){
+    .sub-container {
+      grid-template-columns: [column1-start] 45% [line2] auto [end];
+      grid-template-rows: none;
     }
   }
 

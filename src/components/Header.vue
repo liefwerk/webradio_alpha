@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="header">
     <h1>The Birth Of Club Music</h1>
   </div>
 </template>
@@ -17,5 +17,11 @@ export default {
     text-align: left;
     font-size: 1.6em;
     font-family: Courier New;
+  }
+
+  @media all and (max-width: 985px){
+    #header {
+      font-size: .7em;
+    }
   }
 </style>

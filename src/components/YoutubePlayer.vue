@@ -2,11 +2,17 @@
   <div class="container">
     <div class="sub-container">
       <div id="btns-parent">
-        <button v-for="id in idList" :key="id.id" @click="changePlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
+        <button v-for="id in idList" :key="id.id" @click="loadPlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
       </div>
-      <div class="wrap-element">
-        <iframe class="wrapped-iframe" width="500" height="500" :src="`https://www.youtube-nocookie.com/embed/videoseries?list=`+ this.currentId" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <div class="video-container">
+        <youtube :player-vars="playerVars" ref="youtube" @playing="playing"></youtube>
       </div>
+    </div>
+    <div class="controls">
+      <button id="pause-btn" @click="prevVideo">prev song</button>
+      <button id="play-btn" @click="playVideo">play</button>
+      <button id="pause-btn" @click="pauseVideo">pause</button>
+      <button id="pause-btn" @click="nextVideo">next song</button>
     </div>
     <div id="titre-footer"><h2>{{this.currentName}}</h2></div>
   </div>
@@ -21,17 +27,40 @@ export default {
     return {
       idList: '',
       currentId: '',
-      currentName: ''
-      // fullLink: 'https://www.youtube-nocookie.com/embed/videoseries?list=' + this.currentId
+      currentName: '',
+      playerVars: {
+        listType: 'playlist',
+        list: this.currentId
+      }
     }
   },
   methods: {
-    changePlaylist: function (id, name) {
+    changePlaylist: function (id, name) {},
+    playVideo () {
+      this.player.playVideo()
+    },
+    pauseVideo () {
+      this.player.pauseVideo()
+    },
+    prevVideo () {
+      this.player.prevVideo()
+    },
+    nextVideo () {
+      this.player.nextVideo()
+    },
+    playing () {
+    },
+    loadPlaylist (id, name) {
       this.currentId = id
       this.currentName = name
+      this.player.loadPlaylist({ listType: 'playlist', list: this.currentId, modestbranding: 1, rel: 0 })
     }
   },
-  watch: {},
+  computed: {
+    player () {
+      return this.$refs.youtube.player
+    }
+  },
   async created () {
     const config = {
       headers: {
@@ -47,6 +76,8 @@ export default {
       }, config)
       const res = await instance.get('/playlists')
       this.idList = await res.data
+      this.currentId = this.idList[0].playlist_id
+      console.log(this.currentId)
     } catch (err) {
       console.log(err)
     }
@@ -59,7 +90,7 @@ export default {
   .sub-container {
     margin: 0 auto;
     display: grid;
-    grid-template-columns: [row1-start] 25% [line2] auto [end];
+    grid-template-columns: [row1-start] 35% [line2] auto [end];
     position: absolute;
     width: 100%;
     top: 50%;
@@ -70,16 +101,21 @@ export default {
 
   /* Responsive Iframe */
 
-  .wrap-element {
-    padding: .3em 2em;
-  }
-
-  .wrapped-iframe {
-    position: inherit;
-    left: 0;
+  .video-container {
+    float: none;
+    clear: both;
     width: 100%;
-    height: 100%;
-    border: 0;
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 25px;
+    height: 0;
+  }
+  .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
   }
 
   #btns-parent {
@@ -96,6 +132,15 @@ export default {
     position: absolute;
     bottom: 1em;
     right: 1em;
+  }
+
+  /* Controls */
+
+  .controls {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 1em;
   }
 
   h2 {

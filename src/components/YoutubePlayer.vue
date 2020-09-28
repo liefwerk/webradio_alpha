@@ -91,11 +91,7 @@ export default {
     margin: 0 auto;
     display: grid;
     grid-template-columns: [row1-start] 35% [line2] auto [end];
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
+    position: relative;
     overflow: hidden;
   }
 
@@ -137,9 +133,6 @@ export default {
   /* Controls */
 
   .controls {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
     padding-bottom: 1em;
   }
 
@@ -153,7 +146,7 @@ export default {
     background: red;
     font-family: Courier New;
     font-weight: bold;
-    height: 2.5em;
+    min-height: 3em;
     border: 2px dotted black;
     margin: .3em;
     padding: .3em .9em;

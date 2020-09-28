@@ -1,6 +1,6 @@
 <template>
   <div id="header">
-    <h1>The Birth Of Club Music</h1>
+    <h1>Webradio Alpha - v0.37</h1>
   </div>
 </template>
 

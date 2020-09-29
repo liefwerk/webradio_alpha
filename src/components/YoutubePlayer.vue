@@ -13,6 +13,7 @@
       <button id="play-btn" @click="playVideo">play</button>
       <button id="pause-btn" @click="pauseVideo">pause</button>
       <button id="pause-btn" @click="nextVideo">next song</button>
+      <span style="color: white">{{this.songTitle}}</span>
     </div>
     <div id="titre-footer"><h2>{{this.currentName}}</h2></div>
   </div>
@@ -28,6 +29,8 @@ export default {
       idList: '',
       currentId: '',
       currentName: '',
+      currentTime: '',
+      songTitle: '',
       playerVars: {
         listType: 'playlist',
         list: this.currentId
@@ -35,7 +38,6 @@ export default {
     }
   },
   methods: {
-    changePlaylist: function (id, name) {},
     playVideo () {
       this.player.playVideo()
     },
@@ -43,12 +45,16 @@ export default {
       this.player.pauseVideo()
     },
     prevVideo () {
-      this.player.prevVideo()
+      this.player.previousVideo()
     },
     nextVideo () {
       this.player.nextVideo()
     },
     playing () {
+      this.onVideoPlaying()
+    },
+    async onVideoPlaying (target) {
+      console.log('title:', await this.target.getVideoData().title, 'duration:', await this.player.getDuration())
     },
     loadPlaylist (id, name) {
       this.currentId = id
@@ -77,7 +83,6 @@ export default {
       const res = await instance.get('/playlists')
       this.idList = await res.data
       this.currentId = this.idList[0].playlist_id
-      console.log(this.currentId)
     } catch (err) {
       console.log(err)
     }

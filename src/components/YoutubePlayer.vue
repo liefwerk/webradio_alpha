@@ -5,13 +5,14 @@
         <button v-for="id in idList" :key="id.id" @click="loadPlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
       </div>
       <div class="video-container">
+        <div id="video-mask"></div>
         <youtube :player-vars="playerVars" ref="youtube" @playing="playing"></youtube>
       </div>
     </div>
     <div class="controls">
       <button id="pause-btn" @click="prevVideo">prev song</button>
-      <button id="play-btn" @click="playVideo">play</button>
       <button id="pause-btn" @click="pauseVideo">pause</button>
+      <button id="play-btn" @click="playVideo">play</button>
       <button id="pause-btn" @click="nextVideo">next song</button>
       <span style="color: white">{{this.songTitle}}</span>
     </div>
@@ -40,9 +41,11 @@ export default {
   methods: {
     playVideo () {
       this.player.playVideo()
+      document.querySelector('#play-btn').classList.add('playing')
     },
     pauseVideo () {
       this.player.pauseVideo()
+      document.querySelector('#play-btn').classList.remove('playing')
     },
     prevVideo () {
       this.player.previousVideo()
@@ -51,10 +54,6 @@ export default {
       this.player.nextVideo()
     },
     playing () {
-      this.onVideoPlaying()
-    },
-    async onVideoPlaying (target) {
-      console.log('title:', await this.target.getVideoData().title, 'duration:', await this.player.getDuration())
     },
     loadPlaylist (id, name) {
       this.currentId = id
@@ -90,59 +89,76 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="css" >
 
   .sub-container {
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: [row1-start] 35% [line2] auto [end];
+    display: flex;
+    height: 100vh;
+    flex-flow: row wrap;
     position: relative;
-    overflow: hidden;
+    justify-content: center;
+    align-items: center;
   }
 
   /* Responsive Iframe */
 
   .video-container {
-    float: none;
-    clear: both;
-    width: 100%;
     position: relative;
-    padding-bottom: 56.25%;
-    padding-top: 25px;
+    padding-bottom: 37%;
     height: 0;
+    width: 50%;
+    flex: 0 1 50%;
+    align-self: flex-start;
   }
+
   .video-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* The mask */
+
+  #video-mask {
+    background-image: url(/img/microonde.2265529c.png);
+    position: absolute;
+    width: 100vw;
+    height: 150%;
+    background-size: 80%;
+    background-repeat: no-repeat;
+    z-index: 9;
+    transform: translate(-13%,-15%);
   }
 
   #btns-parent {
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: row wrap;
     justify-content: center;
-    margin: 0 auto;
     position: relative;
+    flex: 0 1 50%;
   }
 
   #titre-footer {
     padding: 0;
     margin: .3em 1em;
     position: absolute;
-    bottom: 1em;
-    right: 1em;
+    top: 3.5em;
+    right: .5em;
   }
 
   /* Controls */
 
   .controls {
-    padding-bottom: 1em;
+    padding-bottom: .5em;
+    position: fixed;
+    bottom: 0;
   }
 
   h2 {
-    color: blue;
+    color: #ffb300;
     margin: 0;
     font-size: 1em;
   }
@@ -151,22 +167,38 @@ export default {
     background: red;
     font-family: Courier New;
     font-weight: bold;
-    min-height: 3em;
-    border: 2px dotted black;
+    border: none;
+    height: 2em;
     margin: .3em;
     padding: .3em .9em;
     color: #dfdfdf;
     cursor: pointer;
   }
 
-  button:focus {
-    border: 2px solid black;
+  .controls button {
+    background: transparent;
+    font-family: Courier New;
+    font-weight: bold;
+    min-height: unset;
+    margin: .3em;
+    padding: .3em .9em;
+    color: #dfdfdf;
+    cursor: pointer;
+    height: auto;
+    min-width: unset;
+  }
+
+  .controls button.playing {
+    color: #ffb300;
+  }
+
+  @media all and (max-width: 647px){
+
   }
 
   @media all and (max-width: 985px){
     .sub-container {
-      grid-template-columns: none;
-      grid-template-rows: [rows1-start] auto [line2] 1fr [end];
+
     }
 
     #btns-parent {
@@ -188,8 +220,7 @@ export default {
 
   @media all and (min-width: 986px) and (max-width: 1280px){
     .sub-container {
-      grid-template-columns: [column1-start] 45% [line2] auto [end];
-      grid-template-rows: none;
+
     }
   }
 

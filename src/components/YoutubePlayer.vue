@@ -7,14 +7,13 @@
       <img src="@/assets/img/microonde.png" id="video-mask" />
       <youtube :player-vars="playerVars" ref="youtube" @playing="playing"></youtube>
     </div>
-    <div class="controls">
+    <div id="controls">
       <button id="pause-btn" @click="prevVideo">prev song</button>
       <button id="pause-btn" @click="pauseVideo">pause</button>
       <button id="play-btn" @click="playVideo">play</button>
       <button id="pause-btn" @click="nextVideo">next song</button>
-      <button v-if="showed" @click="handleOverlay">Fermer les playlists</button>
-      <button v-else @click="handleOverlay">Afficher les playlists</button>
-      <span style="color: white">{{this.songTitle}}</span>
+      <button v-if="showed" @click="handleOverlay">fermer les playlists</button>
+      <button v-else @click="handleOverlay">afficher les playlists</button>
     </div>
     <div id="titre-footer"><h2>{{this.currentName}}</h2></div>
   </div>
@@ -97,6 +96,8 @@ export default {
 
 <style lang="css" >
 
+  @import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=VT323&display=swap');
+
   .container {
     overflow: hidden;
   }
@@ -112,6 +113,7 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    overflow: visible;
   }
 
   .video-container iframe {
@@ -147,6 +149,7 @@ export default {
     overflow-y: auto;
     background: #333;
     opacity: .8;
+    padding-bottom: .5em;
   }
 
   #btns-parent.show-me {
@@ -157,13 +160,15 @@ export default {
     padding: 0;
     margin: .3em 1em;
     position: absolute;
-    top: 3.5em;
+    top: 2.5em;
     right: .5em;
+    font-family: 'VT323', monospace;
+    font-size: 1.4em;
   }
 
   /* Controls */
 
-  .controls {
+  #controls {
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -180,32 +185,36 @@ export default {
     font-size: 1em;
   }
 
-  button {
+  #btns-parent button {
     background: transparent;
-    font-family: Courier New;
-    font-size: 1em;
+    font-family: 'VT323', monospace;
+    font-size: 1.3em;
     font-weight: normal;
     border: none;
-    height: 3em;
     margin: .2em;
     padding: .3em .5em;
     color: white;
     cursor: pointer;
+    text-align: left;
+    display: block;
   }
 
-  .controls button {
+  #controls button {
     background: transparent;
-    font-family: Courier New;
+    font-family: 'Major Mono Display', monospace;
     min-height: unset;
     margin: .3em;
     padding: .3em .9em;
     color: #dfdfdf;
     cursor: pointer;
     height: auto;
+    font-size: 1em;
     min-width: unset;
+    border: none;
+    display: inline-block,
   }
 
-  .controls button.playing {
+  #controls button.playing {
     color: #ffb300;
   }
 
@@ -234,6 +243,10 @@ export default {
     #video-mask {
       top: -6.9rem;
       right: 3.9rem;
+    }
+
+    #btns-parent {
+      width: 20em;
     }
   }
 

@@ -1,19 +1,19 @@
 <template>
   <div class="container">
-    <div class="sub-container">
-      <div id="btns-parent">
-        <button v-for="id in idList" :key="id.id" @click="loadPlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
-      </div>
-      <div class="video-container">
-        <div id="video-mask"></div>
-        <youtube :player-vars="playerVars" ref="youtube" @playing="playing"></youtube>
-      </div>
+    <div id="btns-parent" class="show-me">
+      <button v-for="id in idList" :key="id.id" @click="loadPlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
+    </div>
+    <div class="video-container">
+      <img src="@/assets/img/microonde.png" id="video-mask" />
+      <youtube :player-vars="playerVars" ref="youtube" @playing="playing"></youtube>
     </div>
     <div class="controls">
       <button id="pause-btn" @click="prevVideo">prev song</button>
       <button id="pause-btn" @click="pauseVideo">pause</button>
       <button id="play-btn" @click="playVideo">play</button>
       <button id="pause-btn" @click="nextVideo">next song</button>
+      <button v-if="showed" @click="handleOverlay">Fermer les playlists</button>
+      <button v-else @click="handleOverlay">Afficher les playlists</button>
       <span style="color: white">{{this.songTitle}}</span>
     </div>
     <div id="titre-footer"><h2>{{this.currentName}}</h2></div>
@@ -32,6 +32,7 @@ export default {
       currentName: '',
       currentTime: '',
       songTitle: '',
+      showed: true,
       playerVars: {
         listType: 'playlist',
         list: this.currentId
@@ -59,6 +60,11 @@ export default {
       this.currentId = id
       this.currentName = name
       this.player.loadPlaylist({ listType: 'playlist', list: this.currentId, modestbranding: 1, rel: 0 })
+    },
+    handleOverlay () {
+      console.log('clické')
+      document.getElementById('btns-parent').classList.toggle('show-me')
+      this.showed = !this.showed
     }
   },
   computed: {
@@ -91,25 +97,21 @@ export default {
 
 <style lang="css" >
 
-  .sub-container {
-    margin: 0 auto;
-    display: flex;
-    height: 100vh;
-    flex-flow: row wrap;
-    position: relative;
-    justify-content: center;
-    align-items: center;
+  .container {
+    overflow: hidden;
   }
 
   /* Responsive Iframe */
 
   .video-container {
-    position: relative;
-    padding-bottom: 37%;
+    position: absolute;
+    padding-bottom: 6rem;
     height: 0;
-    width: 50%;
-    flex: 0 1 50%;
-    align-self: flex-start;
+    width: 10rem;
+    margin: 0 auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .video-container iframe {
@@ -123,22 +125,32 @@ export default {
   /* The mask */
 
   #video-mask {
-    background-image: url(/img/microonde.2265529c.png);
-    position: absolute;
-    width: 100vw;
-    height: 150%;
-    background-size: 80%;
-    background-repeat: no-repeat;
-    z-index: 9;
-    transform: translate(-13%,-15%);
+    width: 180%;
+    height: auto;
+    position: relative;
+    z-index: 99;
+    top: -3.5rem;
+    right: 3rem;
   }
 
   #btns-parent {
     display: flex;
     flex-flow: row wrap;
-    justify-content: center;
-    position: relative;
-    flex: 0 1 50%;
+    position: absolute;
+    left: -100%;
+    top: 0;
+    height: 85vh;
+    width: 15em;
+    z-index: 199;
+    margin: 1em;
+    transition: all .5s ease-in-out;
+    overflow-y: auto;
+    background: #333;
+    opacity: .8;
+  }
+
+  #btns-parent.show-me {
+    left: 0;
   }
 
   #titre-footer {
@@ -152,9 +164,14 @@ export default {
   /* Controls */
 
   .controls {
-    padding-bottom: .5em;
     position: fixed;
     bottom: 0;
+    width: 100%;
+    display: block;
+    z-index: 300;
+    background: #d03636;
+    padding: .5em;
+    text-align: center;
   }
 
   h2 {
@@ -164,21 +181,21 @@ export default {
   }
 
   button {
-    background: red;
+    background: transparent;
     font-family: Courier New;
-    font-weight: bold;
+    font-size: 1em;
+    font-weight: normal;
     border: none;
-    height: 2em;
-    margin: .3em;
-    padding: .3em .9em;
-    color: #dfdfdf;
+    height: 3em;
+    margin: .2em;
+    padding: .3em .5em;
+    color: white;
     cursor: pointer;
   }
 
   .controls button {
     background: transparent;
     font-family: Courier New;
-    font-weight: bold;
     min-height: unset;
     margin: .3em;
     padding: .3em .9em;
@@ -192,36 +209,35 @@ export default {
     color: #ffb300;
   }
 
-  @media all and (max-width: 647px){
+  @media all and (min-width: 647px){
+    .video-container {
+      padding-bottom: 10rem;
+      width: 15rem;
+    }
 
+    /* The mask */
+
+    #video-mask {
+      top: -4.8rem;
+      right: 3.5rem;
+    }
   }
 
-  @media all and (max-width: 985px){
-    .sub-container {
-
+  @media all and (min-width: 985px){
+    .video-container {
+      padding-bottom: 12rem;
+      width: 20rem;
     }
 
-    #btns-parent {
-      flex-flow: row nowrap;
-      margin: 0 1.7em;
-      overflow: scroll;
-      justify-content: flex-start;
-    }
+    /* The mask */
 
-    button {
-      height: 5em;
-      min-width: 15em;
-    }
-
-    .wrap-element {
-      height: 50vh;
+    #video-mask {
+      top: -6.9rem;
+      right: 3.9rem;
     }
   }
 
   @media all and (min-width: 986px) and (max-width: 1280px){
-    .sub-container {
-
-    }
   }
 
 </style>

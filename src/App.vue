@@ -11,19 +11,28 @@
 <style lang="scss">
 
 body {
-  background: black;
+  background: #121212;
+  overflow: hidden;
+  margin: 0;
 }
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
 }
 
 #nav {
   position: absolute;
   right: 2em;
+  top: 1em;
+  font-family: Courier New;
+  color: orange;
+
+  a {
+    color: #d03636;
+  }
+
 }
 
 p {

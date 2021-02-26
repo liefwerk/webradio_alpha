@@ -108,7 +108,7 @@ export default {
     position: absolute;
     padding-bottom: 6rem;
     height: 0;
-    width: 10rem;
+    width: 9rem;
     margin: 0 auto;
     top: 50%;
     left: 50%;
@@ -131,8 +131,8 @@ export default {
     height: auto;
     position: relative;
     z-index: 99;
-    top: -3.5rem;
-    right: 3rem;
+    top: -2.9rem;
+    right: 2.1rem;
   }
 
   #btns-parent {
@@ -141,7 +141,7 @@ export default {
     position: absolute;
     left: -100%;
     top: 0;
-    height: 85vh;
+    height: 72vh;
     width: 15em;
     z-index: 199;
     margin: 1em;
@@ -172,11 +172,13 @@ export default {
     position: fixed;
     bottom: 0;
     width: 100%;
-    display: block;
+    display: flex;
     z-index: 300;
     background: #d03636;
     padding: .5em;
     text-align: center;
+    flex-flow: row wrap;
+    justify-content: center;
   }
 
   h2 {
@@ -230,6 +232,10 @@ export default {
       top: -4.8rem;
       right: 3.5rem;
     }
+
+    #btns-parent {
+      height: 78vh;
+    }
   }
 
   @media all and (min-width: 985px){
@@ -247,6 +253,7 @@ export default {
 
     #btns-parent {
       width: 20em;
+      height: 85vh;
     }
   }
 

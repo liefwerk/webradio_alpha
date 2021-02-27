@@ -1,19 +1,21 @@
 <template>
   <div class="container">
     <div id="btns-parent" class="show-me">
-      <button v-for="id in idList" :key="id.id" @click="loadPlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
+      <button v-for="id in idList" :key="id.id" @click="handlePlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
     </div>
     <div class="video-container">
-      <img src="@/assets/img/microonde.png" id="video-mask" />
+    <div id="layer"></div>
       <youtube :player-vars="playerVars" ref="youtube" @playing="playing"></youtube>
     </div>
     <div id="controls">
-      <button id="pause-btn" @click="prevVideo">prev song</button>
-      <button id="pause-btn" @click="pauseVideo">pause</button>
-      <button id="play-btn" @click="playVideo">play</button>
-      <button id="pause-btn" @click="nextVideo">next song</button>
-      <button v-if="showed" @click="handleOverlay">fermer les playlists</button>
-      <button v-else @click="handleOverlay">afficher les playlists</button>
+      <span id="btns-closing">
+        <arrow-left-icon v-if="showed" size="2x" class="custom-class" @click="handleOverlay"></arrow-left-icon>
+        <arrow-right-icon v-else size="2x" class="custom-class" @click="handleOverlay"></arrow-right-icon>
+      </span>
+      <button id="pause-btn" @click="prevVideo"><skip-back-icon size="1.5x" class="custom-class"></skip-back-icon></button>
+      <button v-if="isPlaying" id="pause-btn" @click="pauseVideo"><pause-icon size="1.5x" class="custom-class"></pause-icon></button>
+      <button v-else id="play-btn" @click="playVideo"><play-icon size="1.5x" class="custom-class"></play-icon></button>
+      <button id="pause-btn" @click="nextVideo"><skip-forward-icon size="1.5x" class="custom-class"></skip-forward-icon></button>
     </div>
     <div id="titre-footer"><h2>{{this.currentName}}</h2></div>
   </div>
@@ -21,6 +23,7 @@
 
 <script>
 import axios from 'axios'
+import { PlayIcon, SkipForwardIcon, SkipBackIcon, PauseIcon, ArrowRightIcon, ArrowLeftIcon } from 'vue-feather-icons'
 
 export default {
   name: 'Youtube-Player',
@@ -29,8 +32,8 @@ export default {
       idList: '',
       currentId: '',
       currentName: '',
-      currentTime: '',
       songTitle: '',
+      isPlaying: false,
       showed: true,
       playerVars: {
         listType: 'playlist',
@@ -44,27 +47,40 @@ export default {
       document.querySelector('#play-btn').classList.add('playing')
     },
     pauseVideo () {
+      this.isPlaying = !this.isPlaying
       this.player.pauseVideo()
       document.querySelector('#play-btn').classList.remove('playing')
     },
     prevVideo () {
+      this.isPlaying = !this.isPlaying
       this.player.previousVideo()
     },
     nextVideo () {
+      this.isPlaying = !this.isPlaying
       this.player.nextVideo()
     },
     playing () {
+      this.isPlaying = !this.isPlaying
     },
-    loadPlaylist (id, name) {
+    handlePlaylist (id, name) {
       this.currentId = id
       this.currentName = name
+      console.log(this.currentName)
       this.player.loadPlaylist({ listType: 'playlist', list: this.currentId, modestbranding: 1, rel: 0 })
+      if (this.isPlaying === true) { this.isPlaying = false }
     },
     handleOverlay () {
-      console.log('clické')
       document.getElementById('btns-parent').classList.toggle('show-me')
       this.showed = !this.showed
     }
+  },
+  components: {
+    PlayIcon,
+    SkipForwardIcon,
+    SkipBackIcon,
+    PauseIcon,
+    ArrowRightIcon,
+    ArrowLeftIcon
   },
   computed: {
     player () {
@@ -126,18 +142,18 @@ export default {
 
   /* The mask */
 
-  #video-mask {
-    width: 180%;
-    height: auto;
-    position: relative;
-    z-index: 99;
-    top: -2.9rem;
-    right: 2.1rem;
+  #layer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 9;
+    top: 0;
+    background: rgba(55, 58, 81, 0.22);
   }
 
   #btns-parent {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column nowrap;
     position: absolute;
     left: -100%;
     top: 0;
@@ -154,6 +170,16 @@ export default {
 
   #btns-parent.show-me {
     left: 0;
+  }
+
+  #btns-closing {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    left: 1em;
+    top: -50px;
+    color: #d03636;
+    cursor: pointer;
   }
 
   #titre-footer {

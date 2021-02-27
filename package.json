@@ -19,6 +19,7 @@
     "node-forge": ">=0.10.0",
     "pg": "^8.3.0",
     "vue": "^2.6.11",
+    "vue-feather-icons": "^5.1.0",
     "vue-router": "^3.2.0",
     "vue-youtube": "^1.4.0"
   },

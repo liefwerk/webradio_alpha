@@ -5,17 +5,17 @@
     </div>
     <div class="video-container">
     <div id="layer"></div>
-      <youtube :player-vars="playerVars" ref="youtube" @playing="playing" :video-id="firstVideo"></youtube>
+      <youtube :player-vars="playerVars" ref="youtube" @playing="playing"></youtube>
     </div>
     <div id="controls">
       <span id="btns-closing">
         <arrow-left-icon v-if="showed" size="2x" class="custom-class" @click="handleOverlay"></arrow-left-icon>
         <arrow-right-icon v-else size="2x" class="custom-class" @click="handleOverlay"></arrow-right-icon>
       </span>
-      <button id="pause-btn" @click="prevVideo"><skip-back-icon size="1.5x" class="custom-class"></skip-back-icon></button>
+      <button id="prev-btn" @click="prevVideo"><skip-back-icon size="1.5x" class="custom-class"></skip-back-icon></button>
       <button v-if="isPlaying" id="pause-btn" @click="pauseVideo"><pause-icon size="1.5x" class="custom-class"></pause-icon></button>
       <button v-else id="play-btn" @click="playVideo"><play-icon size="1.5x" class="custom-class"></play-icon></button>
-      <button id="pause-btn" @click="nextVideo"><skip-forward-icon size="1.5x" class="custom-class"></skip-forward-icon></button>
+      <button id="next-btn" @click="nextVideo"><skip-forward-icon size="1.5x" class="custom-class"></skip-forward-icon></button>
     </div>
     <div id="titre-footer"><h2>{{this.currentName}}</h2><h3>{{this.songTitle}}</h3></div>
   </div>
@@ -48,10 +48,10 @@ export default {
     }
   },
   methods: {
-    async handleClick (id, name, firstVideo) {
+    async handleClick (id, name, video) {
       this.isPlaying = true
       this.currentId = id
-      this.firstVideo = firstVideo
+      this.firstVideo = video
       this.playerVars.list = id
       this.currentName = name
       await this.player.loadPlaylist({
@@ -76,12 +76,16 @@ export default {
       this.player.pauseVideo()
     },
     prevVideo () {
-      this.isPlaying = !this.isPlaying
+      // this.isPlaying = !this.isPlaying
       this.player.previousVideo()
+      this.firstVideo = ''
+      console.log('prev btn clicked')
     },
     nextVideo () {
-      this.isPlaying = !this.isPlaying
+      // this.isPlaying = !this.isPlaying
       this.player.nextVideo()
+      this.firstVideo = ''
+      console.log('next btn clicked')
     },
     playing () {
       this.isPlaying = true

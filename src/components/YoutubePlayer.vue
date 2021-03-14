@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <div id="btns-parent" class="show-me">
-      <button v-for="id in idList" :key="id.id" @click="handlePlaylist(id.playlist_id, id.playlist_name)">{{id.playlist_name}}</button>
+      <button v-for="id in idList" :key="id.id" @click="handleClick(id.playlist_id, id.playlist_name, id.first_video_id)">{{id.playlist_name}}</button>
     </div>
     <div class="video-container">
     <div id="layer"></div>
-      <youtube :player-vars="playerVars" ref="youtube" @playing="playing"></youtube>
+      <youtube :player-vars="playerVars" ref="youtube" @playing="playing" :video-id="firstVideo"></youtube>
     </div>
     <div id="controls">
       <span id="btns-closing">
@@ -17,12 +17,13 @@
       <button v-else id="play-btn" @click="playVideo"><play-icon size="1.5x" class="custom-class"></play-icon></button>
       <button id="pause-btn" @click="nextVideo"><skip-forward-icon size="1.5x" class="custom-class"></skip-forward-icon></button>
     </div>
-    <div id="titre-footer"><h2>{{this.currentName}}</h2></div>
+    <div id="titre-footer"><h2>{{this.currentName}}</h2><h3>{{this.songTitle}}</h3></div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+// import getYoutubeTitle from 'get-youtube-title'
+import { createClient } from '@supabase/supabase-js'
 import { PlayIcon, SkipForwardIcon, SkipBackIcon, PauseIcon, ArrowRightIcon, ArrowLeftIcon } from 'vue-feather-icons'
 
 export default {
@@ -32,24 +33,47 @@ export default {
       idList: '',
       currentId: '',
       currentName: '',
+      firstVideo: '',
       songTitle: '',
       isPlaying: false,
       showed: true,
       playerVars: {
+        controls: 0,
         listType: 'playlist',
-        list: this.currentId
+        list: this.currentId,
+        modestbranding: 1,
+        rel: 0,
+        showinfo: 0
       }
     }
   },
   methods: {
-    playVideo () {
-      this.player.playVideo()
-      document.querySelector('#play-btn').classList.add('playing')
+    async handleClick (id, name, firstVideo) {
+      this.isPlaying = true
+      this.currentId = id
+      this.firstVideo = firstVideo
+      this.playerVars.list = id
+      this.currentName = name
+      await this.player.loadPlaylist({
+        controls: 0,
+        listType: 'playlist',
+        list: this.currentId,
+        modestbranding: 1,
+        rel: 0,
+        showinfo: 0
+      })
+      this.playVideo()
+      // await getYoutubeTitle(this.firstVideo, 'AIzaSyATZTbMyQvQJOmnbMATwGaUmqh6bhQPX_g', (err, title) => {
+      //   if (err) return console.log('error', err)
+      //   return title
+      // })
+    },
+    async playVideo () {
+      await this.player.playVideo()
     },
     pauseVideo () {
-      this.isPlaying = !this.isPlaying
+      this.isPlaying = false
       this.player.pauseVideo()
-      document.querySelector('#play-btn').classList.remove('playing')
     },
     prevVideo () {
       this.isPlaying = !this.isPlaying
@@ -60,14 +84,7 @@ export default {
       this.player.nextVideo()
     },
     playing () {
-      this.isPlaying = !this.isPlaying
-    },
-    handlePlaylist (id, name) {
-      this.currentId = id
-      this.currentName = name
-      console.log(this.currentName)
-      this.player.loadPlaylist({ listType: 'playlist', list: this.currentId, modestbranding: 1, rel: 0 })
-      if (this.isPlaying === true) { this.isPlaying = false }
+      this.isPlaying = true
     },
     handleOverlay () {
       document.getElementById('btns-parent').classList.toggle('show-me')
@@ -82,27 +99,39 @@ export default {
     ArrowRightIcon,
     ArrowLeftIcon
   },
+  watch: {
+    currentId: async function handlePlaylist () {
+      await this.player.loadPlaylist({
+        listType: 'playlist',
+        list: this.currentId,
+        controls: 0,
+        modestbranding: 1,
+        rel: 0,
+        showinfo: 0
+      })
+    }
+  },
   computed: {
     player () {
       return this.$refs.youtube.player
     }
   },
   async created () {
-    const config = {
-      headers: {
-        Accept: 'application/json',
-        AccessControlAllowOrigin: '*',
-        crossdomain: true
-      }
-    }
     try {
+      const supabaseUrl = 'https://epqrpjmozlcsvbgkxjkp.supabase.co'
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYxNTE0ODMyNCwiZXhwIjoxOTMwNzI0MzI0fQ.GxLEzrl9Faolqb12sImfJ2OGGIGsYU72FYPJcrA0cO4'
+      const supabase = createClient(supabaseUrl, supabaseKey)
+      const { data: Playlists, error } = await supabase
+        .from('Playlists')
+        .select('*')
+      if (error) console.log(error)
+      else {
+        this.idList = await Playlists
+        this.currentId = this.idList[0].playlist_id
+        this.firstVideo = this.idList[0].first_video_id
+      }
+
       // const PORT = process.env.PORT || 3000
-      const instance = axios.create({
-        baseURL: 'https://webradio-alpha-db.herokuapp.com'
-      }, config)
-      const res = await instance.get('/playlists')
-      this.idList = await res.data
-      this.currentId = this.idList[0].playlist_id
     } catch (err) {
       console.log(err)
     }
@@ -122,9 +151,9 @@ export default {
 
   .video-container {
     position: absolute;
-    padding-bottom: 6rem;
     height: 0;
-    width: 9rem;
+    padding-bottom: 15rem;
+    width: 20rem;
     margin: 0 auto;
     top: 50%;
     left: 50%;
@@ -248,8 +277,8 @@ export default {
 
   @media all and (min-width: 647px){
     .video-container {
-      padding-bottom: 10rem;
-      width: 15rem;
+      padding-bottom: 20rem;
+      width: 30rem;
     }
 
     /* The mask */
@@ -266,8 +295,8 @@ export default {
 
   @media all and (min-width: 985px){
     .video-container {
-      padding-bottom: 12rem;
-      width: 20rem;
+      padding-bottom: 30rem;
+      width: 40rem;
     }
 
     /* The mask */

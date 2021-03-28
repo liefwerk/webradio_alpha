@@ -8,9 +8,10 @@
       <youtube :player-vars="playerVars" ref="youtube" @playing="playing"></youtube>
     </div>
     <div id="controls">
+      <div id="time-control"><span id="time-cursor"></span></div>
       <span id="btns-closing">
-        <arrow-left-icon v-if="showed" size="2x" class="custom-class" @click="handleOverlay"></arrow-left-icon>
-        <arrow-right-icon v-else size="2x" class="custom-class" @click="handleOverlay"></arrow-right-icon>
+        <arrow-left-icon v-if="showed" size="1.5x" class="custom-class" @click="handleOverlay"></arrow-left-icon>
+        <arrow-right-icon v-else size="1.5x" class="custom-class" @click="handleOverlay"></arrow-right-icon>
       </span>
       <button id="prev-btn" @click="prevVideo"><skip-back-icon size="1.5x" class="custom-class"></skip-back-icon></button>
       <button v-if="isPlaying" id="pause-btn" @click="pauseVideo"><pause-icon size="1.5x" class="custom-class"></pause-icon></button>
@@ -53,8 +54,6 @@ export default {
       this.currentId = id
       this.playerVars.list = id
       this.currentName = name
-      this.isTwice = false
-
       await this.player.loadPlaylist({
         controls: 0,
         listType: 'playlist',
@@ -63,10 +62,6 @@ export default {
         rel: 0,
         showinfo: 0
       })
-      if (this.isTwice === false) {
-        this.handleClick()
-        this.isTwice = true
-      }
     },
     async playVideo () {
       await this.player.playVideo()
@@ -101,6 +96,7 @@ export default {
   },
   watch: {
     currentId: async function handlePlaylist () {
+      this.isTwice = false
       await this.player.loadPlaylist({
         listType: 'playlist',
         list: this.currentId,
@@ -109,6 +105,10 @@ export default {
         rel: 0,
         showinfo: 0
       })
+      if (this.isTwice === false) {
+        this.handleClick()
+        this.isTwice = true
+      }
     }
   },
   computed: {
@@ -134,6 +134,17 @@ export default {
     } catch (err) {
       console.log(err)
     }
+
+    clearInterval()
+    this.interval = setInterval(() => {
+      this.player.getDuration().then((res) => {
+        const duration = res
+        this.player.getCurrentTime().then((res) => {
+          const cursor = document.querySelector('#time-cursor')
+          cursor.style.width = ((res / duration) * 100) + '%'
+        })
+      })
+    }, 500)
   }
 }
 </script>
@@ -202,11 +213,9 @@ export default {
 
   #btns-closing {
     position: absolute;
-    width: 50px;
-    height: 50px;
-    left: 1em;
-    top: -50px;
-    color: #d03636;
+    left: .5em;
+    bottom: 3px;
+    color: white;
     cursor: pointer;
   }
 
@@ -222,6 +231,22 @@ export default {
 
   /* Controls */
 
+  #time-control {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: .25em;
+    background: #212121;
+    top: -.4em;
+  }
+
+  #time-cursor {
+    height: 100%;
+    display: block;
+    width: 0;
+    background: white;
+  }
+
   #controls {
     position: fixed;
     bottom: 0;
@@ -229,7 +254,6 @@ export default {
     display: flex;
     z-index: 300;
     background: #d03636;
-    padding: .5em;
     text-align: center;
     flex-flow: row wrap;
     justify-content: center;
@@ -247,8 +271,8 @@ export default {
     font-size: 1.3em;
     font-weight: normal;
     border: none;
-    margin: .2em;
-    padding: .3em .5em;
+    margin: .5em;
+    padding: 0 .5em;
     color: white;
     cursor: pointer;
     text-align: left;
@@ -259,12 +283,11 @@ export default {
     background: transparent;
     font-family: 'Major Mono Display', monospace;
     min-height: unset;
-    margin: .3em;
-    padding: .3em .9em;
-    color: #dfdfdf;
+    margin: .5em;
+    padding: 0 .9em;
+    color: white;
     cursor: pointer;
     height: auto;
-    font-size: 1em;
     min-width: unset;
     border: none;
     display: inline-block,

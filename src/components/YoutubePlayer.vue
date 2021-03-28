@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div id="btns-parent" class="show-me">
-      <button v-for="id in idList" :key="id.id" @click="handleClick(id.playlist_id, id.playlist_name, id.first_video_id)">{{id.playlist_name}}</button>
+      <button v-for="id in idList" :key="id.id" @click="handleClick(id.playlist_id, id.playlist_name, id.first_video_id, $event)">{{id.playlist_name}}</button>
     </div>
     <div class="video-container">
     <div id="layer"></div>
@@ -17,7 +17,7 @@
       <button v-else id="play-btn" @click="playVideo"><play-icon size="1.5x" class="custom-class"></play-icon></button>
       <button id="next-btn" @click="nextVideo"><skip-forward-icon size="1.5x" class="custom-class"></skip-forward-icon></button>
     </div>
-    <div id="titre-footer"><h2>{{this.currentName}}</h2><h3>{{this.songTitle}}</h3></div>
+    <div id="titre-footer"><h2>{{this.currentName}}</h2></div>
   </div>
 </template>
 
@@ -33,8 +33,7 @@ export default {
       idList: '',
       currentId: '',
       currentName: '',
-      firstVideo: '',
-      songTitle: '',
+      isTwice: false,
       isPlaying: false,
       showed: true,
       playerVars: {
@@ -48,12 +47,14 @@ export default {
     }
   },
   methods: {
-    async handleClick (id, name, video) {
+    async handleClick (id, name, video, event) {
+      console.log(this.isTwice)
       this.isPlaying = true
       this.currentId = id
-      this.firstVideo = video
       this.playerVars.list = id
       this.currentName = name
+      this.isTwice = false
+
       await this.player.loadPlaylist({
         controls: 0,
         listType: 'playlist',
@@ -62,11 +63,10 @@ export default {
         rel: 0,
         showinfo: 0
       })
-      this.playVideo()
-      // await getYoutubeTitle(this.firstVideo, 'AIzaSyATZTbMyQvQJOmnbMATwGaUmqh6bhQPX_g', (err, title) => {
-      //   if (err) return console.log('error', err)
-      //   return title
-      // })
+      if (this.isTwice === false) {
+        this.handleClick()
+        this.isTwice = true
+      }
     },
     async playVideo () {
       await this.player.playVideo()
@@ -78,14 +78,10 @@ export default {
     prevVideo () {
       // this.isPlaying = !this.isPlaying
       this.player.previousVideo()
-      this.firstVideo = ''
-      console.log('prev btn clicked')
     },
     nextVideo () {
       // this.isPlaying = !this.isPlaying
       this.player.nextVideo()
-      this.firstVideo = ''
-      console.log('next btn clicked')
     },
     playing () {
       this.isPlaying = true
@@ -132,7 +128,6 @@ export default {
       else {
         this.idList = await Playlists
         this.currentId = this.idList[0].playlist_id
-        this.firstVideo = this.idList[0].first_video_id
       }
 
       // const PORT = process.env.PORT || 3000

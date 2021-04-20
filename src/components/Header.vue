@@ -1,27 +1,42 @@
 <template>
   <div id="header">
-    <h1>Webradio Alpha - v0.37</h1>
+    <h1 id="title">Webradio Alpha - v0.37</h1>
+    <Navigation />
   </div>
 </template>
 
 <script>
+import Navigation from '@/components/Navigation.vue'
+
 export default {
-  name: 'Header'
+  name: 'Header',
+  components: {
+    Navigation
+  }
 }
 </script>
 
-<style lang="css" scoped>
-  h1 {
-    padding: 0 1em;
+<style lang="scss" scoped>
+
+  #header {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    z-index: 1;
+    position: relative;
+  }
+
+  #title {
+    font-family: 'VT323', monospace;
+    margin: 0 1rem;
     color: #dfdfdf;
     text-align: left;
-    font-size: 1.6em;
-    font-family: Courier New;
+    font-size: 2.2rem;
   }
 
   @media all and (max-width: 985px){
-    #header {
-      font-size: .7em;
+    #title {
+      font-size: 1.5em;
     }
   }
 </style>

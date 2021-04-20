@@ -51,9 +51,13 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="scss">
 .container.wrapper {
   height: 100vh;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 0;
 }
 
 .sign-up-page {
@@ -63,48 +67,38 @@ export default {
   color: white;
   text-align: center;
   font-family: 'VT323', monospace;
-  font-size: 1.25em;
-}
+  font-size: 1.25rem;
 
-.form {
-  width: 300px;
-  margin: 0 auto;
-}
+  form {
+    width: 300px;
+    margin: 0 auto;
 
-input {
-  width: 98%;
-  height: 2em;
-}
+    fieldset {
+      border: none;
 
-form button {
-  width: 90%;
-  border: none;
-  padding: .5em 0;
-  margin-top: .5em;
-  background-color: #d03636;
-  font-family: 'VT323', monospace;
-  cursor: pointer;
-  font-size: 1.25em;
-}
+      input {
+        width: 250px;
+        height: 2rem;
+        padding: 0;
+      }
 
-form button:hover {
-  background: white;
-}
+    }
 
-fieldset {
-  border: none;
-}
+    button {
+      width: 250px;
+      border: none;
+      padding: .25rem 0;
+      margin-top: .5rem;
+      background-color: #d03636;
+      font-family: 'VT323', monospace;
+      cursor: pointer;
+      font-size: 1.25rem;
 
-.email {
-
-}
-
-.password {
-
-}
-
-label {
-  margin-right: .5em;
+      &:hover {
+        background: white;
+      }
+    }
+  }
 }
 
 </style>

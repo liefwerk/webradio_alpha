@@ -1,15 +1,26 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/sign-up">Sign Up</router-link>
-    </div>
+    <Header />
     <router-view/>
   </div>
 </template>
 
+<script>
+import Header from '@/components/Header.vue'
+
+export default {
+  name: 'App',
+  components: {
+    Header
+  }
+}
+</script>
+
 <style lang="scss">
+
+:root {
+  --primary: #d03636;
+}
 
 body {
   background: #121212;
@@ -23,27 +34,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-#nav {
-  position: absolute;
-  right: 2em;
-  top: 1em;
-  font-family: Courier New;
-  color: orange;
-
-  a {
-    color: #d03636;
-  }
-
-}
-
 p {
   color: #dfdfdf;
-}
-
-@media all and (max-width: 985px){
-  #nav {
-    display: none;
-  }
 }
 
 </style>

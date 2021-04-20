@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container hidden">
     <div id="btns-parent" class="show-me">
       <button v-for="id in idList" :key="id.id" @click="handleClick(id.playlist_id, id.playlist_name, id.first_video_id, $event)">{{id.playlist_name}}</button>
     </div>
@@ -135,11 +135,10 @@ export default {
 }
 </script>
 
-<style lang="css" >
-
+<style lang="scss" >
   @import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=VT323&display=swap');
 
-  .container {
+  .container.hidden {
     overflow: hidden;
   }
 
@@ -207,12 +206,12 @@ export default {
 
   #titre-footer {
     padding: 0;
-    margin: .3em 1em;
+    margin: .5em 1rem;
     position: absolute;
-    top: 2.5em;
-    right: .5em;
+    bottom: 2.5rem;
+    right: 0;
     font-family: 'VT323', monospace;
-    font-size: 1.4em;
+    font-size: 1rem;
   }
 
   /* Controls */
@@ -221,9 +220,9 @@ export default {
     display: block;
     position: absolute;
     width: 100%;
-    height: .25em;
+    height: .25rem;
     background: #212121;
-    top: -.4em;
+    top: -.4rem;
   }
 
   #time-cursor {
@@ -239,7 +238,7 @@ export default {
     width: 100%;
     display: flex;
     z-index: 300;
-    background: #d03636;
+    background: var(--primary);
     text-align: center;
     flex-flow: row wrap;
     justify-content: center;
@@ -248,17 +247,16 @@ export default {
   h2 {
     color: #ffb300;
     margin: 0;
-    font-size: 1em;
   }
 
   #btns-parent button {
     background: transparent;
     font-family: 'VT323', monospace;
-    font-size: 1.3em;
+    font-size: 1.3rem;
     font-weight: normal;
     border: none;
-    margin: .5em;
-    padding: 0 .5em;
+    margin: .5rem;
+    padding: 0 .5rem;
     color: white;
     cursor: pointer;
     text-align: left;
@@ -269,8 +267,8 @@ export default {
     background: transparent;
     font-family: 'Major Mono Display', monospace;
     min-height: unset;
-    margin: .5em;
-    padding: 0 .9em;
+    margin: .5rem;
+    padding: 0 .9rem;
     color: white;
     cursor: pointer;
     height: auto;
@@ -315,7 +313,7 @@ export default {
     }
 
     #btns-parent {
-      width: 20em;
+      width: 20rem;
       height: 85vh;
     }
   }

@@ -84,6 +84,35 @@ export default {
     handleOverlay () {
       document.getElementById('btns-parent').classList.toggle('show-me')
       this.showed = !this.showed
+    },
+    async handleFetching () {
+      try {
+        const supabaseUrl = 'https://epqrpjmozlcsvbgkxjkp.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYxNTE0ODMyNCwiZXhwIjoxOTMwNzI0MzI0fQ.GxLEzrl9Faolqb12sImfJ2OGGIGsYU72FYPJcrA0cO4'
+        const supabase = createClient(supabaseUrl, supabaseKey)
+        const { data: Playlists, error } = await supabase
+          .from('Playlists')
+          .select('*')
+        if (error) console.log(error)
+        else {
+          this.idList = await Playlists
+          this.currentId = this.idList[0].playlist_id
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    handleTimebar () {
+      clearInterval()
+      this.interval = setInterval(() => {
+        this.player.getDuration().then((res) => {
+          const duration = res
+          this.player.getCurrentTime().then((res) => {
+            const cursor = document.querySelector('#time-cursor')
+            cursor.style.width = ((res / duration) * 100) + '%'
+          })
+        })
+      }, 500)
     }
   },
   components: {
@@ -94,57 +123,14 @@ export default {
     ArrowRightIcon,
     ArrowLeftIcon
   },
-  watch: {
-    currentId: async function handlePlaylist () {
-      this.isTwice = false
-      await this.player.loadPlaylist({
-        listType: 'playlist',
-        list: this.currentId,
-        controls: 0,
-        modestbranding: 1,
-        rel: 0,
-        showinfo: 0
-      })
-      if (this.isTwice === false) {
-        this.handleClick()
-        this.isTwice = true
-      }
-    }
-  },
   computed: {
     player () {
       return this.$refs.youtube.player
     }
   },
   async created () {
-    try {
-      const supabaseUrl = 'https://epqrpjmozlcsvbgkxjkp.supabase.co'
-      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYxNTE0ODMyNCwiZXhwIjoxOTMwNzI0MzI0fQ.GxLEzrl9Faolqb12sImfJ2OGGIGsYU72FYPJcrA0cO4'
-      const supabase = createClient(supabaseUrl, supabaseKey)
-      const { data: Playlists, error } = await supabase
-        .from('Playlists')
-        .select('*')
-      if (error) console.log(error)
-      else {
-        this.idList = await Playlists
-        this.currentId = this.idList[0].playlist_id
-      }
-
-      // const PORT = process.env.PORT || 3000
-    } catch (err) {
-      console.log(err)
-    }
-
-    clearInterval()
-    this.interval = setInterval(() => {
-      this.player.getDuration().then((res) => {
-        const duration = res
-        this.player.getCurrentTime().then((res) => {
-          const cursor = document.querySelector('#time-cursor')
-          cursor.style.width = ((res / duration) * 100) + '%'
-        })
-      })
-    }, 500)
+    this.handleFetching()
+    this.handleTimebar()
   }
 }
 </script>

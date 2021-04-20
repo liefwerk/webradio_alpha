@@ -1,27 +1,51 @@
 <template>
   <div class="container wrapper">
     <div class="sign-up-page">
-      <form class="form">
-        <field class="email">
-          <label>Email</label>
+      <form class="form" v-on:submit.prevent="signUp">
+        <fieldset class="email">
+          <legend>Email</legend>
           <input type="email" v-model="email">
-        </field>
-        <field class="password">
-          <label>Password</label>
+        </fieldset>
+        <fieldset class="password">
+          <legend>Password</legend>
           <input type="password" v-model="password">
-        </field>
+        </fieldset>
+        <button class="button" @click="signUp">Sign Up</button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
+import { createClient } from '@supabase/supabase-js'
+
 export default {
   name: 'SignUp',
   data () {
     return {
       email: '',
       password: ''
+    }
+  },
+  methods: {
+    signUp: async function () {
+      try {
+        const supabaseUrl = 'https://epqrpjmozlcsvbgkxjkp.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYxNTE0ODMyNCwiZXhwIjoxOTMwNzI0MzI0fQ.GxLEzrl9Faolqb12sImfJ2OGGIGsYU72FYPJcrA0cO4'
+        const supabase = createClient(supabaseUrl, supabaseKey)
+
+        const { user, error } = await supabase.auth.signUp({
+          email: this.email,
+          password: this.password
+        })
+
+        if (error) console.log(error)
+        else {
+          console.log(user)
+        }
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
@@ -38,24 +62,45 @@ export default {
   position: relative;
   color: white;
   text-align: center;
+  font-family: 'VT323', monospace;
+  font-size: 1.25em;
 }
 
 .form {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  justify-items: last baseline;
-  row-gap: .5em;
+  width: 300px;
+  margin: 0 auto;
+}
+
+input {
+  width: 98%;
+  height: 2em;
+}
+
+form button {
+  width: 90%;
+  border: none;
+  padding: .5em 0;
+  margin-top: .5em;
+  background-color: #d03636;
+  font-family: 'VT323', monospace;
+  cursor: pointer;
+  font-size: 1.25em;
+}
+
+form button:hover {
+  background: white;
+}
+
+fieldset {
+  border: none;
 }
 
 .email {
-  grid-column: 4 / span 4;
-  grid-row: 1 / span 2;
+
 }
 
 .password {
-  grid-column: 4 / span 4;
-  grid-row: 2;
+
 }
 
 label {

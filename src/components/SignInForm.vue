@@ -39,6 +39,8 @@ export default {
         if (error) console.log(error)
         else {
           console.log(user)
+          this.$store.commit('setUserId', user.id)
+          console.log(this.$store.state.isAuthenticated)
         }
       } catch (err) {
         console.log(err)

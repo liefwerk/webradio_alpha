@@ -2,10 +2,10 @@
   <div class="container main-connect">
     <div class="main-position">
       <div class="wrapper" v-if="handleForm">
-        <SignUpForm />
+        <SignInForm />
       </div>
       <div class="wrapper" v-else>
-        <SignInForm />
+        <SignUpForm />
       </div>
       <p class="connect" v-if="handleForm" @click="handleSwitchForm">I already have an account.</p>
       <p class="connect" v-else @click="handleSwitchForm">I do not have an account.</p>

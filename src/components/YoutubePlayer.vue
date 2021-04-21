@@ -34,7 +34,6 @@ export default {
       idList: '',
       currentId: '',
       currentName: '',
-      isTwice: false,
       isPlaying: false,
       showed: true,
       playerVars: {
@@ -49,7 +48,6 @@ export default {
   },
   methods: {
     async handleClick (id, name, video, event) {
-      console.log(this.isTwice)
       this.isPlaying = true
       this.currentId = id
       this.playerVars.list = id
@@ -103,12 +101,12 @@ export default {
       }
     },
     handleTimebar () {
+      const cursor = document.querySelector('#time-cursor')
       clearInterval()
       this.interval = setInterval(() => {
         this.player.getDuration().then((res) => {
           const duration = res
           this.player.getCurrentTime().then((res) => {
-            const cursor = document.querySelector('#time-cursor')
             cursor.style.width = ((res / duration) * 100) + '%'
           })
         })
@@ -130,6 +128,9 @@ export default {
   },
   async created () {
     this.handleFetching()
+    // this.handleTimebar()
+  },
+  async mounted () {
     this.handleTimebar()
   }
 }
@@ -200,7 +201,7 @@ export default {
     position: absolute;
     left: .5em;
     bottom: 3px;
-    color: white;
+    color: var(--white);
     cursor: pointer;
   }
 
@@ -229,7 +230,7 @@ export default {
     height: 100%;
     display: block;
     width: 0;
-    background: white;
+    background: var(--white);
   }
 
   #controls {
@@ -257,7 +258,7 @@ export default {
     border: none;
     margin: .5rem;
     padding: 0 .5rem;
-    color: white;
+    color: var(--white);
     cursor: pointer;
     text-align: left;
     display: block;
@@ -269,7 +270,7 @@ export default {
     min-height: unset;
     margin: .5rem;
     padding: 0 .9rem;
-    color: white;
+    color: var(--white);
     cursor: pointer;
     height: auto;
     min-width: unset;

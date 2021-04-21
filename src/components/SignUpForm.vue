@@ -1,6 +1,6 @@
 <template>
   <div class="sign-up-page main-form">
-    <form class="form" v-on:submit.prevent="signUp">
+    <form class="form" v-on:submit.prevent="">
       <fieldset class="email">
         <legend>Email</legend>
         <input type="email" v-model="email">
@@ -9,7 +9,7 @@
         <legend>Password</legend>
         <input type="password" v-model="password">
       </fieldset>
-      <button class="button" @click="signUp">Sign up</button>
+      <button class="button" @click="signUp">Create an account</button>
     </form>
   </div>
 </template>

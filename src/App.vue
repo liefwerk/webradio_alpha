@@ -20,6 +20,11 @@ export default {
 
 :root {
   --primary: #d03636;
+  --white: #ebebf2;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {

@@ -1,6 +1,6 @@
 <template>
   <div class="sign-in-page main-form">
-    <form class="form" v-on:submit.prevent="signUp">
+    <form class="form" v-on:submit.prevent="">
       <fieldset class="email">
         <legend>Email</legend>
         <input type="email" v-model="email">
@@ -9,7 +9,7 @@
         <legend>Password</legend>
         <input type="password" v-model="password">
       </fieldset>
-      <button class="button" @click="signUp">Sign in</button>
+      <button class="button" @click="signIn">Connect</button>
     </form>
   </div>
 </template>
@@ -25,7 +25,7 @@ export default {
     }
   },
   methods: {
-    signUp: async function () {
+    signIn: async function () {
       try {
         const supabaseUrl = 'https://epqrpjmozlcsvbgkxjkp.supabase.co'
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYxNTE0ODMyNCwiZXhwIjoxOTMwNzI0MzI0fQ.GxLEzrl9Faolqb12sImfJ2OGGIGsYU72FYPJcrA0cO4'

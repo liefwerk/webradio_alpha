@@ -1,11 +1,14 @@
 <template>
-  <div class="container">
-    <button @click="handleSwitchForm">I already have an account.</button>
-    <div class="wrapper" v-if="handleForm">
-      <SignUpForm />
-    </div>
-    <div class="wrapper" v-else>
-      <SignInForm />
+  <div class="container main-connect">
+    <div class="main-position">
+      <div class="wrapper" v-if="handleForm">
+        <SignUpForm />
+      </div>
+      <div class="wrapper" v-else>
+        <SignInForm />
+      </div>
+      <p class="connect" v-if="handleForm" @click="handleSwitchForm">I already have an account.</p>
+      <p class="connect" v-else @click="handleSwitchForm">I do not have an account.</p>
     </div>
   </div>
 </template>
@@ -15,7 +18,7 @@ import SignUpForm from '@/components/SignUpForm'
 import SignInForm from '@/components/SignInForm'
 
 export default {
-  name: 'SignUp',
+  name: 'Connect',
   components: {
     SignUpForm,
     SignInForm
@@ -35,27 +38,42 @@ export default {
 </script>
 
 <style lang="scss">
-.container .wrapper {
+.container {
+  z-index: 0;
+}
+
+.main-connect {
   height: 100vh;
   position: absolute;
   top: 0;
   width: 100%;
-  z-index: 0;
 
+  .main-position {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }
 
-button {
+.connect {
   position: relative;
-  z-index: 2
+  z-index: 2;
+  color: var(--primary);
+  cursor: pointer;
+  text-align: right;
+  width: 300px;
+  margin: 1em auto 0 auto;
+
+  &:hover {
+      color: var(--white);
+  }
 }
 
 .sign-up-page{}
 
 .main-form {
-  top: 50%;
-  transform: translateY(-50%);
   position: relative;
-  color: white;
+  color: var(--white);
   text-align: center;
   font-family: 'VT323', monospace;
   font-size: 1.25rem;
@@ -66,17 +84,19 @@ button {
 
     fieldset {
       border: none;
+      padding: 0;
+      margin: .5em 0;
 
       input {
-        width: 250px;
+        width: 300px;
         height: 2rem;
-        padding: 0;
+        padding: 0 .5em 0 .5em;
       }
 
     }
 
     button {
-      width: 250px;
+      width: 300px;
       border: none;
       padding: .25rem 0;
       margin-top: .5rem;
@@ -86,7 +106,7 @@ button {
       font-size: 1.25rem;
 
       &:hover {
-        background: white;
+        background: var(--white);
       }
     }
   }

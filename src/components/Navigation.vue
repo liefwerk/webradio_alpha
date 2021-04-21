@@ -2,7 +2,7 @@
   <span id="nav">
     <router-link to="/">Home</router-link>
     <router-link to="/about">About</router-link>
-    <router-link to="/sign-up">Sign Up</router-link>
+    <router-link to="/connect">Connect</router-link>
   </span>
 </template>
 
@@ -27,7 +27,7 @@ export default {
     text-decoration: none;
 
     &:hover {
-      color: white;
+      color: var(--white);
     }
   }
 

@@ -1,6 +1,6 @@
 <template>
   <div id="header">
-    <h1 id="title">Webradio Alpha - v0.37</h1>
+    <h1 id="title">Webradio Alpha - v0.41</h1>
     <Navigation />
   </div>
 </template>

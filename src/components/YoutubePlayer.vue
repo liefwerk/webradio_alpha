@@ -1,15 +1,13 @@
 <template>
   <div class="container hidden">
-    <div id="btns-parent" class="show-me">
-      <button v-for="id in idList" :key="id.id" @click="handleClick(id.playlist_id, id.playlist_name, id.first_video_id, $event)">{{id.playlist_name}}</button>
-    </div>
+    <Playlists :idList="idList" @send-playlist="handleClick" />
     <div class="video-container">
-    <div id="layer"></div>
+      <div id="layer"></div>
       <youtube :player-vars="playerVars" ref="youtube" @playing="playing"></youtube>
     </div>
     <div id="controls">
       <div id="time-control"><span id="time-cursor"></span></div>
-      <span id="btns-closing">
+      <span id="btns-toggle">
         <arrow-left-icon v-if="showed" size="1.5x" class="custom-class" @click="handleOverlay"></arrow-left-icon>
         <arrow-right-icon v-else size="1.5x" class="custom-class" @click="handleOverlay"></arrow-right-icon>
       </span>
@@ -18,20 +16,31 @@
       <button v-else id="play-btn" @click="playVideo"><play-icon size="1.5x" class="custom-class"></play-icon></button>
       <button id="next-btn" @click="nextVideo"><skip-forward-icon size="1.5x" class="custom-class"></skip-forward-icon></button>
     </div>
-    <div id="titre-footer"><h2>{{this.currentName}}</h2></div>
+    <PlaylistTitle :name="currentName" />
   </div>
 </template>
 
 <script>
-// import getYoutubeTitle from 'get-youtube-title'
+import Playlists from '@/components/Playlists.vue'
+import PlaylistTitle from '@/components/PlaylistTitle.vue'
 import { createClient } from '@supabase/supabase-js'
 import { PlayIcon, SkipForwardIcon, SkipBackIcon, PauseIcon, ArrowRightIcon, ArrowLeftIcon } from 'vue-feather-icons'
 
 export default {
   name: 'Youtube-Player',
+  components: {
+    Playlists,
+    PlaylistTitle,
+    PlayIcon,
+    SkipForwardIcon,
+    SkipBackIcon,
+    PauseIcon,
+    ArrowRightIcon,
+    ArrowLeftIcon
+  },
   data () {
     return {
-      idList: '',
+      idList: [],
       currentId: '',
       currentName: '',
       isPlaying: false,
@@ -47,11 +56,14 @@ export default {
     }
   },
   methods: {
-    async handleClick (id, name, video, event) {
+    handleCreate () {
+      console.log('children created')
+    },
+    async handleClick (playlist) {
       this.isPlaying = true
-      this.currentId = id
-      this.playerVars.list = id
-      this.currentName = name
+      this.currentId = playlist.id
+      this.playerVars.list = playlist.id
+      this.currentName = playlist.name
       await this.player.loadPlaylist({
         controls: 0,
         listType: 'playlist',
@@ -112,14 +124,6 @@ export default {
         })
       }, 500)
     }
-  },
-  components: {
-    PlayIcon,
-    SkipForwardIcon,
-    SkipBackIcon,
-    PauseIcon,
-    ArrowRightIcon,
-    ArrowLeftIcon
   },
   computed: {
     player () {
@@ -197,7 +201,7 @@ export default {
     left: 0;
   }
 
-  #btns-closing {
+  #btns-toggle {
     position: absolute;
     left: .5em;
     bottom: 3px;

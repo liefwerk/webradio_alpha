@@ -1,7 +1,10 @@
 import Vue from 'vue'
+import store from '../store'
 import VueRouter from 'vue-router'
+
 import Home from '../views/Home.vue'
 import Connect from '../views/Connect.vue'
+import MyAccount from '../views/MyAccount.vue'
 
 Vue.use(VueRouter)
 
@@ -23,6 +26,14 @@ const routes = [
     path: '/connect',
     name: 'Connect',
     component: Connect
+  },
+  {
+    path: '/account',
+    name: 'MyAccount',
+    component: MyAccount,
+    meta: {
+      requireLogin: true
+    }
   }
 ]
 
@@ -30,6 +41,14 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requireLogin) && !store.state.isAuthenticated) {
+    next({ name: 'Connect', query: { to: to.path } })
+  } else {
+    next()
+  }
 })
 
 export default router

@@ -7,8 +7,8 @@
       <div class="wrapper" v-else>
         <SignUpForm />
       </div>
-      <p class="connect" v-if="handleForm" @click="handleSwitchForm">I already have an account.</p>
-      <p class="connect" v-else @click="handleSwitchForm">I do not have an account.</p>
+      <p class="connect" v-if="handleForm" @click="handleSwitchForm">I do not have an account.</p>
+      <p class="connect" v-else @click="handleSwitchForm">I already have an account.</p>
     </div>
   </div>
 </template>

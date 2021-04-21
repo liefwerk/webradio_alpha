@@ -40,7 +40,8 @@ export default {
         else {
           console.log(user)
           this.$store.commit('setUserId', user.id)
-          console.log(this.$store.state.isAuthenticated)
+          localStorage.setItem('userId', user.id)
+          this.$router.push('/')
         }
       } catch (err) {
         console.log(err)

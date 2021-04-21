@@ -2,7 +2,12 @@
   <span id="nav">
     <router-link to="/">Home</router-link>
     <router-link to="/about">About</router-link>
-    <router-link to="/connect">Connect</router-link>
+    <template v-if="this.$store.state.isAuthenticated">
+      <router-link to="/account">My Account</router-link>
+    </template>
+    <template v-else>
+      <router-link to="/connect">Connect</router-link>
+    </template>
   </span>
 </template>
 

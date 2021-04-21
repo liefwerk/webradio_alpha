@@ -45,10 +45,8 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requireLogin) && !store.state.isAuthenticated) {
-    // this.$store.commit('initializeStore')
     next({ name: 'Connect' })
   } else {
-    console.log('else', store.state.isAuthenticated)
     next()
   }
 })

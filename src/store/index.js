@@ -10,7 +10,10 @@ export default new Vuex.Store({
   state: {
     isAuthenticated: false,
     isConfirmed: false,
-    userId: ''
+    userId: '',
+    userEmail: '',
+    supabaseUrl: 'https://epqrpjmozlcsvbgkxjkp.supabase.co',
+    supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYxNTE0ODMyNCwiZXhwIjoxOTMwNzI0MzI0fQ.GxLEzrl9Faolqb12sImfJ2OGGIGsYU72FYPJcrA0cO4'
   },
   mutations: {
     initializeStore(state) {
@@ -18,7 +21,9 @@ export default new Vuex.Store({
         // state.userId = localStorage.getItem('supabase.auth.token')
         const user = JSON.parse(localStorage.getItem('supabase.auth.token'))
         const userId = user.currentSession.user.id
+        const userEmail = user.currentSession.user.email
         state.userId = userId
+        state.userEmail = userEmail
         state.isAuthenticated = true
       } else {
         state.token = ''

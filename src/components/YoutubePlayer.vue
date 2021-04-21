@@ -1,5 +1,5 @@
 <template>
-  <div class="container hidden">
+  <div>
     <Playlists :idList="idList" @send-playlist="handleClick" />
     <div class="video-container">
       <div id="layer"></div>
@@ -56,9 +56,6 @@ export default {
     }
   },
   methods: {
-    handleCreate () {
-      console.log('children created')
-    },
     async handleClick (playlist) {
       this.isPlaying = true
       this.currentId = playlist.id
@@ -97,8 +94,8 @@ export default {
     },
     async handleFetching () {
       try {
-        const supabaseUrl = 'https://epqrpjmozlcsvbgkxjkp.supabase.co'
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYxNTE0ODMyNCwiZXhwIjoxOTMwNzI0MzI0fQ.GxLEzrl9Faolqb12sImfJ2OGGIGsYU72FYPJcrA0cO4'
+        const supabaseUrl = this.$store.state.supabaseUrl
+        const supabaseKey = this.$store.state.supabaseKey
         const supabase = createClient(supabaseUrl, supabaseKey)
         const { data: Playlists, error } = await supabase
           .from('Playlists')
@@ -132,7 +129,6 @@ export default {
   },
   async created () {
     this.handleFetching()
-    // this.handleTimebar()
   },
   async mounted () {
     this.handleTimebar()
@@ -143,7 +139,7 @@ export default {
 <style lang="scss" >
   @import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=VT323&display=swap');
 
-  .container.hidden {
+  .hidden {
     overflow: hidden;
   }
 
@@ -247,11 +243,6 @@ export default {
     text-align: center;
     flex-flow: row wrap;
     justify-content: center;
-  }
-
-  h2 {
-    color: #ffb300;
-    margin: 0;
   }
 
   #btns-parent button {

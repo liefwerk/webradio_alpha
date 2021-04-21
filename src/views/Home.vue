@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <YoutubePlayer />
     <div>{{this.isAuthenticated}}</div>
     <!--<Maintenance />-->

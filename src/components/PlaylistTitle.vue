@@ -12,3 +12,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  #titre-footer h2 {
+    color: var(--secondary)
+  }
+</style>

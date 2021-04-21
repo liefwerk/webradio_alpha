@@ -15,8 +15,6 @@ export default {
   },
   beforeCreate () {
     this.$store.commit('initializeStore')
-    console.log('store initialized')
-    console.log('auth', this.$store.state.isAuthenticated)
   }
 }
 </script>
@@ -25,6 +23,7 @@ export default {
 
 :root {
   --primary: #d03636;
+  --secondary: #e2a23f;
   --white: #ebebf2;
 }
 
@@ -39,21 +38,28 @@ body {
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 p {
   color: #dfdfdf;
+  font-family: 'Courier New', monospace;
 }
 
-h1 {
+h1, h2 {
     font-family: 'VT323', monospace;
     margin: 0 1rem;
     color: #dfdfdf;
     text-align: left;
+}
+
+h1 {
     font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.8rem;
 }
 
 </style>

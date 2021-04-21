@@ -1,5 +1,5 @@
-import Vue from 'vue'
 import store from '../store'
+import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Home from '../views/Home.vue'
@@ -23,17 +23,17 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/connect',
-    name: 'Connect',
-    component: Connect
-  },
-  {
     path: '/account',
     name: 'MyAccount',
     component: MyAccount,
     meta: {
       requireLogin: true
     }
+  },
+  {
+    path: '/connect',
+    name: 'Connect',
+    component: Connect
   }
 ]
 
@@ -45,8 +45,10 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requireLogin) && !store.state.isAuthenticated) {
-    next({ name: 'Connect', query: { to: to.path } })
+    // this.$store.commit('initializeStore')
+    next({ name: 'Connect' })
   } else {
+    console.log('else', store.state.isAuthenticated)
     next()
   }
 })

@@ -15,6 +15,8 @@ export default {
   },
   beforeCreate () {
     this.$store.commit('initializeStore')
+    console.log('store initialized')
+    console.log('auth', this.$store.state.isAuthenticated)
   }
 }
 </script>
@@ -44,6 +46,14 @@ body {
 
 p {
   color: #dfdfdf;
+}
+
+h1 {
+    font-family: 'VT323', monospace;
+    margin: 0 1rem;
+    color: #dfdfdf;
+    text-align: left;
+    font-size: 2rem;
 }
 
 </style>

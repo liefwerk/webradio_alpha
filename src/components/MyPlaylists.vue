@@ -1,9 +1,12 @@
 <template>
-  <div>
+  <div class="my-playlists">
     <h2>My Playlists</h2>
-    <div>
-      <p v-for="playlist in playlists" :key="playlist.id">{{playlist.playlist_name}}</p>
-    </div>
+      <div v-for="(playlist) in playlists" :key="playlist.id">
+        <input class="input" v-if = "playlist.edit" v-model = "playlist.playlist_name"
+          @blur= "playlist.edit = false; $emit('update')"
+          @keyup.enter = "playlist.edit=false; $emit('update')">
+        <div v-else class="wrapper-flex"><p>{{playlist.playlist_name}}</p><edit-icon @click="playlist.edit = true" size="1.5x" class="playlist-icons"></edit-icon></div>
+      </div>
     <AddPlaylist />
   </div>
 </template>
@@ -11,15 +14,18 @@
 <script>
 import AddPlaylist from '@/components/AddPlaylist'
 import { createClient } from '@supabase/supabase-js'
+import { EditIcon } from 'vue-feather-icons'
 
 export default {
   name: 'MyPlaylists',
   components: {
-    AddPlaylist
+    AddPlaylist,
+    EditIcon
   },
   data () {
     return {
-      playlists: []
+      playlists: [],
+      editedTodo: null
     }
   },
   methods: {
@@ -34,11 +40,15 @@ export default {
         .eq('user_id', this.$store.state.userId)
       if (error) console.log(error)
       else {
-        console.log(data)
         data.map(playlist => {
+          playlist.edit = false
           this.playlists.push(playlist)
         })
+        console.log(this.playlists)
       }
+    },
+    editTodo: function (todo) {
+      this.editedTodo = todo
     }
   },
   created () {
@@ -46,3 +56,33 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+
+  .my-playlists {
+    .input {
+      background-color: transparent;
+      border: 1px solid var(--white);
+      color: var(--white);
+      padding: .5rem;
+      font-family: 'Courier New', monospace;
+      font-size: 1rem;
+    }
+
+    .playlist-icons {
+      color: var(--white);
+      margin-left: .5em;
+
+      &:hover {
+        color: var(--primary);
+        cursor: pointer;
+      }
+    }
+    .wrapper-flex {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+    }
+  }
+
+</style>

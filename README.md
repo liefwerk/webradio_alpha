@@ -1,4 +1,4 @@
-:notes: # Webradio Alpha
+# :notes: Webradio Alpha
 
 Small web application for storing and playing pre-made youtube playlists. Fully responsive, possibility to create account for adding and keeping your playlists on hand.
 

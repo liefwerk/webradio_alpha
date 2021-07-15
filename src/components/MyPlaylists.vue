@@ -2,12 +2,16 @@
   <div class="my-playlists">
     <h2>My Playlists</h2>
       <div v-for="(playlist) in playlists" :key="playlist.id">
-        <input class="input" v-if = "playlist.edit" v-model = "playlist.playlist_name"
-          @blur= "playlist.edit = false; $emit('update')"
-          @keyup.enter = "playlist.edit=false; $emit('update')">
-        <div v-else class="wrapper-flex"><p>{{playlist.playlist_name}}</p><edit-icon @click="playlist.edit = true" size="1.5x" class="playlist-icons"></edit-icon></div>
+        <input class="input" v-if="playlist.edit" v-model="playlist.playlist_name"
+          @blur="playlist.edit = false; $emit('update'); editPlaylistName(playlist)"
+          @keyup.enter="playlist.edit = false; $emit('update'); editPlaylistName(playlist)">
+        <div v-else class="wrapper-flex">
+          <p>{{playlist.playlist_name}}</p>
+          <edit-icon @click="playlist.edit = true" size="1.5x" class="playlist-icons"></edit-icon>
+        </div>
       </div>
-    <AddPlaylist />
+    <AddPlaylist v-if="showAddPlaylist" />
+    <button @click="showAddPlaylist = !showAddPlaylist">Add a new playlist</button>
   </div>
 </template>
 
@@ -25,7 +29,7 @@ export default {
   data () {
     return {
       playlists: [],
-      editedTodo: null
+      showAddPlaylist: false
     }
   },
   methods: {
@@ -44,11 +48,23 @@ export default {
           playlist.edit = false
           this.playlists.push(playlist)
         })
-        console.log(this.playlists)
       }
     },
-    editTodo: function (todo) {
-      this.editedTodo = todo
+    async editPlaylistName (val) {
+      console.log(val)
+      const supabaseUrl = this.$store.state.supabaseUrl
+      const supabaseKey = this.$store.state.supabaseKey
+      const supabase = createClient(supabaseUrl, supabaseKey)
+
+      const { data, error } = await supabase
+        .from('Playlists')
+        .update({ playlist_name: val.playlist_name })
+        .eq('id', val.id)
+
+      if (error) console.log(error)
+      else {
+        console.log(data)
+      }
     }
   },
   created () {

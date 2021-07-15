@@ -1,6 +1,7 @@
 <template>
   <div class="about">
-    <p>Rien à voir par ici.</p>
+    <p>Alfa est une sélection manuelle de playlists.</p>
+    <p class="copy">Ce site est une création originale d'<a href="https://nathanaeljageni.fr" target="_blank" rel="noreferer noopener">Accolade Polyglotte</a>.</p>
   </div>
 </template>
 
@@ -17,5 +18,9 @@
     text-align: center;
     font-family: 'VT323', monospace;
     font-size: 2rem;
+
+    .copy {
+      font-size: 1.5rem;
+    }
   }
 </style>

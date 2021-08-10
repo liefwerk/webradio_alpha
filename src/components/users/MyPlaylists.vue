@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import AddPlaylist from '@/components/AddPlaylist'
+import AddPlaylist from '@/components/users/AddPlaylist'
 import { createClient } from '@supabase/supabase-js'
 import { EditIcon } from 'vue-feather-icons'
 

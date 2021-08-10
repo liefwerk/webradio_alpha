@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import Playlists from '@/components/Playlists.vue'
-import PlaylistTitle from '@/components/PlaylistTitle.vue'
+import Playlists from '@/components/playlists/Playlists.vue'
+import PlaylistTitle from '@/components/playlists/PlaylistTitle.vue'
 import { createClient } from '@supabase/supabase-js'
 import { PlayIcon, SkipForwardIcon, SkipBackIcon, PauseIcon, ArrowRightIcon, ArrowLeftIcon } from 'vue-feather-icons'
 
@@ -181,9 +181,9 @@ export default {
     flex-flow: column nowrap;
     position: absolute;
     left: -100%;
-    top: 0;
+    bottom: 2.5rem;
     height: 72vh;
-    width: 15em;
+    width: 75%;
     z-index: 199;
     margin: 1em;
     transition: all .5s ease-in-out;
@@ -291,7 +291,7 @@ export default {
     }
 
     #btns-parent {
-      height: 78vh;
+      width: 20rem;
     }
   }
 
@@ -310,7 +310,7 @@ export default {
 
     #btns-parent {
       width: 20rem;
-      height: 85vh;
+      height: 78vh;
     }
   }
 

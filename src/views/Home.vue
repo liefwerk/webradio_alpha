@@ -8,8 +8,8 @@
 
 <script>
 // @ is an alias to /src
-import YoutubePlayer from '../components/YoutubePlayer'
-// import Maintenance from '../components/Maintenance'
+import YoutubePlayer from '../components/player/YoutubePlayer'
+// import Maintenance from '../components/maintenance/Maintenance'
 
 export default {
   name: 'Home',

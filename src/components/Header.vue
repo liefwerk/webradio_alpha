@@ -1,12 +1,12 @@
 <template>
   <div id="header">
-    <p id="title">Alfa - handpicked & ecclectic music</p>
+    <p id="title">Alfonz - handpicked ecclectic music</p>
     <Navigation />
   </div>
 </template>
 
 <script>
-import Navigation from '@/components/Navigation.vue'
+import Navigation from '@/components/menus/Navigation.vue'
 
 export default {
   name: 'Header',

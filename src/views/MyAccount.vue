@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import MyPlaylists from '@/components/MyPlaylists'
+import MyPlaylists from '@/components/users/MyPlaylists'
 
 export default {
   name: 'MyAccount',

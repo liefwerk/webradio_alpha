@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import SignUpForm from '@/components/SignUpForm'
-import SignInForm from '@/components/SignInForm'
+import SignUpForm from '@/components/users/SignUpForm'
+import SignInForm from '@/components/users/SignInForm'
 
 export default {
   name: 'Connect',

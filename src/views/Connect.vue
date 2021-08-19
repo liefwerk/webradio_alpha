@@ -1,5 +1,5 @@
 <template>
-  <div class="container main-connect">
+  <div class="main-connect">
     <div class="main-position">
       <div class="wrapper" v-if="handleForm">
         <SignInForm />

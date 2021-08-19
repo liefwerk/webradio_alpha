@@ -1,7 +1,6 @@
 <template>
   <div>
     <YoutubePlayer />
-    <div>{{this.isAuthenticated}}</div>
     <!--<Maintenance />-->
   </div>
 </template>

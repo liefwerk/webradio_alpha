@@ -35,7 +35,7 @@ export default {
         'My Playlists'
       ],
       activeItem: null,
-      activeFilter: null
+      activeFilter: 'All'
     }
   },
   props: {

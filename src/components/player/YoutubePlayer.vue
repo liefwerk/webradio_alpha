@@ -16,21 +16,29 @@
       <button v-else id="play-btn" @click="playVideo"><play-icon size="1.5x" class="custom-class"></play-icon></button>
       <button id="next-btn" @click="nextVideo"><skip-forward-icon size="1.5x" class="custom-class"></skip-forward-icon></button>
     </div>
-    <PlaylistTitle :name="currentName" />
+    <div id="meta-footer">
+      <PlaylistName :name="currentName" />
+      <TrackTitle :title="currentTitle" :url="currentUrl" />
+    </div>
   </div>
 </template>
 
 <script>
 import Playlists from '@/components/playlists/Playlists.vue'
-import PlaylistTitle from '@/components/playlists/PlaylistTitle.vue'
+import PlaylistName from '@/components/playlists/PlaylistName.vue'
+import TrackTitle from '@/components/playlists/TrackTitle.vue'
 import { createClient } from '@supabase/supabase-js'
 import { PlayIcon, SkipForwardIcon, SkipBackIcon, PauseIcon, ArrowRightIcon, ArrowLeftIcon } from 'vue-feather-icons'
+
+import { getIdFromUrl } from 'vue-youtube'
+var getYoutubeTitle = require('get-youtube-title')
 
 export default {
   name: 'Youtube-Player',
   components: {
     Playlists,
-    PlaylistTitle,
+    PlaylistName,
+    TrackTitle,
     PlayIcon,
     SkipForwardIcon,
     SkipBackIcon,
@@ -43,6 +51,8 @@ export default {
       idList: [],
       currentId: '',
       currentName: '',
+      currentUrl: '',
+      currentTitle: '',
       isPlaying: false,
       showed: true,
       playerVars: {
@@ -72,6 +82,7 @@ export default {
     },
     async playVideo () {
       await this.player.playVideo()
+      // current playlistId
     },
     pauseVideo () {
       this.isPlaying = false
@@ -87,6 +98,20 @@ export default {
     },
     playing () {
       this.isPlaying = true
+      this.player.getVideoUrl()
+        .then((res) => {
+          console.log(res)
+          this.currentUrl = res
+          const youtubeId = getIdFromUrl(this.currentUrl)
+
+          console.log(youtubeId)
+          getYoutubeTitle(youtubeId, (err, title) => {
+            if (err) { console.log(err) } else {
+              this.currentTitle = title
+              console.log(this.currentTitle)
+            }
+          })
+        })
     },
     handleOverlay () {
       document.getElementById('btns-parent').classList.toggle('show-me')
@@ -205,14 +230,35 @@ export default {
     cursor: pointer;
   }
 
-  #titre-footer {
+  #meta-footer {
     padding: 0;
     margin: .5em 1rem;
     position: absolute;
     bottom: 2.5rem;
     right: 0;
-    font-family: 'VT323', monospace;
-    font-size: 1rem;
+    .track-title {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-end;
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: var(--secondary);
+        margin: 0;
+        font-family: 'Courier New', monospace;      }
+    }
+    .playlist-name {
+      h2 {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-right: .15rem;
+        font-family: 'Courier New', monospace;
+        margin-bottom: .25rem;
+      }
+    }
+    h2 {
+      text-align: right;
+    }
   }
 
   /* Controls */

@@ -16,7 +16,7 @@
       <button v-else id="play-btn" @click="playVideo"><play-icon size="1.5x" class="custom-class"></play-icon></button>
       <button id="next-btn" @click="nextVideo"><skip-forward-icon size="1.5x" class="custom-class"></skip-forward-icon></button>
     </div>
-    <div id="meta-footer">
+    <div v-if="currentTitle" id="meta-footer">
       <PlaylistName :name="currentName" />
       <TrackTitle :title="currentTitle" :url="currentUrl" />
     </div>
@@ -49,10 +49,10 @@ export default {
   data () {
     return {
       idList: [],
-      currentId: '',
-      currentName: '',
-      currentUrl: '',
-      currentTitle: '',
+      currentId: null,
+      currentName: null,
+      currentUrl: null,
+      currentTitle: null,
       isPlaying: false,
       showed: true,
       playerVars: {

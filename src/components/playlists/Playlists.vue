@@ -11,8 +11,11 @@
 
     </div>
     <p>{{this.idList.playlist_id}}</p>
+    <div v-if="!$store.state.isAuthenticated && activeFilter === 'My Playlists'" class="links">
+      <a class="link-connect" href="/connect">Please connect to display your own playlists</a>
+    </div>
     <button
-      v-for="id in idList"
+      v-for="id in filteredList"
       :key="id.id"
       @click="handlePlaylist(id.playlist_id, id.playlist_name)"
       :class="id.playlist_id === activeItem ? 'active' : ''">
@@ -54,6 +57,15 @@ export default {
   },
   created () {
     this.$emit('created')
+  },
+  computed: {
+    filteredList: function () {
+      if (this.activeFilter === 'My Playlists') {
+        return this.idList.filter(id => id.user_id === this.$store.state.userId)
+      } else {
+        return this.idList
+      }
+    }
   }
 }
 </script>
@@ -69,11 +81,33 @@ export default {
       margin: 1rem 0 0;
       cursor: pointer;
       &.active-filter {
-        color: red;
+        color: var(--secondary);
+      }
+      &:hover {
+        color: var(--secondary);
       }
     }
   }
-  #btns-parent button.active {
-    color: red;
+  #btns-parent {
+    button {
+      text-transform: uppercase;
+      &:hover {
+        color: var(--secondary);
+      }
+      &.active{
+        color: var(--secondary);
+      }
+    }
+    .links {
+      margin: 0 1rem 0 1rem;
+      .link-connect {
+        color: var(--white);
+        text-decoration: none;
+        font-family: 'Courrier New', monospace;
+        &:hover {
+          color: var(--primary)
+        }
+      }
+    }
   }
 </style>

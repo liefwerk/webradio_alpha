@@ -13,6 +13,7 @@
       <router-link to="/about">About</router-link>
       <template v-if="this.$store.state.isAuthenticated">
         <router-link to="/account">My Account</router-link>
+        <a @click="disconnect" href="">Disconnect</a>
       </template>
       <template v-else>
         <router-link to="/connect">Connect</router-link>
@@ -22,11 +23,22 @@
 </template>
 
 <script>
+import { createClient } from '@supabase/supabase-js'
+
 export default {
   name: 'Navigation',
   data () {
     return {
       menuOpened: false
+    }
+  },
+  methods: {
+    disconnect: async function () {
+      const supabaseUrl = this.$store.state.supabaseUrl
+      const supabaseKey = this.$store.state.supabaseKey
+      const supabase = createClient(supabaseUrl, supabaseKey)
+      const { error } = await supabase.auth.signOut()
+      if (error) console.log(error)
     }
   }
 }
@@ -45,6 +57,7 @@ export default {
     flex-flow: column nowrap;
     text-align: right;
     font-size: 1.2rem;
+    cursor: pointer;
 
     a {
       color: var(--primary);

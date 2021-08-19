@@ -20,14 +20,32 @@ export default {
 </script>
 
 <style lang="scss">
-  .link-icon {
-    width: 1.5rem;
-    height: auto;
+  .track-title {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    font-size: 1.25rem;
+    font-weight: 500;
     color: var(--secondary);
-    cursor: pointer;
-    margin-left: .75rem;
-    &:hover {
-      color: var(--primary);
+    font-family: 'Courier New', monospace;
+    text-align: right;
+    h2 {
+      margin: 0;
+    }
+    a {
+      align-self: end;
+    }
+
+    .link-icon {
+      width: 1.5rem;
+      height: auto;
+      color: var(--secondary);
+      cursor: pointer;
+      margin-left: .75rem;
+
+      &:hover {
+        color: var(--primary);
+      }
     }
   }
 </style>

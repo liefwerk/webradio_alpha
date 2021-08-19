@@ -1,7 +1,7 @@
 <template>
   <div class="main-header">
     <div class="site-title">
-      <router-link to="/" class="title">Alfonz - handpicked ecclectic music</router-link>
+      <router-link to="/" class="title">Alfonz - handpicked eclectic music</router-link>
     </div>
     <div class="navigation">
       <Navigation />

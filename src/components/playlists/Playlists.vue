@@ -10,7 +10,6 @@
       </p>
 
     </div>
-    <p>{{this.idList.playlist_id}}</p>
     <div v-if="!$store.state.isAuthenticated && activeFilter === 'My Playlists'" class="links">
       <a class="link-connect" href="/connect">Please connect to display your own playlists</a>
     </div>
@@ -74,11 +73,13 @@ export default {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
-    margin: 0 1rem 0 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ffffff24;
+    margin: 1rem;
     p {
+      margin: 0;
       font-size: 2rem;
       font-family: 'VT323', monospace;
-      margin: 1rem 0 0;
       cursor: pointer;
       &.active-filter {
         color: var(--secondary);

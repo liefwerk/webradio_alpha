@@ -36,12 +36,14 @@ export default {
           password: this.password
         })
 
-        if (error) console.log(error)
-        else {
-          console.log(user)
+        if (error) {
+          console.log(error)
+          this.$toast.error(error.message)
+        } else {
           this.$store.commit('setUserId', user.id)
           localStorage.setItem('userId', user.id)
           this.$router.push('/')
+          this.$toast.success('You are now connected!')
         }
       } catch (err) {
         console.log(err)

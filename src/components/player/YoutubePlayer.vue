@@ -34,7 +34,7 @@ import { getIdFromUrl } from 'vue-youtube'
 var getYoutubeTitle = require('get-youtube-title')
 
 export default {
-  name: 'Youtube-Player',
+  name: 'YoutubePlayer',
   components: {
     Playlists,
     PlaylistName,
@@ -82,11 +82,11 @@ export default {
     },
     async playVideo () {
       await this.player.playVideo()
-      // current playlistId
     },
     pauseVideo () {
       this.isPlaying = false
       this.player.pauseVideo()
+      document.title = '⏸ Alfonz - Paused'
     },
     prevVideo () {
       // this.isPlaying = !this.isPlaying
@@ -100,15 +100,12 @@ export default {
       this.isPlaying = true
       this.player.getVideoUrl()
         .then((res) => {
-          console.log(res)
           this.currentUrl = res
           const youtubeId = getIdFromUrl(this.currentUrl)
-
-          console.log(youtubeId)
           getYoutubeTitle(youtubeId, (err, title) => {
             if (err) { console.log(err) } else {
               this.currentTitle = title
-              console.log(this.currentTitle)
+              document.title = `🎺 Alfonz - ${this.currentTitle}`
             }
           })
         })
@@ -236,29 +233,6 @@ export default {
     position: absolute;
     bottom: 2.5rem;
     right: 0;
-    .track-title {
-      display: flex;
-      flex-flow: row nowrap;
-      justify-content: flex-end;
-      h2 {
-        font-size: 1.5rem;
-        font-weight: 500;
-        color: var(--secondary);
-        margin: 0;
-        font-family: 'Courier New', monospace;      }
-    }
-    .playlist-name {
-      h2 {
-        font-size: 1.2rem;
-        font-weight: 500;
-        margin-right: .15rem;
-        font-family: 'Courier New', monospace;
-        margin-bottom: .25rem;
-      }
-    }
-    h2 {
-      text-align: right;
-    }
   }
 
   /* Controls */

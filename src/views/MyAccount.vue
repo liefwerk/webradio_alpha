@@ -19,7 +19,7 @@ export default {
 
 <style lang="scss">
   .container {
-    margin: 0 5em;
+    margin: 5em;
   }
   .my-account {
     h1, h2 {

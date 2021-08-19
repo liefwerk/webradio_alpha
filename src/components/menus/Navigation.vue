@@ -13,7 +13,7 @@
       <router-link to="/about">About</router-link>
       <template v-if="this.$store.state.isAuthenticated">
         <router-link to="/account">My Account</router-link>
-        <a @click="disconnect" href="">Disconnect</a>
+        <p class="disconnect-btn" @click="disconnect">Disconnect</p>
       </template>
       <template v-else>
         <router-link to="/connect">Connect</router-link>
@@ -39,6 +39,10 @@ export default {
       const supabase = createClient(supabaseUrl, supabaseKey)
       const { error } = await supabase.auth.signOut()
       if (error) console.log(error)
+      else {
+        this.$store.state.isAuthenticated = false
+        this.$toast.success("You've been successfully disconnected! See ya!")
+      }
     }
   }
 }
@@ -51,6 +55,7 @@ export default {
   display: flex;
   flex-flow: column nowrap;
   text-align: right;
+  position: relative;
   .links {
     float: right;
     display: flex;
@@ -58,11 +63,23 @@ export default {
     text-align: right;
     font-size: 1.2rem;
     cursor: pointer;
+    position: absolute;
+    top: 3rem;
+    right: 0;
+    transition: all .5s ease-in-out;
 
     a {
       color: var(--primary);
       text-decoration: none;
+      margin-bottom: .5rem;
 
+      &:hover {
+        color: var(--white);
+      }
+    }
+    .disconnect-btn {
+      color: var(--primary);
+      margin: 0;
       &:hover {
         color: var(--white);
       }

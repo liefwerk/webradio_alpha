@@ -36,9 +36,12 @@ export default {
           password: this.password
         })
 
-        if (error) console.log(error)
-        else {
-          console.log(user)
+        if (error) {
+          console.log(error)
+          this.$toast.error(error.message)
+        } else {
+          this.$router.push('/')
+          this.$toast.info('A mail has been sent to ' + user.email + '. Please activate your account.')
         }
       } catch (err) {
         console.log(err)

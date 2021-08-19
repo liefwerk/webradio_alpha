@@ -1,26 +1,31 @@
 <template>
   <div class="about">
-    <p>Alfa est une sélection manuelle de playlists.</p>
-    <p class="copy">Ce site est une création originale d'<a href="https://nathanaeljageni.fr" target="_blank" rel="noreferer noopener">Accolade Polyglotte</a>.</p>
+    <p>Alfonz is a collection of youtube playlists. </p>
+    <p class="copy">Original creation of <a href="https://nathanaeljageni.fr" target="_blank" rel="noreferer noopener" class="link">Accolade Polyglotte</a>.</p>
   </div>
 </template>
 
 <style lang="scss">
   .about {
     width: 100%;
-    height: 4rem;
     position: absolute;
-    top:0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    top: 50%;
+    left: 50%;
     margin: auto;
     text-align: center;
-    font-family: 'VT323', monospace;
-    font-size: 2rem;
+    font-size: 1.75rem;
+    transform: translate(-50%, -50%);
+    padding: 0 2rem;
 
     .copy {
-      font-size: 1.5rem;
+      font-size: 1.25rem;
+      .link {
+        text-decoration: none;
+        color: var(--primary);
+        &:hover {
+          color: var(--white);
+        }
+      }
     }
   }
 </style>

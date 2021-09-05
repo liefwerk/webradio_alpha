@@ -26,8 +26,7 @@ export default {
 <style lang="scss" scoped>
   .container {
     max-width: 1250px;
-    margin: auto;
-    margin-top: 3rem;
+    margin: 2rem 4rem 0;
     &.wrapper {
       display: flex;
       flex-flow: row nowrap;

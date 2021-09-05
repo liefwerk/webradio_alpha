@@ -29,16 +29,16 @@ export default {
     margin: 1rem 0;
     .site-title {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       z-index: 1;
       position: relative;
+      width: 100%;
       .title {
         font-family: 'VT323', monospace;
-        margin: 0 1rem;
         color: #dfdfdf;
         text-align: left;
         text-decoration: none;
-        font-size: 2.2rem;
+        font-size: 1.75rem;
         &:hover {
           color: var(--primary);
         }
@@ -46,16 +46,6 @@ export default {
     }
     .navigation {
       z-index: 299;
-    }
-  }
-
-  @media all and (max-width: 985px){
-    .main-header {
-      .site-title {
-        .title {
-          font-size: 1.75rem;
-        }
-      }
     }
   }
 </style>

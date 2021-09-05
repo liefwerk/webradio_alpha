@@ -1,6 +1,6 @@
 <template>
   <span id="nav">
-    <div>
+    <div class="menu">
       <svg @click="menuOpened = !menuOpened" v-if="menuOpened" xmlns="http://www.w3.org/2000/svg" class="menu-icon active" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 6h16M4" />
       </svg>
@@ -56,6 +56,9 @@ export default {
   flex-flow: column nowrap;
   text-align: right;
   position: relative;
+  .menu {
+    fisplay: flex;
+  }
   .links {
     float: right;
     display: flex;
@@ -93,6 +96,7 @@ export default {
     height: 2rem;
     color: var(--primary);
     cursor: pointer;
+    align-self: center;
     &:hover {
       color: var(--secondary);
     }

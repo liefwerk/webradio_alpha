@@ -10,32 +10,44 @@
             <edit-icon @click="playlist.edit = true" size="1x" class="icon"></edit-icon>
           </div>
           <div class="playlist-icon">
-            <trash-icon @click="playlist.delete = true" size="1x" class="icon"></trash-icon>
+            <trash-icon @click="deletePlaylist(playlist.id)" size="1x" class="icon"></trash-icon>
           </div>
           <p class="playlist-name">{{playlist.playlist_name}}</p>
         </div>
       </div>
-    <AddPlaylist v-if="showAddPlaylist" @closeModal="showAddPlaylist = false" />
+    <AddPlaylistModal
+      v-if="showAddPlaylist"
+      @closeModal="showAddPlaylist = false"
+      @refreshItems="handleFetching"/>
+    <DeletePlaylistModal
+      v-if="showDeletePlaylist"
+      @closeModal="showDeletePlaylist = false"
+      @refreshItems="handleFetching"
+      :playlistId="playlistId" />
     <button @click="showAddPlaylist = !showAddPlaylist">Add a new playlist</button>
   </div>
 </template>
 
 <script>
-import AddPlaylist from '@/components/users/AddPlaylist'
+import AddPlaylistModal from '@/components/modals/AddPlaylistModal'
+import DeletePlaylistModal from '@/components/modals/DeletePlaylistModal'
 import { createClient } from '@supabase/supabase-js'
 import { EditIcon, TrashIcon } from 'vue-feather-icons'
 
 export default {
   name: 'MyPlaylists',
   components: {
-    AddPlaylist,
+    AddPlaylistModal,
+    DeletePlaylistModal,
     EditIcon,
     TrashIcon
   },
   data () {
     return {
       playlists: [],
-      showAddPlaylist: false
+      playlistId: null,
+      showAddPlaylist: false,
+      showDeletePlaylist: false
     }
   },
   methods: {
@@ -50,14 +62,15 @@ export default {
         .eq('user_id', this.$store.state.userId)
       if (error) console.log(error)
       else {
+        const _playlists = []
         data.map(playlist => {
           playlist.edit = false
-          this.playlists.push(playlist)
+          _playlists.push(playlist)
         })
+        this.playlists = _playlists
       }
     },
     async editPlaylistName (val) {
-      console.log(val)
       const supabaseUrl = this.$store.state.supabaseUrl
       const supabaseKey = this.$store.state.supabaseKey
       const supabase = createClient(supabaseUrl, supabaseKey)
@@ -71,6 +84,10 @@ export default {
       else {
         console.log(data)
       }
+    },
+    async deletePlaylist (id) {
+      this.playlistId = id
+      this.showDeletePlaylist = true
     }
   },
   created () {

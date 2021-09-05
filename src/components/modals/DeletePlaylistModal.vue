@@ -1,19 +1,12 @@
 <template>
   <div class="add-playlist">
-    <form class="form" v-on:submit.prevent="">
-      <fieldset class="playlist-name">
-        <legend>Name of the playlist</legend>
-        <input type="text" v-model="name" required>
-      </fieldset>
-      <fieldset class="password">
-        <legend>ID of the playlist</legend>
-        <input type="text" v-model="playlistId" required>
-      </fieldset>
+    <div class="delete-modal">
+      <p>Êtes-vous sûr de vouloir supprimer cette playlist ?</p>
       <div class="buttons">
-        <button class="button" @click="addPlaylist">Add the playlist</button>
+        <button class="button" @click="deletePlaylist">Delete the playlist</button>
         <a class="close-modal" @click="$emit('closeModal')">Cancel</a>
       </div>
-    </form>
+    </div>
     <div class="opacity-layout"></div>
   </div>
 </template>
@@ -23,25 +16,26 @@ import { createClient } from '@supabase/supabase-js'
 
 export default {
   name: 'AddPlaylist',
-  data () {
-    return {
-      name: undefined,
-      playlistId: undefined
-    }
+  props: {
+    playlistId: null
   },
   methods: {
-    async addPlaylist () {
+    async deletePlaylist () {
       const supabaseUrl = this.$store.state.supabaseUrl
       const supabaseKey = this.$store.state.supabaseKey
       const supabase = createClient(supabaseUrl, supabaseKey)
+
       const { data, error } = await supabase
         .from('Playlists')
-        .insert([
-          { playlist_id: this.playlistId, playlist_name: this.name, user_id: this.$store.state.userId }
-        ])
+        .delete()
+        .eq('id', this.playlistId)
+
       if (error) console.log(error)
       else {
         console.log(data)
+        this.$emit('closeModal')
+        this.$emit('refreshItems')
+        this.$toast.success('Playlist has been successfully deleted.')
       }
     }
   }
@@ -73,25 +67,13 @@ export default {
     z-index: 399;
   }
 
-  form {
+  .delete-modal {
     z-index: 499;
     position: absolute;
     top: 50%;
     right: 50%;
     transform: translate(50%, -50%);
 
-    fieldset {
-      border: none;
-      padding: 0;
-      margin: .5em 0;
-
-      input {
-        width: 300px;
-        height: 2rem;
-        padding: 0 .5em 0 .5em;
-      }
-
-    }
     a {
       &.close-modal {
         cursor: pointer;

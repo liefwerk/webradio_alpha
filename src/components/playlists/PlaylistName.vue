@@ -1,7 +1,6 @@
 <template>
   <div class="playlist-name">
     <h2>in {{this.name}}</h2>
-
   </div>
 </template>
 
@@ -23,6 +22,13 @@ export default {
       margin-right: .15rem;
       font-family: 'Courier New', monospace;
       margin-bottom: .25rem;
+    }
+  }
+  @media all and (max-width: 985px){
+    .playlist-name {
+      h2 {
+        font-size: 1rem;
+      }
     }
   }
 </style>

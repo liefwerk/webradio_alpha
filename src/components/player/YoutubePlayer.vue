@@ -8,13 +8,13 @@
     <div id="controls">
       <div id="time-control"><span id="time-cursor"></span></div>
       <span id="btns-toggle">
-        <arrow-left-icon v-if="showed" size="1.5x" class="custom-class" @click="handleOverlay"></arrow-left-icon>
-        <arrow-right-icon v-else size="1.5x" class="custom-class" @click="handleOverlay"></arrow-right-icon>
+        <arrow-left-icon v-if="showed" size="1.75x" class="custom-class" @click="handleOverlay"></arrow-left-icon>
+        <arrow-right-icon v-else size="1.75x" class="custom-class" @click="handleOverlay"></arrow-right-icon>
       </span>
-      <button id="prev-btn" @click="prevVideo"><skip-back-icon size="1.5x" class="custom-class"></skip-back-icon></button>
-      <button v-if="isPlaying" id="pause-btn" @click="pauseVideo"><pause-icon size="1.5x" class="custom-class"></pause-icon></button>
-      <button v-else id="play-btn" @click="playVideo"><play-icon size="1.5x" class="custom-class"></play-icon></button>
-      <button id="next-btn" @click="nextVideo"><skip-forward-icon size="1.5x" class="custom-class"></skip-forward-icon></button>
+      <button id="prev-btn" @click="prevVideo"><skip-back-icon size="1.25x" class="custom-class"></skip-back-icon></button>
+      <button v-if="isPlaying" id="pause-btn" @click="pauseVideo"><pause-icon size="1.25x" class="custom-class"></pause-icon></button>
+      <button v-else id="play-btn" @click="playVideo"><play-icon size="1.25x" class="custom-class"></play-icon></button>
+      <button id="next-btn" @click="nextVideo"><skip-forward-icon size="1.25x" class="custom-class"></skip-forward-icon></button>
     </div>
     <div v-if="currentTitle" id="meta-footer">
       <PlaylistName :name="currentName" />
@@ -221,17 +221,18 @@ export default {
 
   #btns-toggle {
     position: absolute;
-    left: .5em;
-    bottom: 3px;
+    left: 0;
     color: var(--white);
     cursor: pointer;
+    margin: .5rem;
+    padding: 0 .9rem;
   }
 
   #meta-footer {
     padding: 0;
     margin: .5em 1rem;
     position: absolute;
-    bottom: 2.5rem;
+    bottom: 3.5rem;
     right: 0;
   }
 
@@ -258,6 +259,7 @@ export default {
     bottom: 0;
     width: 100%;
     display: flex;
+    padding: .25rem 0;
     z-index: 300;
     background: var(--primary);
     text-align: center;

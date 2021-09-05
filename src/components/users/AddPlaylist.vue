@@ -1,5 +1,5 @@
 <template>
-  <div class="add-playlist playlist-form">
+  <div class="add-playlist">
     <form class="form" v-on:submit.prevent="">
       <fieldset class="playlist-name">
         <legend>Name of the playlist</legend>
@@ -9,8 +9,12 @@
         <legend>ID of the playlist</legend>
         <input type="text" v-model="playlistId" required>
       </fieldset>
-      <button class="button" @click="addPlaylist">Add the playlist</button>
+      <div class="buttons">
+        <button class="button" @click="addPlaylist">Add the playlist</button>
+        <a class="close-modal" @click="$emit('closeModal')">Cancel</a>
+      </div>
     </form>
+    <div class="opacity-layout"></div>
   </div>
 </template>
 
@@ -44,17 +48,37 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
-.playlist-form {
-  position: relative;
+.add-playlist {
+  position: absolute;
+  top: 0;
+  left: 0;
   color: var(--white);
   font-family: 'VT323', monospace;
   font-size: 1.25rem;
+  z-index: 499;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+
+  .opacity-layout {
+    width: 100%;
+    height: 100vh;
+    opacity: 0.85;
+    background: #000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 399;
+  }
 
   form {
-    // width: 300px;
-    margin: 0 auto;
+    z-index: 499;
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
 
     fieldset {
       border: none;
@@ -68,21 +92,23 @@ export default {
       }
 
     }
-
-    button {
-      width: 300px;
-      border: none;
-      padding: .25rem 0;
-      margin-top: .5rem;
-      background-color: #d03636;
-      font-family: 'VT323', monospace;
-      cursor: pointer;
-      font-size: 1.25rem;
-
-      &:hover {
-        background: var(--white);
+    a {
+      &.close-modal {
+        cursor: pointer;
+        margin-top: 1rem;
+        &:hover {
+          color: var(--primary);
+        }
       }
     }
+    .buttons {
+      display: flex;
+      flex-flow: column nowrap;
+      button {
+        width: 300px;
+      }
+    }
+
   }
 }
 </style>

@@ -1,16 +1,21 @@
 <template>
-  <div class="my-playlists">
+  <div class="wrapper">
     <h2>My Playlists</h2>
       <div v-for="(playlist) in playlists" :key="playlist.id">
         <input class="input" v-if="playlist.edit" v-model="playlist.playlist_name"
           @blur="playlist.edit = false; $emit('update'); editPlaylistName(playlist)"
           @keyup.enter="playlist.edit = false; $emit('update'); editPlaylistName(playlist)">
         <div v-else class="wrapper-flex">
-          <p>{{playlist.playlist_name}}</p>
-          <edit-icon @click="playlist.edit = true" size="1.5x" class="playlist-icons"></edit-icon>
+          <div class="playlist-icon">
+            <edit-icon @click="playlist.edit = true" size="1x" class="icon"></edit-icon>
+          </div>
+          <div class="playlist-icon">
+            <trash-icon @click="playlist.delete = true" size="1x" class="icon"></trash-icon>
+          </div>
+          <p class="playlist-name">{{playlist.playlist_name}}</p>
         </div>
       </div>
-    <AddPlaylist v-if="showAddPlaylist" />
+    <AddPlaylist v-if="showAddPlaylist" @closeModal="showAddPlaylist = false" />
     <button @click="showAddPlaylist = !showAddPlaylist">Add a new playlist</button>
   </div>
 </template>
@@ -18,13 +23,14 @@
 <script>
 import AddPlaylist from '@/components/users/AddPlaylist'
 import { createClient } from '@supabase/supabase-js'
-import { EditIcon } from 'vue-feather-icons'
+import { EditIcon, TrashIcon } from 'vue-feather-icons'
 
 export default {
   name: 'MyPlaylists',
   components: {
     AddPlaylist,
-    EditIcon
+    EditIcon,
+    TrashIcon
   },
   data () {
     return {
@@ -73,9 +79,13 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
-  .my-playlists {
+  .wrapper {
+    text-align: left;
+    h2 {
+      margin:0 0 1rem 0;
+    }
     .input {
       background-color: transparent;
       border: 1px solid var(--white);
@@ -85,19 +95,24 @@ export default {
       font-size: 1rem;
     }
 
-    .playlist-icons {
-      color: var(--white);
-      margin-left: .5em;
-
-      &:hover {
-        color: var(--primary);
-        cursor: pointer;
-      }
-    }
     .wrapper-flex {
       display: flex;
       flex-flow: row nowrap;
+      justify-content: flex-start;
       align-items: center;
+      .playlist-name {
+        margin: 0 1rem 1rem;
+      }
+      .playlist-icon {
+        margin: 0 .5rem 1rem 0;
+        .icon {
+          color: var(--white);
+          &:hover {
+            color: var(--primary);
+            cursor: pointer;
+          }
+        }
+      }
     }
   }
 

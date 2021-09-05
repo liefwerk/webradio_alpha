@@ -32,14 +32,14 @@ export default {
 }
 
 body {
-  background: #121212;
-  overflow: hidden;
+  background: #212121;
   margin: 0;
 }
 
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: 'Courier New', monospace;
 }
 
 p {
@@ -60,6 +60,29 @@ h1 {
 
 h2 {
     font-size: 1.8rem;
+}
+
+.link {
+  text-decoration: none;
+  color: var(--secondary);
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+button {
+  border: none;
+  padding: .25rem 2rem;
+  margin-top: .5rem;
+  background-color: var(--primary);
+  font-family: 'VT323', monospace;
+  cursor: pointer;
+  font-size: 1.25rem;
+
+  &:hover {
+    background: var(--white);
+  }
 }
 
 </style>

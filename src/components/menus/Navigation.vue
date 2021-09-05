@@ -67,21 +67,23 @@ export default {
     top: 3rem;
     right: 0;
     transition: all .5s ease-in-out;
+    background-color: var(--primary);
+    padding: .5rem .5rem 1rem 1rem;
 
     a {
-      color: var(--primary);
+      color: var(--white);
       text-decoration: none;
       margin-bottom: .5rem;
 
       &:hover {
-        color: var(--white);
+        color: var(--secondary);
       }
     }
     .disconnect-btn {
-      color: var(--primary);
+      color: var(--white);
       margin: 0;
       &:hover {
-        color: var(--white);
+        color: var(--secondary);
       }
     }
   }

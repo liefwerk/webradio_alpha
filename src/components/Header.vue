@@ -45,13 +45,17 @@ export default {
       }
     }
     .navigation {
-
+      z-index: 299;
     }
   }
 
   @media all and (max-width: 985px){
-    #title {
-      font-size: 1.5em;
+    .main-header {
+      .site-title {
+        .title {
+          font-size: 1.75rem;
+        }
+      }
     }
   }
 </style>

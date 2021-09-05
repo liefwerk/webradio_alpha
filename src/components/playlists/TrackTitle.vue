@@ -48,4 +48,11 @@ export default {
       }
     }
   }
+  @media all and (max-width: 985px){
+    .track-title {
+      h2 {
+        font-size: 1.5rem;
+      }
+    }
+  }
 </style>

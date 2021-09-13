@@ -12,9 +12,21 @@
         <arrow-right-icon v-else size="1.75x" class="custom-class" @click="handleOverlay"></arrow-right-icon>
       </span>
       <button id="prev-btn" @click="prevVideo"><skip-back-icon size="1.25x" class="custom-class"></skip-back-icon></button>
-      <button v-if="isPlaying" id="pause-btn" @click="pauseVideo"><pause-icon size="1.25x" class="custom-class"></pause-icon></button>
+      <button
+        v-if="isPlaying"
+        id="pause-btn"
+        :class="isPlaying === true ? 'active' : ''"
+        @click="pauseVideo">
+          <pause-icon size="1.25x" class="custom-class"></pause-icon>
+      </button>
       <button v-else id="play-btn" @click="playVideo"><play-icon size="1.25x" class="custom-class"></play-icon></button>
       <button id="next-btn" @click="nextVideo"><skip-forward-icon size="1.25x" class="custom-class"></skip-forward-icon></button>
+      <button
+        id="next-btn"
+        :class="isShuffled === true ? 'active' : ''"
+        @click="shuffleVideo">
+        <shuffle-icon size="1.25x" class="custom-class"></shuffle-icon>
+      </button>
     </div>
     <div v-if="currentTitle" id="meta-footer">
       <PlaylistName :name="currentName" />
@@ -28,7 +40,7 @@ import Playlists from '@/components/playlists/Playlists.vue'
 import PlaylistName from '@/components/playlists/PlaylistName.vue'
 import TrackTitle from '@/components/playlists/TrackTitle.vue'
 import { createClient } from '@supabase/supabase-js'
-import { PlayIcon, SkipForwardIcon, SkipBackIcon, PauseIcon, ArrowRightIcon, ArrowLeftIcon } from 'vue-feather-icons'
+import { PlayIcon, SkipForwardIcon, SkipBackIcon, PauseIcon, ArrowRightIcon, ArrowLeftIcon, ShuffleIcon } from 'vue-feather-icons'
 
 import { getIdFromUrl } from 'vue-youtube'
 var getYoutubeTitle = require('get-youtube-title')
@@ -44,7 +56,8 @@ export default {
     SkipBackIcon,
     PauseIcon,
     ArrowRightIcon,
-    ArrowLeftIcon
+    ArrowLeftIcon,
+    ShuffleIcon
   },
   data () {
     return {
@@ -54,6 +67,7 @@ export default {
       currentUrl: null,
       currentTitle: null,
       isPlaying: false,
+      isShuffled: false,
       showed: true,
       playerVars: {
         controls: 0,
@@ -95,6 +109,10 @@ export default {
     nextVideo () {
       // this.isPlaying = !this.isPlaying
       this.player.nextVideo()
+    },
+    shuffleVideo () {
+      this.isShuffled = !this.isShuffled
+      this.player.setShuffle(this.isShuffled)
     },
     playing () {
       this.isPlaying = true
@@ -265,6 +283,10 @@ export default {
     text-align: center;
     flex-flow: row wrap;
     justify-content: center;
+
+    .active {
+      color: var(--secondary);
+    }
   }
 
   #btns-parent button {

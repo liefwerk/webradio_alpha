@@ -24,7 +24,7 @@ export default {
 :root {
   --primary: #d03636;
   --secondary: #e2a23f;
-  --white: #ebebf2;
+  --white: #dadbe3;
 }
 
 * {
@@ -32,7 +32,7 @@ export default {
 }
 
 body {
-  background: #212121;
+  background: #121212;
   margin: 0;
 }
 

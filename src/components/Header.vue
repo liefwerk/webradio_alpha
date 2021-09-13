@@ -35,7 +35,7 @@ export default {
       width: 100%;
       .title {
         font-family: 'VT323', monospace;
-        color: #dfdfdf;
+        color: var(--white);
         text-align: left;
         text-decoration: none;
         font-size: 1.75rem;

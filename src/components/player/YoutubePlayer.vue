@@ -221,15 +221,14 @@ export default {
     flex-flow: column nowrap;
     position: absolute;
     left: -100%;
-    bottom: 2.5rem;
+    bottom: 3.5rem;
     height: 72vh;
     width: 75%;
     z-index: 199;
     margin: 1em;
     transition: all .5s ease-in-out;
     overflow-y: auto;
-    background: #333;
-    opacity: .8;
+    background: #212121;
     padding-bottom: .5em;
   }
 

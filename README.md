@@ -2,7 +2,7 @@
 
 Small web application for storing and playing pre-made youtube playlists. Fully responsive, possibility to create an account for adding and keeping your playlists on hand.
 
-## WHat did you learn making this ?
+## :question: What did you learn making this ?
 
 This is my second VueJS project and my first Heroku-hosted project that uses a Firebase-like database. The database is handled through Supabase, a tool similar to Firebase, quite easy to use and very quick to respond.
 
@@ -11,22 +11,22 @@ The most insightful skill I learnt with this project is to be able to go beyond 
 ---
 ## Project setup
 ```
-npm install
+yarn
 ```
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+yarn serve
 ```
 
 ### Compiles and minifies for production
 ```
-npm run build
+yarn build
 ```
 
 ### Lints and fixes files
 ```
-npm run lint
+yarn lint
 ```
 
 ### Customize configuration

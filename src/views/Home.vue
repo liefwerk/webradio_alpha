@@ -1,20 +1,20 @@
 <template>
   <div>
-    <YoutubePlayer />
-    <!--<Maintenance />-->
+    <!-- <YoutubePlayer /> -->
+    <Maintenance />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import YoutubePlayer from '../components/player/YoutubePlayer'
-// import Maintenance from '../components/maintenance/Maintenance'
+// import YoutubePlayer from '../components/player/YoutubePlayer'
+import Maintenance from '../components/maintenance/Maintenance'
 
 export default {
   name: 'Home',
   components: {
-    YoutubePlayer
-    // Maintenance
+    // YoutubePlayer
+    Maintenance
   },
   data () {
     return {

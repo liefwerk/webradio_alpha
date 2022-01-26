@@ -208,8 +208,8 @@ export default {
   /* The mask */
 
   #layer {
-    width: 100%;
-    height: 100%;
+    width: 101%;
+    height: 101%;
     position: absolute;
     z-index: 9;
     top: 0;

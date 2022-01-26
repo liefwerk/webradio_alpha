@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <h1>Le dev est pleine panique.</h1>
-    <p>Reviens plus tard.</p>
+    <h1>We are having a technical issue.</h1>
+    <p>please come back later.</p>
     <img src="https://media.giphy.com/media/LmNwrBhejkK9EFP504/giphy.gif" >
   </div>
 </template>
@@ -15,6 +15,7 @@ export default {
 <style lang="css" scoped>
   h1 {
     color: #dfdfdf;
+    text-align: center;
   }
 
   .container{
@@ -26,5 +27,6 @@ export default {
     left: 0;
     right: 0;
     margin: auto;
+    text-align: center;
   }
 </style>

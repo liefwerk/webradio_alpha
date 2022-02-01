@@ -85,4 +85,20 @@ button {
   }
 }
 
+.debug {
+  color: white;
+  background-color: hsla(129, 100%, 23%, 0.9);
+  padding: .5rem;
+  z-index: 9999;
+  position: relative;
+  width: fit-content;
+  display: flex;
+  position: absolute;
+  top: 0;
+  flex-flow: column nowrap;
+  span {
+    margin-bottom: 0.5rem;
+  }
+}
+
 </style>

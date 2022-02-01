@@ -5,8 +5,22 @@
       <div id="layer"></div>
       <youtube :player-vars="playerVars" ref="youtube" @playing="playing"></youtube>
     </div>
+    <!-- <div class="debug">
+      <span>duration: {{ this.duration }}</span>
+      <span>currentTime: {{ this.currentTime }}</span>
+      <span>ratio: {{ this.ratio }}</span>
+      <span>selectedTimeToJumpTo: {{ this.selectedTimeToJumpTo }}</span>
+    </div> -->
     <div id="controls">
-      <div id="time-control"><span id="time-cursor"></span></div>
+      <div
+        id="time-control"
+        :class="timeHovered ? 'enlarged' : ''"
+        @mouseenter="timeHovered = true"
+        @mousemove="timeToJumpTo"
+        @click="handleTimeJump"
+        @mouseleave="timeHovered = false">
+        <span id="time-cursor"></span>
+      </div>
       <span id="btns-toggle">
         <arrow-left-icon v-if="showed" size="1.75x" class="custom-class" @click="handleOverlay"></arrow-left-icon>
         <arrow-right-icon v-else size="1.75x" class="custom-class" @click="handleOverlay"></arrow-right-icon>
@@ -66,9 +80,15 @@ export default {
       currentName: null,
       currentUrl: null,
       currentTitle: null,
+      duration: null,
+      ratio: null,
+      selectedTimeToJumpTo: null,
+      timeCursorWidth: null,
+      currentTime: null,
       isPlaying: false,
       isShuffled: false,
       showed: true,
+      timeHovered: false,
       playerVars: {
         controls: 0,
         listType: 'playlist',
@@ -109,6 +129,10 @@ export default {
     nextVideo () {
       // this.isPlaying = !this.isPlaying
       this.player.nextVideo()
+    },
+    handleTimeJump () {
+      // this.isPlaying = !this.isPlaying
+      this.player.seekTo(this.selectedTimeToJumpTo, true)
     },
     shuffleVideo () {
       this.isShuffled = !this.isShuffled
@@ -154,12 +178,21 @@ export default {
       clearInterval()
       this.interval = setInterval(() => {
         this.player.getDuration().then((res) => {
-          const duration = res
+          this.duration = res
           this.player.getCurrentTime().then((res) => {
-            cursor.style.width = ((res / duration) * 100) + '%'
+            this.currentTime = res
+            cursor.style.width = ((this.currentTime / this.duration) * 100) + '%'
+            this.timeCursorWidth = cursor.style.width
           })
         })
       }, 500)
+    },
+    timeToJumpTo (e) {
+      const timebarWidth = window.innerWidth
+      const xPosition = e.clientX
+      this.ratio = (xPosition / timebarWidth)
+
+      this.selectedTimeToJumpTo = this.duration * this.ratio
     }
   },
   computed: {
@@ -208,8 +241,8 @@ export default {
   /* The mask */
 
   #layer {
-    width: 101%;
-    height: 101%;
+    width: 100.01%;
+    height: 100.01%;
     position: absolute;
     z-index: 9;
     top: 0;
@@ -262,13 +295,17 @@ export default {
     height: .25rem;
     background: #212121;
     top: -.4rem;
-  }
-
-  #time-cursor {
-    height: 100%;
-    display: block;
-    width: 0;
-    background: var(--white);
+    cursor: pointer;
+    &.enlarged {
+      height: .75rem;
+      top: -.9rem;
+    }
+    #time-cursor {
+      height: 100%;
+      display: block;
+      width: 0;
+      background: var(--white);
+    }
   }
 
   #controls {

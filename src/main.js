@@ -12,7 +12,7 @@ import titleMixin from './mixins/titleMixin'
 Vue.config.productionTip = false
 
 const toastOptions = {
-  position: POSITION.BOTTOM_RIGHT
+    position: POSITION.BOTTOM_RIGHT
 }
 
 Vue.use(VueX)
@@ -22,7 +22,7 @@ Vue.use(Toast, toastOptions)
 Vue.mixin(titleMixin)
 
 new Vue({
-  store,
-  router,
-  render: h => h(App)
+    store,
+    router,
+    render: h => h(App)
 }).$mount('#app')

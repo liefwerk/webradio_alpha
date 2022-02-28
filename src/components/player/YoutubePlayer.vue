@@ -209,7 +209,7 @@ export default {
 }
 </script>
 
-<style lang="scss" >
+<style lang="scss">
   @import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=VT323&display=swap');
 
   .hidden {

@@ -1,50 +1,50 @@
 <template>
-  <div id="app">
-    <Header />
-    <router-view/>
-  </div>
+    <div id="app">
+        <Header />
+        <router-view />
+    </div>
 </template>
 
 <script>
 import Header from '@/components/Header.vue'
 
 export default {
-  name: 'App',
-  components: {
-    Header
-  },
-  beforeCreate () {
-    this.$store.commit('initializeStore')
-  }
+    name: 'App',
+    components: {
+        Header
+    },
+    beforeCreate () {
+        this.$store.commit('initializeStore')
+    }
 }
 </script>
 
 <style lang="scss">
 
 :root {
-  --primary: #d03636;
-  --secondary: #e2a23f;
-  --white: #dadbe3;
+    --primary: #d03636;
+    --secondary: #e2a23f;
+    --white: #dadbe3;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  background: #121212;
-  margin: 0;
+    background: #121212;
+    margin: 0;
 }
 
 #app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: 'Courier New', monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Courier New', monospace;
 }
 
 p {
-  color: #dfdfdf;
-  font-family: 'Courier New', monospace;
+    color: #dfdfdf;
+    font-family: 'Courier New', monospace;
 }
 
 h1, h2 {
@@ -62,43 +62,46 @@ h2 {
     font-size: 1.8rem;
 }
 
+ul {
+    margin: 0
+}
+
 .link {
-  text-decoration: none;
-  color: var(--secondary);
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-  }
+    text-decoration: none;
+    color: var(--secondary);
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 button {
-  border: none;
-  padding: .25rem 2rem;
-  margin-top: .5rem;
-  background-color: var(--primary);
-  font-family: 'VT323', monospace;
-  cursor: pointer;
-  font-size: 1.25rem;
-
-  &:hover {
-    background: var(--white);
-  }
+    border: none;
+    padding: .25rem 2rem;
+    margin-top: .5rem;
+    background-color: var(--primary);
+    font-family: 'VT323', monospace;
+    cursor: pointer;
+    font-size: 1.25rem;
+    &:hover {
+        background: var(--white);
+    }
 }
 
 .debug {
-  color: white;
-  background-color: hsla(129, 100%, 23%, 0.9);
-  padding: .5rem;
-  z-index: 9999;
-  position: relative;
-  width: fit-content;
-  display: flex;
-  position: absolute;
-  top: 0;
-  flex-flow: column nowrap;
-  span {
-    margin-bottom: 0.5rem;
-  }
+    color: white;
+    background-color: hsla(129, 100%, 23%, 0.9);
+    padding: .5rem;
+    z-index: 9999;
+    position: relative;
+    width: fit-content;
+    display: flex;
+    position: absolute;
+    top: 0;
+    flex-flow: column nowrap;
+    span {
+        margin-bottom: 0.5rem;
+    }
 }
 
 </style>

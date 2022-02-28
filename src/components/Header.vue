@@ -30,7 +30,7 @@ export default {
         margin: 1rem;
         .site-title {
             display: flex;
-            justify-content: flex-end;
+            justify-content: flex-start;
             z-index: 1;
             position: relative;
             width: 100%;
@@ -41,10 +41,10 @@ export default {
                 text-decoration: none;
                 font-size: 1.3rem;
                 &:hover {
-                color: var(--primary);
+                    color: var(--primary);
                 }
                 @include md {
-                font-size: 1.75rem;
+                    font-size: 1.75rem;
                 }
             }
         }

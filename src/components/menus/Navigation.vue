@@ -51,7 +51,6 @@ export default {
 <style lang="scss" scoped>
     #nav {
         font-family: 'Courier New', monospace;
-        margin: 0 1rem;
         display: flex;
         flex-flow: column nowrap;
         text-align: right;

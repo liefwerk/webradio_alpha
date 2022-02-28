@@ -14,7 +14,7 @@ export default {
     },
     computed: {
         player () {
-        return this.$refs.youtube.player
+            return this.$refs.youtube.player
         }
     }
 }

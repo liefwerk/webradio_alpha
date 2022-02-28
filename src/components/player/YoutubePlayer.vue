@@ -219,16 +219,17 @@ export default {
     }
 
     .marquee .title {
+        position: absolute;
         display: inline-block;
-        padding-left: 100%;
-        animation: marquee 5s linear infinite;
-        width: 150vw;
+        transform: translateX(100%);
+        animation: marquee 20s linear infinite;
+        width: 100%;
     }
 
     /* Make it move */
     @keyframes marquee {
-        0%   { transform: translate(0, 0); }
-        100% { transform: translate(-100%, 0); }
+        0%   { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
     }
 
     .hidden {
@@ -299,11 +300,12 @@ export default {
     }
 
     #meta-footer {
-        padding: 0;
-        margin: .5em 1rem;
+        padding: .5em 1rem;
         position: absolute;
+        overflow: hidden;
         bottom: 3.5rem;
         right: 0;
+        width: 100%;
     }
 
     /* Controls */

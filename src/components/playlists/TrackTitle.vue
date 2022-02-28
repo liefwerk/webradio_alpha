@@ -28,9 +28,9 @@ export default {
         font-weight: 500;
         color: var(--secondary);
         font-family: 'Courier New', monospace;
-        text-align: right;
         h2 {
             margin: 0;
+            text-align: right;
         }
         a {
             align-self: end;
@@ -49,9 +49,9 @@ export default {
     }
     @media all and (max-width: 985px){
         .track-title {
-        h2 {
-            font-size: 1.5rem;
-        }
+            h2 {
+                font-size: 1.5rem;
+            }
         }
     }
 </style>

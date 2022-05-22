@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1>We are having a technical issue.</h1>
+        <h1>We are under construction.</h1>
         <p>please come back later.</p>
         <img src="https://media.giphy.com/media/LmNwrBhejkK9EFP504/giphy.gif" >
     </div>

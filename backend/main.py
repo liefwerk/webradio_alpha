@@ -2,86 +2,98 @@ from email import message
 from flask import Flask, request
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
+import uuid
 
 app = Flask(__name__)
 api = Api(app)
+cors = CORS(app, resources={r"/playlists/*": {"origins": "*"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 
-class VideoModel(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
+class PlaylistModel(db.Model):
+	__abstract__ = True
+
 	name = db.Column(db.String(100), nullable=False)
-	views = db.Column(db.Integer, nullable=False)
-	likes = db.Column(db.Integer, nullable=False)
 
 	def __repr__(self):
-		return f"Video(name = {name}, views = {views}, likes = {likes})"
+		return f"Playlist(name = {self.name})"
+
+class YoutubePlaylistModel(PlaylistModel):
+	__tablename__ = "youtube_playlists"
+
+	id = db.Column(db.String(100), primary_key=True)
+	playlist_id = db.Column(db.String(100), nullable=False)
+
+	def __repr__(self):
+		return f"YoutubePlaylist(playlist_id = {self.playlist_id}, name = {self.name})"
 
 # db.create_all()
 
-video_post_args = reqparse.RequestParser()
-video_post_args.add_argument("name", type=str, help="Name of the video is required", required=True)
-video_post_args.add_argument("views", type=int, help="Views of the video is required", required=True)
-video_post_args.add_argument("likes", type=int, help="Likes on the video is required", required=True)
+playlist_post_args = reqparse.RequestParser()
+playlist_post_args.add_argument("name", type=str, help="Name of the playlist is required", required=True)
+playlist_post_args.add_argument("playlist_id", type=str, help="ID of the playlist is required", required=True)
 
-video_put_args = reqparse.RequestParser()
-video_put_args.add_argument("likes", type=int, help="Likes on the video is required")
-video_put_args.add_argument("name", type=str, help="Name of the video is required")
-video_put_args.add_argument("views", type=int, help="Views of the video is required")
+playlist_put_args = reqparse.RequestParser()
+playlist_put_args.add_argument("name", type=str, help="Name of the playlist is required")
+playlist_put_args.add_argument("playlist_id", type=str, help="ID of the playlist is required", required=True)
 
 resource_fields = {
-	'id': fields.Integer,
+	'id': fields.String,
 	'name': fields.String,
-	'views': fields.Integer,
-	'likes': fields.Integer
+	'playlist_id': fields.String
 }
 
-class Video(Resource):
+class YoutubePlaylist(Resource):
 	@marshal_with(resource_fields)
-	def get(self, video_id):
-		result = VideoModel.query.filter_by(id=video_id).first()
+	def get(self, uuid):
+		result = YoutubePlaylistModel.query.filter_by(id=uuid).first()
 		if not result:
-			abort(404, message="Could not find a video with that ID.")
+			abort(404, message="Could not find a playlist with this ID.")
 		return result
 
 	@marshal_with(resource_fields)
-	def post(self, video_id):
-		args = video_post_args.parse_args()
-
-		result = VideoModel.query.filter_by(id=video_id).first()
-		if result:
-			abort(409, message="Video ID already taken.")
+	def post(self):
+		args = playlist_post_args.parse_args()
 		
-		video = VideoModel(id=video_id, name=args['name'], views=args['views'], likes=args['likes'])
-		db.session.add(video)
+		id = str(uuid.uuid4())
+		playlist = YoutubePlaylistModel(id=id, name=args['name'], playlist_id=args['playlist_id'])
+		db.session.add(playlist)
 		db.session.commit()
-		return video, 201
+		return playlist, 201
 
 	@marshal_with(resource_fields)
-	def put(self, video_id):
-		args = video_put_args.parse_args()
-		result = VideoModel.query.filter_by(id=video_id).first()
+	def put(self, uuid):
+		args = playlist_put_args.parse_args()
+		result = YoutubePlaylistModel.query.filter_by(id=uuid).first()
 
 		if not result:
 			abort(404, message="Video doesn't exist.")
 
 		if args['name']:
 			result.name = args["name"]
-		if args['views']:
-			result.views = args["views"]
-		if args['likes']:
-			result.likes = args["likes"]
+		if args['playlist_id']:
+			result.playlist_id = args["playlist_id"]
 
 		db.session.commit()
 
 		return result
 
-	def delete(self, video_id):
-		del videos[video_id]
+	def delete(self, uuid):
+		del playlists[uuid]
 		return '', 204
 
+class YoutubePlaylists(Resource):
+	@marshal_with(resource_fields)
+	def get(self):
+		result = YoutubePlaylistModel.query.all()
 
-api.add_resource(Video, "/video/<int:video_id>")
+		print(result)
+		return result, 200
+
+
+api.add_resource(YoutubePlaylist, "/playlist/yt/")
+api.add_resource(YoutubePlaylists, "/playlists/yt/")
 
 if __name__ == "__main__":
 	app.run(debug=True)

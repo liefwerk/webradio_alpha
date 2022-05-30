@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { PlaylistContextProvider } from './context/PlaylistContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <PlaylistContextProvider>
+      <App />
+    </PlaylistContextProvider>
   </React.StrictMode>
 );
 

@@ -1,25 +1,27 @@
-import { usePlaylists } from "../hooks/usePlaylists";
+// import { useFetch } from "../hooks/useFetch";
 import { useState } from 'react'
+import usePlaylists from '../hooks/usePlaylist'
 
 function AddPlaylist() {
 
 	const { playlistID, setPlaylistID } = useState(null)
 	const { name, setName } = useState(null)
-	const { addPlaylist } = usePlaylists('/yt', 'POST', body)
-
-	const handleAddPlaylist = (data) => {
-		error.preventDefault()
-
+	const { error, isPending, response } = usePlaylists( '/playlists', body )
+	
+	const handleAddPlaylist = (e) => {
+		e.preventDefault()
+		
+		setPlaylistID({ playlistID: playlistID })
+		setName({ name: name })
+		
 		const body = {
 			playlist_id: playlistID,
 			name: name
 		}
-		
-		console.log(body)
+	
 
-		const { error, isPending, response } = addPlaylist( '/playlists', body )
-		
 		console.log(response)
+		console.log(error, isPending)
 
 	}
 

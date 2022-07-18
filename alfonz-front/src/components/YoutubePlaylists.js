@@ -1,7 +1,8 @@
 import useFetch from '../hooks/useFetch'
 
-// hooks
-import { useGetPlaylists } from '../hooks/usePlaylists'
+// hooks and context
+// import { useGetPlaylists } from '../hooks/usePlaylists'
+import { usePlaylistContext } from '../hooks/usePlaylistContext'
 
 function YoutubePlaylists() {
 

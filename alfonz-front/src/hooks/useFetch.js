@@ -8,7 +8,7 @@ const useFetch = (url, method, body) => {
 
 	useEffect(() => {
 		const abortCont = new AbortController();
-		const baseURL = "http://localhost:5000/playlists";
+		const baseURL = "http://127.0.0.1:5000/playlists";
 
 		let fullUrl = baseURL + url
 		
@@ -16,9 +16,10 @@ const useFetch = (url, method, body) => {
 			fetch(fullUrl, { 
 				method: method,
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*',
 				},
-				body: JSON.stringify(body)
+				// body: JSON.stringify(body)
 			},
 			{ signal: abortCont.signal })
 				.then(res => {

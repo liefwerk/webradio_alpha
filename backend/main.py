@@ -7,7 +7,7 @@ import uuid
 
 app = Flask(__name__)
 api = Api(app)
-cors = CORS(app, resources={r"/playlists/*": {"origins": "*"}})
+cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, support_credentials=True)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 
@@ -87,10 +87,13 @@ class YoutubePlaylists(Resource):
 	@marshal_with(resource_fields)
 	def get(self):
 		result = YoutubePlaylistModel.query.all()
-
-		print(result)
+	
 		return result, 200
 
+@app.before_request
+def check_flight():
+	if request.method.lower() == 'options':
+		return 'ok', 200
 
 api.add_resource(YoutubePlaylist, "/playlist/yt/")
 api.add_resource(YoutubePlaylists, "/playlists/yt/")

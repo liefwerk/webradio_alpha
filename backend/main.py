@@ -35,7 +35,7 @@ playlist_post_args.add_argument("name", type=str, help="Name of the playlist is 
 playlist_post_args.add_argument("playlist_id", type=str, help="ID of the playlist is required", required=True)
 
 playlist_put_args = reqparse.RequestParser()
-playlist_put_args.add_argument("name", type=str, help="Name of the playlist is required")
+playlist_put_args.add_argument("name", type=str, help="Name of the playlist is not required", required=False)
 playlist_put_args.add_argument("playlist_id", type=str, help="ID of the playlist is required", required=True)
 
 resource_fields = {
@@ -80,7 +80,10 @@ class YoutubePlaylist(Resource):
 		return result
 
 	def delete(self, uuid):
-		del playlists[uuid]
+		playlist = YoutubePlaylistModel.query.get(uuid)
+		db.session.delete(playlist)
+		db.session.commit()
+		
 		return '', 204
 
 class YoutubePlaylists(Resource):
@@ -95,8 +98,8 @@ def check_flight():
 	if request.method.lower() == 'options':
 		return 'ok', 200
 
-api.add_resource(YoutubePlaylist, "/playlist/yt/")
-api.add_resource(YoutubePlaylists, "/playlists/yt/")
+api.add_resource(YoutubePlaylist, '/playlists/single/yt',  '/playlists/single/yt/<string:uuid>')
+api.add_resource(YoutubePlaylists, '/playlists/yt')
 
 if __name__ == "__main__":
 	app.run(debug=True)

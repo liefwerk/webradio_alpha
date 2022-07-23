@@ -5,7 +5,9 @@ export const PlaylistContext = createContext()
 export const playlistReducer = (state, action) => {
 	switch (action.type) {
 		case 'SELECT_PLAYLIST':
-			return { ...state, playlist: action.payload }
+			return { ...state, currentPlaylist: action.payload }
+		case 'ADD_PLAYLISTS':
+			return { ...state, playlists: action.payload }
 		default:
 			return state
 	}
@@ -13,7 +15,8 @@ export const playlistReducer = (state, action) => {
 
 export const PlaylistContextProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(playlistReducer, { 
-		playlist: null,
+		currentPlaylist: null,
+		playlists: null
 	})
 
 	console.log('PlaylistContext state:', state)

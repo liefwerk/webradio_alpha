@@ -12,38 +12,36 @@ const useFetch = (url, method, body) => {
 
 		let fullUrl = baseURL + url
 		
-		setTimeout(() => {
-			fetch(fullUrl, { 
-				method: method,
-				headers: {
-					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': '*',
-				},
-				// body: JSON.stringify(body)
+		fetch(fullUrl, { 
+			method: method,
+			headers: {
+				'Content-Type': 'application/json'
 			},
-			{ signal: abortCont.signal })
-				.then(res => {
-					if (!res.ok) { // error coming back from server
-						throw Error('could not fetch the data for that resource');
-					} 
-					return res.json();
-				})
-				.then(data => {
+			body: JSON.stringify(body)
+		},
+		{ signal: abortCont.signal })
+			.then(res => {
+				if (!res.ok) { // error coming back from server
+					throw Error('could not fetch the data for that resource');
+				} 
+				return res.json();
+			})
+			.then(data => {
+				setIsPending(false);
+				setData(data);
+				setError(null);
+				console.log(data)
+			})
+			.catch(err => {
+				if (err.name === 'AbortError') {
+					console.log('fetch aborted')
+				} else {
+					// auto catches network / connection error
 					setIsPending(false);
-					setData(data);
-					setError(null);
-				})
-				.catch(err => {
-					if (err.name === 'AbortError') {
-						console.log('fetch aborted')
-					} else {
-						// auto catches network / connection error
-						setIsPending(false);
-						setError(err.message);
-					}
-				})
-		}, 1000);
-	
+					setError(err.message);
+				}
+			})
+
 		// abort the fetch
 		return () => abortCont.abort();
 	}, [url, method, body])

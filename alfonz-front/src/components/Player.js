@@ -3,7 +3,7 @@ import { usePlaylistContext } from '../hooks/usePlaylistContext';
 
 function Player() {
 
-	const { playlist } = usePlaylistContext()
+	const { currentPlaylist } = usePlaylistContext()
 
 	const opts = {
 		height: '390',
@@ -11,7 +11,7 @@ function Player() {
 		playerVars: {
 			// https://developers.google.com/youtube/player_parameters
 			listType: 'playlist',
-			list: playlist,
+			list: currentPlaylist,
 			controls: 0,
 			modestbranding: 1,
 			rel: 0,

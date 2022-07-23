@@ -1,45 +1,62 @@
-// import { useFetch } from "../hooks/useFetch";
 import { useState } from 'react'
-import usePlaylists from '../hooks/usePlaylist'
+import { post } from '../utils/apiUtils'
 
 function AddPlaylist() {
-
-	const { playlistID, setPlaylistID } = useState(null)
-	const { name, setName } = useState(null)
-	const { error, isPending, response } = usePlaylists( '/playlists', body )
+	
+	const [name, setName] = useState('')
+	const [playlistID, setPlaylistID] = useState('')
 	
 	const handleAddPlaylist = (e) => {
 		e.preventDefault()
-		
-		setPlaylistID({ playlistID: playlistID })
-		setName({ name: name })
-		
+
 		const body = {
-			playlist_id: playlistID,
-			name: name
+			"name": name,
+			"playlist_id": playlistID,
 		}
-	
 
-		console.log(response)
-		console.log(error, isPending)
+		post('/single/yt', body)
+			.then( res => {
+				console.log(res)
+			} )
+			.catch( err => console.log('error', err) )
 
+		// fetch('http://127.0.0.1:5000/playlist/yt/', {
+		// 	method: 'POST',
+		// 	headers: {
+		// 		'Content-Type': 'application/json'
+		// 	},
+		// 	body: JSON.stringify(body)
+		// }).then( res => {
+		// 	console.log(res)
+		// }).catch( err => console.log(err))
+
+	}
+
+	const handleChangeID = (value) => {
+		setPlaylistID(value);
+	}
+
+	const handleChangeName = (value) => {
+		setName(value);
 	}
 
     return (
 		<form className='add-playlist' onSubmit={ handleAddPlaylist }>
 			<label>
 				<input
-					value={ name }
+					// value={ data.name }
+					onChange={ (e) => handleChangeName(e.target.value) }
 					placeholder="Name of the playlist" 
 					type="text" />
 			</label>
 			<label>
-				<input 
-					value={ playlistID }
+				<input
+					// value={ data.playlistID }
+					onChange={ (e) => handleChangeID(e.target.value) }
 					placeholder="ID for the playlist" 
 					type="text" />
 			</label>
-
+			<button type="">Add playlist</button>
 		</form>
     );
     

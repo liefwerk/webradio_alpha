@@ -6,11 +6,9 @@ from flask_cors import CORS
 from flask_httpauth import HTTPBasicAuth
 
 def create_app(test_config=None):
-	app = Flask(__name__, instance_relative_config=True)
+	app = Flask(__name__, instance_relative_config=False)
 
 	app.config.from_mapping(
-        # a default secret that should be overridden by instance config
-        SECRET_KEY="dev",
         # store the database in the instance folder
         DATABASE=os.path.join(app.instance_path, "app.sqlite"),
     )
@@ -35,16 +33,24 @@ def create_app(test_config=None):
 	except OSError:
 		pass
 
+
+	@app.route("/")
+	def hello():
+		return {"message": "Hello World!"}
+
+
 	# Initialize the database
 	from app import db
 	db.init_app(app)
 
 	# Register the blueprints
+	from app import auth
+	app.register_blueprint(auth.blueprint)
+	
 	from app import users
 	app.register_blueprint(users.blueprint)
 	
 	from app import playlists
 	app.register_blueprint(playlists.blueprint)
-
 
 	return app

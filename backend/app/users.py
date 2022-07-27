@@ -57,7 +57,25 @@ def create_user():
 
 @blueprint.route("/<int:user_id>/", methods=["PUT"])
 def update_user(user_id):
-    return {"action": f"update user {user_id}"}
+    data = request.json
+
+    username = data.get("username")
+
+    if not all([username]):
+        return {"error": "Required fields are missing"}, 400
+
+    db = get_db()
+
+    try:
+        cursor = db.execute(
+            "UPDATE user SET username=? WHERE id=?",
+            (username, user_id),
+        )
+        db.commit()
+    except db.IntegrityError:
+        return {"error": "This username is already registered"}, 400
+
+    return jsonify({"id": user_id}), 200
 
 
 @blueprint.route("/<int:user_id>/", methods=["DELETE"])

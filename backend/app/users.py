@@ -3,10 +3,12 @@ from werkzeug.security import generate_password_hash
 
 from flask import current_app
 from .db import get_db
+from .auth import login_required
 
 blueprint = Blueprint("users", __name__, url_prefix="/users")
 
 @blueprint.route("/", methods=["GET"])
+@login_required
 def list_users():
 	db = get_db()
 

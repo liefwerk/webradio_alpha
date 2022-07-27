@@ -1,5 +1,6 @@
 import jwt
-from flask import Blueprint, current_app, request
+import functools
+from flask import Blueprint, current_app, g, request
 from werkzeug.security import check_password_hash
 
 from .db import get_db
@@ -41,3 +42,36 @@ def get_token():
     token = generate_token(user["id"])
 
     return {"user_id": user["id"], "token": token}
+
+
+@blueprint.before_app_request
+def set_user():
+    data = request.headers.get("Authorization")
+    token = str.replace(str(data), 'Bearer ', '')
+    
+    if not token:
+        g.user = None
+        return
+
+    user_id = decode_token(token)
+
+    if not user_id:
+        g.user = None
+        return
+
+    db = get_db()
+    cursor = db.execute("SELECT * FROM user WHERE id=?", (user_id,))
+    user = cursor.fetchone()
+
+    g.user = user
+
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return {"error": "Authentication failed"}, 401
+
+        return view(**kwargs)
+
+    return wrapped_view

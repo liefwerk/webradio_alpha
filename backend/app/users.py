@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from werkzeug.security import generate_password_hash
 
+from flask import current_app
 from .db import get_db
 
 blueprint = Blueprint("users", __name__, url_prefix="/users")

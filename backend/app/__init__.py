@@ -3,10 +3,11 @@ import os
 from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
+from flask_httpauth import HTTPBasicAuth
 
 def create_app(test_config=None):
 	app = Flask(__name__, instance_relative_config=True)
-	
+
 	app.config.from_mapping(
         # a default secret that should be overridden by instance config
         SECRET_KEY="dev",
@@ -14,8 +15,12 @@ def create_app(test_config=None):
         DATABASE=os.path.join(app.instance_path, "app.sqlite"),
     )
 
+	# API
 	api = Api(app)
 	cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, support_credentials=True)
+
+	# Authentication
+	auth = HTTPBasicAuth()
 
 	if test_config is None:
 		# load the instance config, if it exists, when not testing

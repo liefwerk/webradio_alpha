@@ -14,7 +14,7 @@ CREATE TABLE playlist (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT UNIQUE NOT NULL,
   playlist_id TEXT NOT NULL,
-  user_id UNIQUE NOT NULL,
-  type TEXT NOT NULL,
+  user_id UNIQUE,
+  playlist_type TEXT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES user(id)
 );

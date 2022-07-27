@@ -80,4 +80,10 @@ def update_user(user_id):
 
 @blueprint.route("/<int:user_id>/", methods=["DELETE"])
 def delete_user(user_id):
-    return "", 204
+
+    db = get_db()
+
+    db.execute("DELETE FROM user WHERE id=?", (user_id,))
+    db.commit()
+
+    return jsonify({"message": "Successfully deleted."}), 200

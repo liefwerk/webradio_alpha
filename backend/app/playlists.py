@@ -12,47 +12,47 @@ def list_playlists():
 	playlists = cursor.fetchall()
 
 	playlist_list = []
-	for playlists in playlists:
+	for playlist in playlists:
 		playlist_list.append(
 			{
-				"id": user["id"],
-				"name": user["name"],
-				"playlist_id": user["playlist_id"],
-				"user_id": user["user_id"],
-				"type": user["type"]
+				"id": playlist["id"],
+				"name": playlist["name"],
+				"playlist_id": playlist["playlist_id"],
+				"user_id": playlist["user_id"],
+				"playlist_type": playlist["playlist_type"]
 			}
 		)
 
-	return jsonify(user_list)
+	return jsonify(playlist_list)
 
 
-@blueprint.route("/<int:user_id>/", methods=["GET"])
-def get_user(user_id):
-    return {"action": f"get user {user_id}"}
+@blueprint.route("/<int:playlist_id>/", methods=["GET"])
+def get_playlist(user_id):
+    return {"action": f"get playlist {playlist_id}"}
 
 
 @blueprint.route("/", methods=["POST"])
-def create_user():
+def create_playlist():
     data = request.json
 
-    username = data.get("username")
-    password = data.get("password")
+    name = data.get("name")
+    playlist_id = data.get("playlist_id")
+    user_id = data.get("user_id")
+    playlist_type = data.get("type")
 
-    if not all([username, password]):
+    if not all([name, playlist_id, playlist_type]):
         return {"error": "Required fields are missing"}, 400
 
     db = get_db()
 
-    hashed_password = generate_password_hash(password)
-
     try:
         cursor = db.execute(
-            "INSERT INTO user (username, password) VALUES (?, ?)",
-            (username, hashed_password),
+            "INSERT INTO playlist (name, playlist_id, user_id, playlist_type) VALUES (?, ?, ?, ?)",
+            (name, playlist_id, user_id, playlist_type),
         )
         db.commit()
     except db.IntegrityError:
-        return {"error": "This username is already registered"}, 400
+        return {"error": "This name is already registered"}, 400
 
     return jsonify({"id": cursor.lastrowid}), 201
 

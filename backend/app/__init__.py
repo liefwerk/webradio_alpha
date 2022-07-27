@@ -37,6 +37,9 @@ def create_app(test_config=None):
 	# Register the blueprints
 	from app import users
 	app.register_blueprint(users.blueprint)
+	
+	from app import playlists
+	app.register_blueprint(playlists.blueprint)
 
 
 	return app

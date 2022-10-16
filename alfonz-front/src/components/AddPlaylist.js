@@ -12,23 +12,14 @@ function AddPlaylist() {
 		const body = {
 			"name": name,
 			"playlist_id": playlistID,
+			"type": "youtube"
 		}
 
-		post('/single/yt', body)
+		post('/', body)
 			.then( res => {
 				console.log(res)
 			} )
 			.catch( err => console.log('error', err) )
-
-		// fetch('http://127.0.0.1:5000/playlist/yt/', {
-		// 	method: 'POST',
-		// 	headers: {
-		// 		'Content-Type': 'application/json'
-		// 	},
-		// 	body: JSON.stringify(body)
-		// }).then( res => {
-		// 	console.log(res)
-		// }).catch( err => console.log(err))
 
 	}
 

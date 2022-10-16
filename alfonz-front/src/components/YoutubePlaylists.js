@@ -7,32 +7,31 @@ import { usePlaylistContext } from '../hooks/usePlaylistContext'
 
 function YoutubePlaylists() {
 
-    const { error, isPending, data: fetchedPlaylists } = useFetch('/yt')
+    const { error, isPending, data: fetchedPlaylists } = useFetch('/')
 	const { playlists } = usePlaylistContext()
 
 	// context
 	const { dispatch } = usePlaylistContext()
 
 	useEffect(() => {
-	  if (fetchedPlaylists){
-		dispatch({ type: 'ADD_PLAYLISTS', payload: fetchedPlaylists })
-	  }
-
-	  console.log(playlists)
-	
-	  return () => {}
-	}, [fetchedPlaylists])
-	
+		if (fetchedPlaylists){
+			dispatch({ type: 'ADD_PLAYLISTS', payload: fetchedPlaylists })
+		}
+		
+		return () => {}
+	}, [fetchedPlaylists, dispatch])
+		
 
 	const changePlaylist = (playlistID) => {
 		dispatch({ type: 'SELECT_PLAYLIST', payload: playlistID })
 	}
 
 	const deletePlaylist = (UUID) => {
-		console.log(UUID)
-		del(`/single/yt/${UUID}`)
+		del(`/yt/${UUID}/`)
 			.then( res => console.log(res) )
 			.catch( err => console.log(err) )
+
+		dispatch({ type: 'DELETE_PLAYLIST', payload: UUID })
 	}
 
     return (

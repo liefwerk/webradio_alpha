@@ -62,6 +62,12 @@ def update_user(user_id):
     return {"action": f"update user {user_id}"}
 
 
-@blueprint.route("/<int:user_id>/", methods=["DELETE"])
-def delete_user(user_id):
-    return "", 204
+@blueprint.route("/yt/<int:playlist_id>/", methods=["DELETE"])
+def delete_playlist(playlist_id):
+    
+    db = get_db()
+
+    db.execute("DELETE FROM playlist WHERE id=?", (playlist_id,))
+    db.commit()
+
+    return {"delete": f"delete playlist {playlist_id}"}

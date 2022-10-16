@@ -10,21 +10,21 @@ blueprint = Blueprint("users", __name__, url_prefix="/users")
 @blueprint.route("/", methods=["GET"])
 @login_required
 def list_users():
-	db = get_db()
+    db = get_db()
 
-	cursor = db.execute("SELECT * FROM user")
-	users = cursor.fetchall()
+    cursor = db.execute("SELECT * FROM user")
+    users = cursor.fetchall()
 
-	user_list = []
-	for user in users:
-		user_list.append(
-			{
-				"id": user["id"],
-				"username": user["username"]
-			}
-		)
+    user_list = []
+    for user in users:
+        user_list.append(
+            {
+                "id": user["id"],
+                "username": user["username"]
+            }
+        )
 
-	return jsonify(user_list)
+    return jsonify(user_list)
 
 
 @blueprint.route("/<int:user_id>/", methods=["GET"])

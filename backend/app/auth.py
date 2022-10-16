@@ -48,8 +48,8 @@ def get_token():
 def set_user():
     data = request.headers.get("Authorization")
     token = str.replace(str(data), 'Bearer ', '')
-    
-    if not token:
+
+    if token == 'None':
         g.user = None
         return
 

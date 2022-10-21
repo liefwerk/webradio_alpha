@@ -78,14 +78,14 @@ def add_playlists():
 
     playlists_list = [
         {
-            "name": "playlist_1",
-            "playlist_id": "123456789",
+            "name": "Parachuté",
+            "playlist_id": "PLGo4WhVb-_D92snc2HkUm-3oiXovmVkDA",
             "user_id": None,
             "playlist_type": "youtube",
         },
         {
-            "name": "playlist_2",
-            "playlist_id": "987654321",
+            "name": "1.99e3",
+            "playlist_id": "PLy0eCs87EghQbyv35bKGwgbk7fzbNNjsU",
             "user_id": None,
             "playlist_type": "youtube",
         },

@@ -8,7 +8,7 @@ const useFetch = (url, method, body) => {
 
 	useEffect(() => {
 		const abortCont = new AbortController();
-		const baseURL = "http://localhost:5000/playlists";
+		const baseURL = process.env.NODE_ENV === "development" ? "http://play.natjs.fr/playlists" : "http://play.natjs.fr/playlists";
 
 		let fullUrl = baseURL + url
 		
@@ -32,7 +32,6 @@ const useFetch = (url, method, body) => {
 				setIsPending(false);
 				setData(data);
 				setError(null);
-				console.log('data', data)
 			})
 			.catch(err => {
 				if (err.name === 'AbortError') {

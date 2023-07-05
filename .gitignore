@@ -10,6 +10,7 @@ __pycache__/
 
 instance/
 config.py
+log.txt
 
 .pytest_cache/
 .coverage

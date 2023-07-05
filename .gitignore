@@ -3,7 +3,6 @@
 .vscode
 
 # Back #
-
 venv/
 
 *.pyc
@@ -15,6 +14,7 @@ config.py
 .pytest_cache/
 .coverage
 htmlcov/
+*.cfg
 
 build/
 *.egg-info/

@@ -7,7 +7,9 @@ on:
   push:
     branches: [ v-react ]
     paths:
-        - 'alfonz-front/**'
+      # added /null just for testing purposes, so it won't trigger on install
+      # just remove /null when the files are ready for CD
+        - 'alfonz-front/null/**'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:

@@ -16,7 +16,6 @@ config.py
 .coverage
 htmlcov/
 
-dist/
 build/
 *.egg-info/
 

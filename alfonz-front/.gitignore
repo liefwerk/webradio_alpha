@@ -1,26 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-.vscode
-
-# Back #
-venv/
-
-*.pyc
-__pycache__/
-
-instance/
-config.py
-log.txt
-
-.pytest_cache/
-.coverage
-htmlcov/
-*.cfg
-
-build/
-*.egg-info/
-
-# Front #
 # dependencies
 /node_modules
 /.pnp

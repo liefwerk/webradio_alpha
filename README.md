@@ -1,33 +1,41 @@
-# :notes: Webradio Alpha
+# Welcome to Alfonz
 
-Small web application for storing and playing pre-made youtube playlists. Fully responsive, possibility to create an account for adding and keeping your playlists on hand.
+## Development
 
-## :question: What did you learn making this ?
+### Launch the development server
 
-This is my second VueJS project and my first Heroku-hosted project that uses a Firebase-like database. The database is handled through Supabase, a tool similar to Firebase, quite easy to use and very quick to respond.
-
-The most insightful skill I learnt with this project is to be able to go beyond the tools that I am using. To explain it concisely, I am using a youtube-iframe npm package to read the playlists. This is quite powerful as a standalone package, but using it in the context of a VueJS web app and with a database to store user's playlist it can go quite far. The challenge resides in finding the best way to make all these tools interact together. VueJS is a great framework for quickly organizing the project. I would not have been able to make this project under such a short notice without it.
-
----
-## Project setup
-```
-yarn
+```bash
+cd backend
+. ./venv/bin/activate
+FLASK_APP=app
+FLASK_ENV=development
 ```
 
-### Compiles and hot-reloads for development
-```
-yarn serve
+### Initialize the database and seed it
+
+```bash
+flask init-db
+flask seed-db
 ```
 
-### Compiles and minifies for production
-```
-yarn build
+### Start the dev server
+
+```bash
+flask run
 ```
 
-### Lints and fixes files
-```
-yarn lint
+## Production
+
+### Run the prod server
+
+```bash
+source ./venv/bin/activate
+waitress-serve --p 8145 --call 'app:create_app' > log.txt 2>&1 &
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Kill the prod server
+
+```bash
+ps -aux
+kill <PID> ## Find the PID related to the background process
+```

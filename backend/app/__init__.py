@@ -6,14 +6,15 @@ from flask_cors import CORS
 from flask_httpauth import HTTPBasicAuth
 
 def create_app(test_config=None):
-
-
 	app = Flask(__name__, instance_relative_config=False)
 
 	app.config.from_mapping(
 		# store the database in the instance folder
 		DATABASE=os.path.join(app.instance_path, "app.sqlite"),
 	)
+	
+	# Debug Mode 
+	app.run(debug=True)
 
 	# API
 	api = Api(app)

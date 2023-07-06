@@ -10,7 +10,7 @@ def create_app(test_config=None):
 
 	app = Flask(__name__, instance_relative_config=False)
 
-	if app.config['ENV'] == 'production':
+	if 'ENV' in app.config:
 		app.config.from_mapping(
 			# store the database in the instance folder
 			DATABASE=os.path.join(app.instance_path, "app.sqlite"),

@@ -1,8 +1,8 @@
 # Welcome to Alfonz
 
-## Launch the backend
+## Development
 
-### Development launch
+### Launch the development server
 
 ```bash
 cd backend
@@ -22,4 +22,20 @@ flask seed-db
 
 ```bash
 flask run
+```
+
+## Production
+
+### Run the prod server
+
+```bash
+source ./venv/bin/activate
+waitress-serve --p 8145 --call 'app:create_app' > log.txt 2>&1 &
+```
+
+### Kill the prod server
+
+```bash
+ps -aux
+kill <PID> ## Find the PID related to the background process
 ```

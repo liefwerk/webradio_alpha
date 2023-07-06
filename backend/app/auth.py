@@ -9,6 +9,7 @@ blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 
 def generate_token(user_id):
     payload = { "id": user_id }
+    
     return jwt.encode(payload, current_app.config["JWT_SECRET"], algorithm="HS256")
 
 

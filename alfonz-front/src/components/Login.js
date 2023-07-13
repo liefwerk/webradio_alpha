@@ -1,21 +1,19 @@
-import { useState } from 'react'
 import { post } from '../utils/apiUtils'
 
-function AddPlaylist() {
+function Login() {
 	
-	const [name, setName] = useState('')
-	const [playlistID, setPlaylistID] = useState('')
+	const [username, setUsername] = useState('')
+	const [password, setPassword] = useState('')
 	
-	const handleAddPlaylist = (e) => {
+	const handleLogin = (e) => {
 		e.preventDefault()
 
 		const body = {
-			"name": name,
-			"playlist_id": playlistID,
-			"type": "youtube"
+			"username": username,
+			"password": password
 		}
 
-		post('/playlists/', body)
+		post('/', body)
 			.then( res => {
 				console.log(res)
 			} )
@@ -53,4 +51,4 @@ function AddPlaylist() {
     
 }
 
-export default AddPlaylist;
+export default Login;

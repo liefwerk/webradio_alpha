@@ -28,11 +28,13 @@ function YoutubePlaylists() {
 	}
 
 	const deletePlaylist = (UUID) => {
-		del(`/yt/${UUID}/`)
-			.then( res => console.log(res) )
+		del(`/playlists/del/${UUID}/`)
+			.then( res => { 
+				console.log(res) 
+				dispatch({ type: 'DELETE_PLAYLIST', payload: UUID })
+			})
 			.catch( err => console.log(err) )
 
-		dispatch({ type: 'DELETE_PLAYLIST', payload: UUID })
 	}
 
     return (

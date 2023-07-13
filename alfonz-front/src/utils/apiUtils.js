@@ -1,4 +1,4 @@
-const baseURL = 'http://127.0.0.1:5000/playlists'
+const baseURL = 'http://127.0.0.1:5000'
 
 const headers = {
 	'Content-Type': 'application/json',

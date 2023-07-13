@@ -14,7 +14,7 @@ def create_app(test_config=None):
 	)
 	
 	# Debug Mode 
-	app.run(debug=True)
+	# app.run(debug=True)
 
 	# API
 	api = Api(app)

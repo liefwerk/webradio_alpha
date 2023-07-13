@@ -4,19 +4,20 @@ import { useEffect } from 'react'
 
 // hooks and context
 import { usePlaylistContext } from '../hooks/usePlaylistContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 
 function YoutubePlaylists() {
 
     const { error, isPending, data: fetchedPlaylists } = useFetch('/')
-	const { playlists } = usePlaylistContext()
 
 	// context
-	const { dispatch } = usePlaylistContext()
+	const { playlists, dispatch } = usePlaylistContext()
+	const { bearerToken } = useAuthContext()
 
 	useEffect(() => {
 		if (fetchedPlaylists){
 			dispatch({ type: 'ADD_PLAYLISTS', payload: fetchedPlaylists })
-			dispatch({ type: 'SELECT_PLAYLIST', payload: fetchedPlaylists[0].playlist_id })
+			// dispatch({ type: 'SELECT_PLAYLIST', payload: fetchedPlaylists[0].playlist_id })
 		}
 		
 		return () => {}
@@ -28,9 +29,9 @@ function YoutubePlaylists() {
 	}
 
 	const deletePlaylist = (UUID) => {
-		del(`/playlists/del/${UUID}/`)
+		del(`/playlists/del/${UUID}/`, bearerToken)
+			.then( res => res.json() )
 			.then( res => { 
-				console.log(res) 
 				dispatch({ type: 'DELETE_PLAYLIST', payload: UUID })
 			})
 			.catch( err => console.log(err) )

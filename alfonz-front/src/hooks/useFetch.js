@@ -15,8 +15,7 @@ const useFetch = (url, method, body) => {
 		fetch(fullUrl, { 
 			method: method,
 			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MX0.cxWxLJd70YK20JoUohi4bVS1VY2rF01ha2bTzbveJ1I'
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(body)
 		},
@@ -25,7 +24,6 @@ const useFetch = (url, method, body) => {
 				if (!res.ok) { // error coming back from server
 					throw Error('could not fetch the data for that resource');
 				} 
-				console.log('fetched');
 				return res.json();
 			})
 			.then(data => {

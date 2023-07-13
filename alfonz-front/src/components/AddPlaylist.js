@@ -1,10 +1,16 @@
 import { useState } from 'react'
 import { post } from '../utils/apiUtils'
 
+// hooks and context
+import { useAuthContext } from '../hooks/useAuthContext'
+
 function AddPlaylist() {
 	
 	const [name, setName] = useState('')
 	const [playlistID, setPlaylistID] = useState('')
+
+	// context
+	const { bearerToken } = useAuthContext()
 	
 	const handleAddPlaylist = (e) => {
 		e.preventDefault()
@@ -15,7 +21,7 @@ function AddPlaylist() {
 			"type": "youtube"
 		}
 
-		post('/playlists/', body)
+		post('/playlists/', body, bearerToken)
 			.then( res => {
 				console.log(res)
 			} )

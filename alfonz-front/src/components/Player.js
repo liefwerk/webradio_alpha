@@ -5,7 +5,7 @@ function Player() {
 
 	const { currentPlaylist } = usePlaylistContext()
 
-	const opts = {
+	let opts = {
 		height: '390',
 		width: '640',
 		playerVars: {
@@ -15,9 +15,10 @@ function Player() {
 			controls: 0,
 			modestbranding: 1,
 			rel: 0,
-			showinfo: 0
+			showinfo: 0,
+			autoplay: 1
 		},
-	};
+	}
 
 	const onReady = (event) => {
 		event.target.playVideo();

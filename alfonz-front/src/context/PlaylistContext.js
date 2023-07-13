@@ -9,7 +9,8 @@ export const playlistReducer = (state, action) => {
 		case 'ADD_PLAYLISTS':
 			return { ...state, playlists: action.payload }
 		case 'DELETE_PLAYLIST':
-			const playlists = state.playlists.filter(playlist => playlist.id !== action.payload);
+			const playlists = state.playlists.filter(playlist => playlist.id !== action.payload)
+			console.log(playlists)
 			return { ...state, playlists: playlists }
 		default:
 			return state
@@ -21,8 +22,6 @@ export const PlaylistContextProvider = ({ children }) => {
 		currentPlaylist: null,
 		playlists: null
 	})
-
-	console.log('PlaylistContext state:', state)
 
 	return (
 		<PlaylistContext.Provider value={{ ...state, dispatch }}>

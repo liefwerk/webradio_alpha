@@ -1,10 +1,16 @@
 import { useState } from 'react'
-import { post } from '../utils/apiUtils'
+import { getToken } from '../utils/apiUtils'
+
+// hooks and context
+import { useAuthContext } from '../hooks/useAuthContext'
 
 function Login() {
 	
 	const [username, setUsername] = useState('nathanael')
 	const [password, setPassword] = useState('')
+
+	// context
+	const { dispatch } = useAuthContext()
 	
 	const handleLogin = (e) => {
 		e.preventDefault()
@@ -14,11 +20,12 @@ function Login() {
 			"password": password
 		}
 
-		console.log(body)
-
-		post('/auth/get-token/', body)
+		getToken('/auth/get-token/', body)
 			.then(res => res.json() )
-			.then(res => console.log(res) )
+			.then(res => { 
+				console.log(res.token)
+				dispatch({ type: 'ADD_BEARER_TOKEN', payload: res.token })
+			})
 			.catch(err => console.log('error', err))
 
 	}

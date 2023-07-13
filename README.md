@@ -36,6 +36,6 @@ waitress-serve --p 8145 --call 'app:create_app' > log.txt 2>&1 &
 ### Kill the prod server
 
 ```bash
-ps -aux
+lsof -i tcp
 kill <PID> ## Find the PID related to the background process
 ```

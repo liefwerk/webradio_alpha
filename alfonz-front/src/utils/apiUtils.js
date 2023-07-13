@@ -11,11 +11,13 @@ export const post = (URL, body) => {
 	
 	return new Promise((resolve, reject) => {
 
-		fetch(fullURL, { 
+		const response = fetch(fullURL, { 
 			method: 'POST',
 			headers: headers,
 			body: JSON.stringify(body)
 		})
+
+		resolve(response)
 	})
 }
 

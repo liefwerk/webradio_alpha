@@ -1,8 +1,8 @@
 :root {
   --c-dark: #0d0d0e;
   --c-light: #dadae3;
-  --c-primary: #4d4daf;
-  --c-primary-light: #6060d5;
+  --c-primary: #d53434;
+  --c-primary-light: #e03333;
 }
 
 body {
@@ -35,4 +35,10 @@ a, a:visited, .navigation button {
   padding: 0;
   text-decoration: underline;
   cursor: pointer;
+}
+
+/* Player */
+iframe, object, embed {
+  max-width: 100%;
+  max-height: 100%;
 }

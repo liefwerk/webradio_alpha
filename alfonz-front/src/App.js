@@ -2,7 +2,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // components
-import Player from './components/Player'
+import YoutubePlayer from './components/YoutubePlayer'
 import YoutubePlaylists from './components/YoutubePlaylists'
 import AddPlaylist from './components/AddPlaylist'
 import Navigation from './components/Navigation'
@@ -12,7 +12,7 @@ function App() {
 
     return (
         <div className="App">
-            <Player />
+            <YoutubePlayer />
             <BrowserRouter>
                 <Navigation />
                 <Routes>

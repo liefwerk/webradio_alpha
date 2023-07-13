@@ -44,12 +44,12 @@ function YoutubePlaylists() {
 			{ isPending && <p>IsPending</p> }
 			{ playlists && playlists.map( ( playlist, index ) => {
 				return (
-					<div key={ playlist.id }>
+					<div key={ playlist.id } className="playlist__item">
 						<p className="playlist__name">{ playlist.name }</p>
 						<p className="playlist__id">{ playlist.playlist_id }</p>
 						<button 
 							onClick={() => { changePlaylist(playlist.playlist_id) }}
-							className='playlist__button'>
+							className="playlist__button">
 								Select this playlist
 						</button>
 						<button 

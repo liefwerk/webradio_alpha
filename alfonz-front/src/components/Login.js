@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { getToken } from '../utils/apiUtils'
+import { useNavigate } from "react-router-dom";
 
 // hooks and context
 import { useAuthContext } from '../hooks/useAuthContext'
@@ -11,6 +12,9 @@ function Login() {
 
 	// context
 	const { dispatch } = useAuthContext()
+
+	// route
+	const navigate = useNavigate();
 	
 	const handleLogin = (e) => {
 		e.preventDefault()
@@ -21,12 +25,12 @@ function Login() {
 		}
 
 		getToken('/auth/get-token/', body)
-			.then(res => res.json() )
-			.then(res => { 
-				console.log(res.token)
+			.then(res => {
+				console.log(res)
 				dispatch({ type: 'ADD_BEARER_TOKEN', payload: res.token })
+				navigate("/")
 			})
-			.catch(err => console.log('error', err))
+			.catch(err => console.log(err))
 
 	}
 

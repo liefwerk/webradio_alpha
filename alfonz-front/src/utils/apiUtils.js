@@ -10,13 +10,18 @@ export const getToken = (URL, body) => {
 	
 	return new Promise((resolve, reject) => {
 
-		const response = fetch(fullURL, { 
+		fetch(fullURL, { 
 			method: 'POST',
 			headers: headers,
 			body: JSON.stringify(body)
 		})
-
-		resolve(response)
+		.then(res => res.json())
+		.then(res => {
+			if (!res.error)
+				resolve(res)
+			else
+				reject(res)
+		})
 	})
 }
 
@@ -28,13 +33,18 @@ export const post = (URL, body, token) => {
 	
 	return new Promise((resolve, reject) => {
 
-		const response = fetch(fullURL, { 
+		fetch(fullURL, { 
 			method: 'POST',
 			headers: { ...headers, 'Authorization': `${token}` },
 			body: JSON.stringify(body)
 		})
-
-		resolve(response)
+		.then(res => res.json())
+		.then(res => {
+			if (!res.error)
+				resolve(res)
+			else
+				reject(res)
+		})
 	})
 }
 
@@ -44,11 +54,17 @@ export const del = (URL, token) => {
 	
 	return new Promise((resolve, reject) => {
 	
-		const response = fetch(fullURL, { 
+		fetch(fullURL, { 
 			method: 'DELETE',
 			headers: { ...headers, 'Authorization': `${token}` },
 		})
+		.then(res => res.json())
+		.then(res => {
+			if (!res.error)
+				resolve(res)
+			else
+				reject(res)
+		})
 
-		resolve(response)
 	})
 }

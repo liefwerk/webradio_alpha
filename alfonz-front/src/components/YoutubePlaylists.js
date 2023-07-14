@@ -17,7 +17,7 @@ function YoutubePlaylists() {
 	useEffect(() => {
 		if (fetchedPlaylists){
 			dispatch({ type: 'ADD_PLAYLISTS', payload: fetchedPlaylists })
-			// dispatch({ type: 'SELECT_PLAYLIST', payload: fetchedPlaylists[0].playlist_id })
+			dispatch({ type: 'SELECT_PLAYLIST', payload: fetchedPlaylists[0].playlist_id })
 		}
 		
 		return () => {}

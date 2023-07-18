@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react'
 import { usePlaylistContext } from '../hooks/usePlaylistContext';
+import { getVideosTitle } from '../utils/ytUtils';
 
 import YouTube from "react-youtube";
+import PlayerControls from './PlayerControls'
 
 let videoElement = null
 
 function Player() {
 	const { currentPlaylist } = usePlaylistContext()
-	// const [ songTitle, setSongTitle ] = useState()
 	const [isPaused, setIsPaused] = useState(true)
-
-	const togglePause = () => {
-		setIsPaused(!isPaused)
-	}
+	const [playlistTracks, setPlaylistsTracks] = useState(null)
+	const [videoData, setVideoData] = useState(null)
 
 	const opts = {
 		height: "390",
@@ -24,9 +23,8 @@ function Player() {
 	}
 
 	useEffect(() => {
-
 		if (videoElement) {
-			console.log(isPaused)
+			console.log(videoElement.target.getCurrentTime())
 
 			if (isPaused) {
 				videoElement.target.pauseVideo();
@@ -34,28 +32,70 @@ function Player() {
 				videoElement.target.playVideo();
 			}
 		}
+	}, [isPaused])
 
-		return () => {}
-	}, [isPaused, videoElement])
+	useEffect(() => {
+		if (videoElement) {
+			console.log('calling youtube API')
+			setPlaylistsTracks(videoElement.target.getPlaylist())
+			getVideosTitle(currentPlaylist, function(err, title) {
+				setPlaylistsTracks(title)
+			})
+		}
+	}, [currentPlaylist])
 
 	const _onReady = (event) => {
 		setIsPaused(true)
 		videoElement = event;
 	};
 
+	const _onPlay = (event) => {
+		if (videoElement) {
+			setVideoData(videoElement.target.getVideoData())
+		}
+	}
+
+	const togglePause = () => {
+		setIsPaused(!isPaused)
+	}
+
+	const setToNextVideo = () => {
+		if (videoElement) {
+			videoElement.target.nextVideo()
+			setIsPaused(false)
+		}
+	}
+
+	const setToPreviousVideo = () => {
+		if (videoElement) {
+			videoElement.target.previousVideo()
+			setIsPaused(false)
+		}
+	}
+
+	const playlistTitles = playlistTracks && playlistTracks.map((item, index) =>
+		<li key={item.position}>{ item.title } { item.position }</li>
+	)
+
     return (
 		<>
 			<div id="video-player--yt" className="video-player video-player--yt">
 				<YouTube
 					opts={ opts }
-					onReady={_onReady} />
+					onReady={ _onReady }
+					onPlay={ _onPlay } />
 			</div>
-			<p>{ currentPlaylist }</p>
-			<div id="player-controls player-controls--yt">
-				<button onClick={ togglePause }>
-					{ !isPaused ? 'pause' : 'play' }
-				</button>
-			</div>
+			{videoData && (
+				<p>{ videoData.title }</p>
+			)}
+			<ul className="playlist-items">
+				{playlistTitles}
+			</ul>
+			<PlayerControls
+				togglePause={ togglePause }
+				setToNextVideo={ setToNextVideo }
+				setToPreviousVideo={ setToPreviousVideo }
+				isPaused={ isPaused } />
 		</>
 	)
 }

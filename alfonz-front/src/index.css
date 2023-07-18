@@ -1,5 +1,5 @@
 :root {
-  --c-dark: #0d0d0e;
+  --c-dark: #1a1a1a;
   --c-light: #dadae3;
   --c-primary: #d53434;
   --c-primary-light: #e03333;
@@ -13,6 +13,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--c-dark);
+  text-align: center;
 }
 
 code {
@@ -41,4 +42,10 @@ a, a:visited, .navigation button {
 iframe, object, embed {
   max-width: 100%;
   max-height: 100%;
+}
+
+.playlist-items {
+  color: var(--c-light);
+  list-style-type: none;
+  
 }

@@ -8,6 +8,8 @@ export const playlistReducer = (state, action) => {
 			return { ...state, currentPlaylist: action.payload }
 		case 'ADD_PLAYLISTS':
 			return { ...state, playlists: action.payload }
+		case 'ADD_PLAYLISTS_TITLES':
+			return { ...state, playlistTitles: action.payload }
 		case 'DELETE_PLAYLIST':
 			const playlists = state.playlists.filter(playlist => playlist.id !== action.payload)
 			console.log(playlists)
@@ -20,7 +22,8 @@ export const playlistReducer = (state, action) => {
 export const PlaylistContextProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(playlistReducer, { 
 		currentPlaylist: null,
-		playlists: null
+		playlists: null,
+		playlistTitles: null
 	})
 
 	return (

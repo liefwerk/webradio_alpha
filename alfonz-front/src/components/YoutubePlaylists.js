@@ -6,6 +6,9 @@ import { useEffect } from 'react'
 import { usePlaylistContext } from '../hooks/usePlaylistContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 
+// components
+import YoutubeTitles from './YoutubeTitles'
+
 function YoutubePlaylists() {
 
     const { error, isPending, data: fetchedPlaylists } = useFetch('/')
@@ -60,6 +63,7 @@ function YoutubePlaylists() {
 					</div>
 				)
 			} ) }
+			<YoutubeTitles />
 		</div>
     );
     

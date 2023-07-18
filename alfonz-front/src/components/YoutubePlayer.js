@@ -1,21 +1,24 @@
 import { useEffect, useState } from 'react'
+import YouTube from "react-youtube";
+
+// hooks and context
 import { usePlaylistContext } from '../hooks/usePlaylistContext';
 import { getVideosTitle } from '../utils/ytUtils';
 
-import YouTube from "react-youtube";
+// components
 import PlayerControls from './PlayerControls'
 
 let videoElement = null
 
 function Player() {
-	const { currentPlaylist } = usePlaylistContext()
+	const { currentPlaylist, dispatch } = usePlaylistContext()
 	const [isPaused, setIsPaused] = useState(true)
 	const [playlistTracks, setPlaylistsTracks] = useState(null)
 	const [videoData, setVideoData] = useState(null)
 
 	const opts = {
-		height: "390",
-		width: "640",
+		height: "0",
+		width: "0",
 		playerVars: {
 			listType: 'playlist',
 			list: currentPlaylist
@@ -36,13 +39,13 @@ function Player() {
 
 	useEffect(() => {
 		if (videoElement) {
-			console.log('calling youtube API')
 			setPlaylistsTracks(videoElement.target.getPlaylist())
-			getVideosTitle(currentPlaylist, function(err, title) {
-				setPlaylistsTracks(title)
+			getVideosTitle(currentPlaylist, function(err, titles) {
+				setPlaylistsTracks(titles)
+				dispatch({ type: 'ADD_PLAYLISTS_TITLES', payload: titles })
 			})
 		}
-	}, [currentPlaylist])
+	}, [currentPlaylist, dispatch])
 
 	const _onReady = (event) => {
 		setIsPaused(true)
@@ -73,10 +76,6 @@ function Player() {
 		}
 	}
 
-	const playlistTitles = playlistTracks && playlistTracks.map((item, index) =>
-		<li key={item.position}>{ item.title } { item.position }</li>
-	)
-
     return (
 		<>
 			<div id="video-player--yt" className="video-player video-player--yt">
@@ -85,12 +84,9 @@ function Player() {
 					onReady={ _onReady }
 					onPlay={ _onPlay } />
 			</div>
-			{videoData && (
-				<p>{ videoData.title }</p>
-			)}
-			<ul className="playlist-items">
-				{playlistTitles}
-			</ul>
+			<div className="video-title">
+				{ videoData && <p>{ videoData.title }</p> }
+			</div>
 			<PlayerControls
 				togglePause={ togglePause }
 				setToNextVideo={ setToNextVideo }

@@ -13,10 +13,10 @@ function Navigation() {
 
 	return (
 		<nav className="navigation">
-			<Link to="/">Home</Link> |{" "}
-			<Link to="add">Add Playlist</Link> |{" "}
-			{!bearerToken && <Link to="login">Login</Link> }
-			{bearerToken && <button onClick={ handleLogOut }>Logout</button> }
+			<Link to="/">Home</Link> 
+			<Link to="add">Add Playlist</Link> 
+			{ !bearerToken && <Link to="login">Login</Link> }
+			{ bearerToken && <button onClick={ handleLogOut }>Logout</button> }
 		</nav>
     );
     

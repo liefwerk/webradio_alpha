@@ -7,8 +7,8 @@
 ```bash
 cd backend
 . ./venv/bin/activate
-FLASK_APP=app
-FLASK_ENV=development
+export FLASK_APP=app
+export FLASK_ENV=development
 ```
 
 ### Initialize the database and seed it

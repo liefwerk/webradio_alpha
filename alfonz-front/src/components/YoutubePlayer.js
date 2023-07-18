@@ -1,49 +1,60 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { usePlaylistContext } from '../hooks/usePlaylistContext';
 
-import { useYoutubePlayer } from "react-hook-youtube";
+import YouTube from "react-youtube";
+
+let videoElement = null
 
 function Player() {
 	const { currentPlaylist } = usePlaylistContext()
+	// const [ songTitle, setSongTitle ] = useState()
+	const [isPaused, setIsPaused] = useState(true)
 
-	const { YoutubePlayer, player } = useYoutubePlayer({
+	const togglePause = () => {
+		setIsPaused(!isPaused)
+	}
+
+	const opts = {
 		height: "390",
 		width: "640",
 		playerVars: {
 			listType: 'playlist',
 			list: currentPlaylist
-		},
-		events: {},
-	});
+		}
+	}
 
 	useEffect(() => {
-		console.log(currentPlaylist)
 
-		player.loadPlaylist({
-			list: currentPlaylist
-		})
-		return () => {
-			player.playVideo()
+		if (videoElement) {
+			console.log(isPaused)
+
+			if (isPaused) {
+				videoElement.target.pauseVideo();
+			} else {
+				videoElement.target.playVideo();
+			}
 		}
 
-	}, [currentPlaylist])
+		return () => {}
+	}, [isPaused, videoElement])
 
-	const pauseVideo = () => {
-		player.loadPlaylist({
-			list: currentPlaylist
-		})
-	}
+	const _onReady = (event) => {
+		setIsPaused(true)
+		videoElement = event;
+	};
 
     return (
 		<>
 			<div id="video-player--yt" className="video-player video-player--yt">
-				{/* <YouTube opts={opts} onReady={onReady} /> */}
-				<YoutubePlayer />
+				<YouTube
+					opts={ opts }
+					onReady={_onReady} />
 			</div>
 			<p>{ currentPlaylist }</p>
 			<div id="player-controls player-controls--yt">
-				<button onClick={ null }>Play</button>
-				<button onClick={ pauseVideo }>Pause</button>
+				<button onClick={ togglePause }>
+					{ !isPaused ? 'pause' : 'play' }
+				</button>
 			</div>
 		</>
 	)

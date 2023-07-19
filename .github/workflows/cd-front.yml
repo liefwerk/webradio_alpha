@@ -5,11 +5,11 @@ name: Alfonz Frontend CD
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ v-react ]
+    branches: [ master ]
     paths:
       # added /null just for testing purposes, so it won't trigger on install
       # just remove /null when the files are ready for CD
-        - 'alfonz-front/null/**'
+        - 'alfonz-front/**'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -30,7 +30,7 @@ jobs:
         port: 22
         script: |
           cd ~/apps/webradio_alpha
-          git pull origin v-react
+          git pull origin master
           git status
           yarn
           yarn build

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+// https://github.com/tjallingt/react-youtube
 import YouTube from "react-youtube";
 
 // hooks and context
@@ -16,6 +17,7 @@ function Player() {
 	const [playlistTracks, setPlaylistsTracks] = useState(null)
 	const [videoData, setVideoData] = useState(null)
 
+	// https://developers.google.com/youtube/iframe_api_reference
 	const opts = {
 		height: "0",
 		width: "0",
@@ -50,11 +52,35 @@ function Player() {
 	const _onReady = (event) => {
 		setIsPaused(true)
 		videoElement = event;
+
+		if (!playlistTracks) {
+			setPlaylistsTracks(videoElement.target.getPlaylist())
+			getVideosTitle(currentPlaylist, function(err, titles) {
+				setPlaylistsTracks(titles)
+				dispatch({ type: 'ADD_PLAYLISTS_TITLES', payload: titles })
+			})
+			dispatch({ type: 'ADD_CURRENT_TRACK_INDEX', payload: 1 })
+		}
 	};
 
 	const _onPlay = (event) => {
 		if (videoElement) {
 			setVideoData(videoElement.target.getVideoData())
+		}
+	}
+
+	const _onStateChange = (event) => {
+		// -1 (unstarted)
+		// 0 (ended)
+		// 1 (playing)
+		// 2 (paused)
+		// 3 (buffering)
+		// 5 (video cued)
+		if (videoElement && event.data === 1) {
+			setVideoData(videoElement.target.getVideoData())
+			
+			const index = videoElement.target.getPlaylistIndex()
+			dispatch({ type: 'ADD_CURRENT_TRACK_INDEX', payload: index + 1 })
 		}
 	}
 
@@ -82,10 +108,16 @@ function Player() {
 				<YouTube
 					opts={ opts }
 					onReady={ _onReady }
-					onPlay={ _onPlay } />
+					onPlay={ _onPlay }
+					onStateChange={ _onStateChange } />
 			</div>
 			<div className="video-title">
-				{ videoData && <span className="title">{ videoData.title }</span> }
+				{ videoData && (
+					<>
+						<h3 className="video-title__sub">PLAYING</h3>
+						<span className="title">{ videoData.title }</span>
+					</>
+				)}
 			</div>
 			<PlayerControls
 				togglePause={ togglePause }

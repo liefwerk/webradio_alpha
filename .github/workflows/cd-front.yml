@@ -33,8 +33,5 @@ jobs:
           git pull origin master
           git status
           cd ./alfonz-front
-          ls
-          node -v
-          yarn
-          yarn build
+          npm -v
           pm2 restart alfonz-front

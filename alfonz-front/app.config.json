@@ -4,7 +4,7 @@
       "name": "alfonz-front",
       "script": "npx",
       "interpreter": "none",
-      "args": "serve -p 3006 -T"
+      "args": "serve -p 3006"
     }
   ]
 }

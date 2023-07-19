@@ -18,7 +18,7 @@ def create_app(test_config=None):
 
 	# API
 	api = Api(app)
-	cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, support_credentials=True)
+	cors = CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "http://radio.natjs.fr"]}}, support_credentials=True)
 
 	# Authentication
 	auth = HTTPBasicAuth()

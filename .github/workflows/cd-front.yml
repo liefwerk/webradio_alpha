@@ -33,5 +33,5 @@ jobs:
           git pull origin master
           git status
           cd ./alfonz-front
-          npm -v
+          npm install
           pm2 restart alfonz-front

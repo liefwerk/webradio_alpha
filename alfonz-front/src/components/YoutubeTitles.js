@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 // hooks and context
 import { usePlaylistContext } from '../hooks/usePlaylistContext';
 
@@ -7,16 +5,16 @@ import { usePlaylistContext } from '../hooks/usePlaylistContext';
 function Player() {
 	const { playlistTitles } = usePlaylistContext()
 
-	const renderPlaylistTitles = playlistTitles && playlistTitles.map((item, index) =>
-		<li key={item.position} className="playlist-item">
-			<span className="playlist-item__position">{ item.position + 1 }</span>
-			<span className="playlist-item__title">{ item.title }</span>
+	const renderPlaylistTitles = playlistTitles && playlistTitles.map(track =>
+		<li key={track.position} className="playlist-track">
+			<span className="playlist-track__position">{ track.position + 1 }</span>
+			<span className="playlist-track__title">{ track.title }</span>
 		</li>
 	)
 
     return (
-		<ul className="playlist-items">
-			{renderPlaylistTitles}
+		<ul className="playlist-tracks">
+			{ renderPlaylistTitles }
 		</ul>
 	)
 }

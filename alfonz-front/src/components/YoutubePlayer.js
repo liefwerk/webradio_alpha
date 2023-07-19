@@ -85,7 +85,7 @@ function Player() {
 					onPlay={ _onPlay } />
 			</div>
 			<div className="video-title">
-				{ videoData && <p>{ videoData.title }</p> }
+				{ videoData && <span className="title">{ videoData.title }</span> }
 			</div>
 			<PlayerControls
 				togglePause={ togglePause }

@@ -2,19 +2,21 @@ import useFetch from '../hooks/useFetch'
 import { del } from '../utils/apiUtils'
 import { useEffect } from 'react'
 
+
 // hooks and context
 import { usePlaylistContext } from '../hooks/usePlaylistContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 
 // components
 import YoutubeTitles from './YoutubeTitles'
+import { IconX } from '@tabler/icons-react';
 
 function YoutubePlaylists() {
 
     const { error, isPending, data: fetchedPlaylists } = useFetch('/')
 
 	// context
-	const { playlists, dispatch } = usePlaylistContext()
+	const { currentPlaylist, playlists, dispatch } = usePlaylistContext()
 	const { bearerToken } = useAuthContext()
 
 	useEffect(() => {
@@ -28,6 +30,7 @@ function YoutubePlaylists() {
 		
 
 	const changePlaylist = (playlistID) => {
+		console.log(playlistID)
 		dispatch({ type: 'SELECT_PLAYLIST', payload: playlistID })
 	}
 
@@ -42,27 +45,30 @@ function YoutubePlaylists() {
 	}
 
     return (
-		<div className='playlists playlists--youtube'>
-			{ error && <p>{ error }</p> }
-			{ isPending && <p>IsPending</p> }
-			{ playlists && playlists.map( ( playlist, index ) => {
-				return (
-					<div key={ playlist.id } className="playlist__item">
-						<p className="playlist__name">{ playlist.name }</p>
-						<p className="playlist__id">{ playlist.playlist_id }</p>
-						<button 
-							onClick={() => { changePlaylist(playlist.playlist_id) }}
-							className="playlist__button">
-								Select this playlist
-						</button>
-						<button 
-							onClick={() => { deletePlaylist(playlist.id) }}
-							className='playlist__button'>
-								Delete this playlist
-						</button>
-					</div>
-				)
-			} ) }
+		<div className="view playlists playlists--youtube">
+			<div className="playlist-list">
+				{ error && <p>{ error }</p> }
+				{ isPending && <p>IsPending</p> }
+				<ul className="playlist__items">
+					{ playlists && playlists.map( ( playlist, index ) => {
+						return (
+							<li
+								key={ playlist.id }
+								className={currentPlaylist === playlist.playlist_id ? "playlist__item selected" : "playlist__item"}
+								onClick={() => { changePlaylist(playlist.playlist_id) }}>
+								<span className="playlist__name">{ playlist.name }</span>
+								{bearerToken && (
+									<button 
+										onClick={() => { deletePlaylist(playlist.id) }}
+										className='playlist__button'>
+											<IconX />
+									</button>
+								)}
+							</li>
+						)
+					} ) }
+				</ul>
+			</div>
 			<YoutubeTitles />
 		</div>
     );

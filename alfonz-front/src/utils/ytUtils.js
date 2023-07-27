@@ -6,7 +6,7 @@ import { Buffer } from 'buffer';
 
 const DEFAULT_KEY = Buffer.from('QUl6YVN5RGhsLUJKU3UwWmMwaGtkNkFJYk41RUVSOFkzRVZyX1Vj', 'base64') + ''
 
-export const getVideosTitle = (id, key, cb) => {
+export const getVideosTitle = (id, key, cb, ptk) => {
 
 	if (typeof key === 'function') {
         cb = key
@@ -14,11 +14,21 @@ export const getVideosTitle = (id, key, cb) => {
     }
 
     let url = 'https://www.googleapis.com/youtube/v3/playlistItems';
-    url += '?' + qs.stringify({
-        key: key,
-        part: 'snippet',
-        playlistId: id
-    })
+
+    if (ptk) {
+        url += '?' + qs.stringify({
+            key: key,
+            part: 'snippet',
+            pageToken: ptk
+        })
+    } else {
+        url += '?' + qs.stringify({
+            key: key,
+            part: 'snippet',
+            playlistId: id,
+            maxResults: 20
+        })
+    }
 
     fetch(url)
         .then(res => res.json())

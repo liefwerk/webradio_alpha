@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { getToken } from '../utils/apiUtils'
+import { getToken } from '../../utils/apiUtils'
 import { useNavigate } from "react-router-dom";
 
 // hooks and context
-import { useAuthContext } from '../hooks/useAuthContext'
+import { useAuthContext } from '../../hooks/useAuthContext'
 
 function Login() {
 	

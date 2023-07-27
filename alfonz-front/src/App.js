@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // components
-import YoutubePlayer from './components/YoutubePlayer'
-import YoutubePlaylists from './components/YoutubePlaylists'
-import AddPlaylist from './components/AddPlaylist'
+import YoutubePlayer from './components/player/YoutubePlayer'
+import YoutubePlaylists from './components/playlist/YoutubePlaylists'
+import AddPlaylist from './components/playlist/AddPlaylist'
 import Navigation from './components/Navigation'
-import Login from './components/Login'
+import Login from './components/login/Login'
 
 function App() {
 

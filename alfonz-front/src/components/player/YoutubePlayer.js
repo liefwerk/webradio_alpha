@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react'
 import YouTube from "react-youtube";
 
 // hooks and context
-import { usePlaylistContext } from '../hooks/usePlaylistContext';
-import { getVideosTitle } from '../utils/ytUtils';
+import { usePlaylistContext } from '../../hooks/usePlaylistContext';
+import { getVideosTitle } from '../../utils/ytUtils';
 
 // components
 import PlayerControls from './PlayerControls'

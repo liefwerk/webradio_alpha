@@ -163,6 +163,8 @@ iframe, object, embed {
   margin: 0;
   padding: 0;
   align-self: end;
+  max-height: 250px;
+  overflow-y: scroll;
 }
 
 .playlist-track {

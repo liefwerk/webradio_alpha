@@ -1,14 +1,14 @@
-import useFetch from '../hooks/useFetch'
-import { del } from '../utils/apiUtils'
+import useFetch from '../../hooks/useFetch'
+import { del } from '../../utils/apiUtils'
 import { useEffect } from 'react'
 
 
 // hooks and context
-import { usePlaylistContext } from '../hooks/usePlaylistContext'
-import { useAuthContext } from '../hooks/useAuthContext'
+import { usePlaylistContext } from '../../hooks/usePlaylistContext'
+import { useAuthContext } from '../../hooks/useAuthContext'
 
 // components
-import YoutubeTitles from './YoutubeTitles'
+import YoutubeTitles from '../player/YoutubeTitles'
 import { IconX } from '@tabler/icons-react';
 
 function YoutubePlaylists() {

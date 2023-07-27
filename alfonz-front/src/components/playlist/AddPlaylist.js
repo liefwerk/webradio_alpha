@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { post } from '../utils/apiUtils'
+import { post } from '../../utils/apiUtils'
 
 // hooks and context
-import { useAuthContext } from '../hooks/useAuthContext'
+import { useAuthContext } from '../../hooks/useAuthContext'
 
 function AddPlaylist() {
 	

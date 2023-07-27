@@ -1,5 +1,5 @@
 // hooks and context
-import { usePlaylistContext } from '../hooks/usePlaylistContext';
+import { usePlaylistContext } from '../../hooks/usePlaylistContext';
 
 
 function Player() {

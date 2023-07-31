@@ -29,11 +29,12 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           port: 22
           script: |
-            export PATH="$PATH=/home/liefwerk/.nvm/versions/node/v18.16.1/bin"
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            npm --help
             cd ~/apps/webradio_alpha
             git pull origin master
             git status
             cd ./alfonz-front
-            nvm current use `nvm current`
             npm install
             pm2 restart alfonz-front

@@ -20,6 +20,9 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    - name: Check nvm location
+      shell: bash -l -eo pipefail {0}
+      run: echo $NVM_DIR
     - name: Deploy using ssh
       uses: appleboy/ssh-action@master
       with:

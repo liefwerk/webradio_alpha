@@ -36,4 +36,5 @@ jobs:
             git status
             cd ./alfonz-front
             npm install
+            npm run build
             pm2 restart alfonz-front

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 // https://github.com/tjallingt/react-youtube
 import YouTube from "react-youtube";
 
@@ -10,12 +10,15 @@ import { getVideosTitle } from '../../utils/ytUtils';
 import PlayerControls from './PlayerControls'
 
 let videoElement = null
+let timer
 
 function Player() {
 	const { currentPlaylist, dispatch } = usePlaylistContext()
 	const [isPaused, setIsPaused] = useState(true)
 	const [playlistTracks, setPlaylistsTracks] = useState(null)
 	const [videoData, setVideoData] = useState(null)
+	const [videoDuration, setVideoDuration] = useState(0)
+	const timeBar = useRef(null)
 
 	// https://developers.google.com/youtube/iframe_api_reference
 	const opts = {
@@ -50,10 +53,9 @@ function Player() {
 	}, [currentPlaylist, dispatch])
 
 	const _onReady = (event) => {
-		setIsPaused(true)
 		videoElement = event;
 		dispatch({ type: 'ADD_YT_PLAYER', payload: event })
-
+		
 		if (!playlistTracks) {
 			setPlaylistsTracks(videoElement.target.getPlaylist())
 			getVideosTitle(currentPlaylist, function(err, tracks) {
@@ -67,6 +69,7 @@ function Player() {
 	const _onPlay = (event) => {
 		if (videoElement) {
 			setVideoData(videoElement.target.getVideoData())
+			setIsPaused(false)
 		}
 	}
 
@@ -77,10 +80,27 @@ function Player() {
 		// 2 (paused)
 		// 3 (buffering)
 		// 5 (video cued)
-		if (videoElement && event.data === 1) {
-			setVideoData(videoElement.target.getVideoData())
-			const index = videoElement.target.getPlaylistIndex()
-			dispatch({ type: 'ADD_CURRENT_TRACK_INDEX', payload: index + 1 })
+
+		if (videoElement) {
+
+			if (event.data === 1) {
+				setVideoData(videoElement.target.getVideoData())
+				const index = videoElement.target.getPlaylistIndex()
+				dispatch({ type: 'ADD_CURRENT_TRACK_INDEX', payload: index + 1 })
+
+				const duration = videoElement.target.getDuration()
+				setVideoDuration(duration)
+
+				clearInterval(timer)
+				timer = setInterval(() => {
+					let currentTime = Math.floor(videoElement.target.getCurrentTime())
+					timeBar.current.style.width = Math.floor((currentTime / duration) * 100) + "%"
+				}, 1000)
+			}
+
+			if (event.data === 0 || event.data === 2 || event.data === -1) {
+				clearInterval(timer)
+			}
 		}
 	}
 
@@ -102,6 +122,16 @@ function Player() {
 		}
 	}
 
+	const handleTimeJump = (e) => {
+		if (videoElement) {
+			const timebarWidth = window.innerWidth
+			const ratio = e.clientX / timebarWidth
+			const jumpToValue = Math.floor(videoDuration * ratio)
+
+			videoElement.target.seekTo(jumpToValue)
+		}
+	}
+
     return (
 		<>
 			<div id="video-player--yt" className="video-player video-player--yt">
@@ -118,6 +148,9 @@ function Player() {
 						<span className="title">{ videoData.title }</span>
 					</>
 				)}
+			</div>
+			<div className="timebar__wrapper" onClick={ handleTimeJump }>
+				<span className="timebar" ref={ timeBar }></span>
 			</div>
 			<PlayerControls
 				togglePause={ togglePause }

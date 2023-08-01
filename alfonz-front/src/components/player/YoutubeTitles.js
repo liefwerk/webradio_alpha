@@ -34,7 +34,6 @@ function YoutubeTitles({ sendTrackToCue }) {
 
     return (
 		<ul className="playlist-tracks">
-			{ currentTrackIndex }
 			{ renderPlaylistTitles }
 		</ul>
 	)

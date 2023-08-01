@@ -108,8 +108,9 @@ a, a:visited, .navigation button {
   "navigation"
   "playlists"
   "video-title"
+  "timebar"
   "player-controls";
-  grid-template-rows: 75px 1fr auto 65px;
+  grid-template-rows: 75px 1fr auto 5px 65px;
 }
 
 /* Player */
@@ -246,6 +247,20 @@ iframe, object, embed {
 .video-title__sub {
   font-size: 12px;
   margin-bottom: .2rem;
+}
+
+.timebar__wrapper {
+  grid-area: timebar;
+  position: relative;
+  width: 100%;
+  background: var(--c-light);
+  cursor: pointer;
+}
+
+.timebar {
+  background: var(--c-primary);
+  display: block;
+  height: 100%;
 }
 
 @media screen and (min-width: 760px) {

@@ -11,7 +11,7 @@ function YoutubeTitles({ sendTrackToCue }) {
 		} else if (track.title === "Deleted video") {
 			return "playlist-track deleted"
 		} else {
-			return "playlist-track"
+			return "playlist-track" 
 		}
 	}
 

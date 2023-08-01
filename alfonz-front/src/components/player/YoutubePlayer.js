@@ -42,9 +42,9 @@ function Player() {
 	useEffect(() => {
 		if (videoElement) {
 			setPlaylistsTracks(videoElement.target.getPlaylist())
-			getVideosTitle(currentPlaylist, function(err, titles) {
-				setPlaylistsTracks(titles)
-				dispatch({ type: 'ADD_PLAYLISTS_TITLES', payload: titles })
+			getVideosTitle(currentPlaylist, function(err, tracks) {
+				setPlaylistsTracks(tracks)
+				dispatch({ type: 'ADD_PLAYLISTS_TITLES', payload: tracks })
 			})
 		}
 	}, [currentPlaylist, dispatch])
@@ -52,12 +52,13 @@ function Player() {
 	const _onReady = (event) => {
 		setIsPaused(true)
 		videoElement = event;
+		dispatch({ type: 'ADD_YT_PLAYER', payload: event })
 
 		if (!playlistTracks) {
 			setPlaylistsTracks(videoElement.target.getPlaylist())
-			getVideosTitle(currentPlaylist, function(err, titles) {
-				setPlaylistsTracks(titles)
-				dispatch({ type: 'ADD_PLAYLISTS_TITLES', payload: titles })
+			getVideosTitle(currentPlaylist, function(err, tracks) {
+				setPlaylistsTracks(tracks)
+				dispatch({ type: 'ADD_PLAYLISTS_TITLES', payload: tracks })
 			})
 			dispatch({ type: 'ADD_CURRENT_TRACK_INDEX', payload: 1 })
 		}
@@ -78,7 +79,6 @@ function Player() {
 		// 5 (video cued)
 		if (videoElement && event.data === 1) {
 			setVideoData(videoElement.target.getVideoData())
-			
 			const index = videoElement.target.getPlaylistIndex()
 			dispatch({ type: 'ADD_CURRENT_TRACK_INDEX', payload: index + 1 })
 		}

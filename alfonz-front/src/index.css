@@ -1,5 +1,6 @@
 :root {
   --c-dark: #1a1a1a;
+  --c-gray: #9a9a9a;
   --c-light: #dadae3;
   --c-primary: #d53434;
   --c-primary-light: #ef5151;
@@ -172,10 +173,18 @@ iframe, object, embed {
   flex-flow: row;
   column-gap: 1rem;
   margin-bottom: .5rem;
+  font-size: .85rem;
+  cursor: pointer;
 }
 
 .playlist-track.playing {
   color: var(--c-primary-light);
+  cursor: default;
+}
+
+.playlist-track.deleted {
+  color: var(--c-gray);
+  cursor: default;
 }
 
 .playlist-track__position {}
@@ -199,6 +208,7 @@ iframe, object, embed {
   display: flex;
   column-gap: .5rem;
   height: fit-content;
+  font-size: .9rem;
 }
 
 .playlist__item:hover,
@@ -236,4 +246,14 @@ iframe, object, embed {
 .video-title__sub {
   font-size: 12px;
   margin-bottom: .2rem;
+}
+
+@media screen and (min-width: 760px) {
+  .playlist-track {
+    font-size: .95rem;
+  }
+
+  .playlist__item {
+    font-size: 1rem;
+  }
 }

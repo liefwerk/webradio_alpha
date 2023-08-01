@@ -2,7 +2,6 @@ import useFetch from '../../hooks/useFetch'
 import { del } from '../../utils/apiUtils'
 import { useEffect } from 'react'
 
-
 // hooks and context
 import { usePlaylistContext } from '../../hooks/usePlaylistContext'
 import { useAuthContext } from '../../hooks/useAuthContext'
@@ -16,7 +15,7 @@ function YoutubePlaylists() {
     const { error, isPending, data: fetchedPlaylists } = useFetch('/')
 
 	// context
-	const { currentPlaylist, playlists, dispatch } = usePlaylistContext()
+	const { currentPlaylist, playlists, YTPlayer, dispatch } = usePlaylistContext()
 	const { bearerToken } = useAuthContext()
 
 	useEffect(() => {
@@ -44,6 +43,11 @@ function YoutubePlaylists() {
 
 	}
 
+	const sendTrackToCue = (trackIndex) => {
+		console.log(trackIndex)
+		YTPlayer.target.playVideoAt(trackIndex)
+	}
+
     return (
 		<div className="view playlists playlists--youtube">
 			<div className="playlist-list">
@@ -69,7 +73,7 @@ function YoutubePlaylists() {
 					} ) }
 				</ul>
 			</div>
-			<YoutubeTitles />
+			<YoutubeTitles sendTrackToCue={ sendTrackToCue } />
 		</div>
     );
     

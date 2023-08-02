@@ -2,7 +2,7 @@ aniso8601==8.0.0
 blinker==1.5
 cffi==1.15.1
 click==7.1.2
-cryptography==38.0.1
+cryptography==41.0.3
 dnspython==2.2.1
 email-validator==1.2.1
 Flask==1.1.2

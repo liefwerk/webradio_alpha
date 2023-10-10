@@ -29,7 +29,6 @@ function YoutubePlaylists() {
 		
 
 	const changePlaylist = (playlistID) => {
-		console.log(playlistID)
 		dispatch({ type: 'SELECT_PLAYLIST', payload: playlistID })
 	}
 
@@ -44,7 +43,6 @@ function YoutubePlaylists() {
 	}
 
 	const sendTrackToCue = (trackIndex) => {
-		console.log(trackIndex)
 		YTPlayer.target.playVideoAt(trackIndex)
 	}
 

@@ -28,9 +28,6 @@ export const getToken = (URL, body) => {
 export const post = (URL, body, token) => {
 
 	let fullURL = baseURL + URL
-
-	console.log({ ...headers, 'Authorization': `${token}` })
-	
 	return new Promise((resolve, reject) => {
 
 		fetch(fullURL, { 

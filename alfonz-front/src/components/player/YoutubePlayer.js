@@ -32,8 +32,6 @@ function Player() {
 
 	useEffect(() => {
 		if (videoElement) {
-			console.log(videoElement.target.getCurrentTime())
-
 			if (isPaused) {
 				videoElement.target.pauseVideo();
 			} else {
@@ -45,9 +43,11 @@ function Player() {
 	useEffect(() => {
 		if (videoElement) {
 			setPlaylistsTracks(videoElement.target.getPlaylist())
-			getVideosTitle(currentPlaylist, function(err, tracks) {
-				setPlaylistsTracks(tracks)
-				dispatch({ type: 'ADD_PLAYLISTS_TITLES', payload: tracks })
+			getVideosTitle(currentPlaylist, function(err, response) {
+				setPlaylistsTracks(response.playlistItems)
+				dispatch({ type: 'ADD_PLAYLISTS_TITLES', payload: response.playlistItems })
+				dispatch({ type: 'EDIT_NEXT_PAGE_TOKEN', payload: response.nextPageToken })
+				dispatch({ type: 'ADD_PLAYLISTS_TITLE_TOTAL', payload: response.totalResults })
 			})
 		}
 	}, [currentPlaylist, dispatch])
@@ -58,9 +58,12 @@ function Player() {
 		
 		if (!playlistTracks) {
 			setPlaylistsTracks(videoElement.target.getPlaylist())
-			getVideosTitle(currentPlaylist, function(err, tracks) {
-				setPlaylistsTracks(tracks)
-				dispatch({ type: 'ADD_PLAYLISTS_TITLES', payload: tracks })
+			getVideosTitle(currentPlaylist, function(err, response) {
+				setPlaylistsTracks(response.playlistItems)
+				dispatch({ type: 'ADD_PLAYLISTS_TITLES', payload: response.playlistItems })
+				dispatch({ type: 'EDIT_NEXT_PAGE_TOKEN', payload: response.nextPageToken })
+				dispatch({ type: 'ADD_PLAYLISTS_TITLE_TOTAL', payload: response.totalResults })
+				
 			})
 			dispatch({ type: 'ADD_CURRENT_TRACK_INDEX', payload: 1 })
 		}
@@ -126,7 +129,7 @@ function Player() {
 		if (videoElement) {
 			const timebarWidth = window.innerWidth
 			const ratio = e.clientX / timebarWidth
-			const jumpToValue = Math.floor(videoDuration * ratio)
+			const jumpToValue = videoDuration * ratio
 
 			videoElement.target.seekTo(jumpToValue)
 		}

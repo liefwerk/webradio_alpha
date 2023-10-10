@@ -1,5 +1,5 @@
 import qs from 'query-string'
-import { Buffer } from 'buffer';
+import { Buffer } from 'buffer'
 
 // Documentation:
 // https://developers.google.com/youtube/v3/docs/playlistItems/list
@@ -19,7 +19,9 @@ export const getVideosTitle = (id, key, cb, ptk) => {
         url += '?' + qs.stringify({
             key: key,
             part: 'snippet',
-            pageToken: ptk
+            pageToken: ptk,
+            playlistId: id,
+            maxResults: 20
         })
     } else {
         url += '?' + qs.stringify({
@@ -33,13 +35,19 @@ export const getVideosTitle = (id, key, cb, ptk) => {
     fetch(url)
         .then(res => res.json())
         .then((res) => {
-			
+
 			let playlistItems = res.items.map((item) => {
 				return { title: item.snippet.title, position: item.snippet.position }
 			})
 
+            let response = {
+                nextPageToken: res.nextPageToken,
+                playlistItems,
+                totalResults: res.pageInfo.totalResults
+            }
+
             if (playlistItems !== undefined)
-    			cb(null, playlistItems)
+    			cb(null, response)
             else
                 throw new Error("There is no items in the playlist.")
 		})

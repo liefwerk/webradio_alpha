@@ -1,20 +1,33 @@
+import { useCallback, useEffect } from 'react';
 // hooks and context
 import { usePlaylistContext } from '../../hooks/usePlaylistContext';
-import { useEffect } from 'react';
+import { getVideosTitle } from '../../utils/ytUtils';
 
 function YoutubeTitles({ sendTrackToCue }) {
-	const { playlistTitles, currentTrackIndex } = usePlaylistContext()
+	const { playlistTitles,
+		currentTrackIndex,
+		currentPlaylist,
+		nextPageToken,
+		playlistTotal,
+		dispatch } = usePlaylistContext()
 
-	const handleIntersect = (entries, observer) => {
-
+	const handleIntersect = useCallback((entries, observer) => {
 		entries.forEach((entry) => {
 			if (entry.isIntersecting) {
-				// can start loading new titles
-				console.log("load new titles")
-				observer.unobserve(entry.target);
+				if (playlistTitles.length >= playlistTotal) {
+					observer.unobserve(entry.target);
+				} else {
+					getVideosTitle(currentPlaylist, function(err, response) {
+						console.log(response)
+						dispatch({ type: 'PUSH_PLAYLISTS_TITLES', payload: response.playlistItems })
+						dispatch({ type: 'EDIT_NEXT_PAGE_TOKEN', payload: response.nextPageToken })
+						dispatch({ type: 'ADD_PLAYLISTS_TITLE_TOTAL', payload: response.totalResults })
+					}, () => {}, nextPageToken)
+					observer.unobserve(entry.target);
+				}
 			}
 		})
-	}
+	}, [nextPageToken, currentPlaylist, playlistTitles, playlistTotal, dispatch])
 
 	useEffect(() => {
 		const playlistsList = document.querySelector(".playlist-tracks").children
@@ -36,7 +49,7 @@ function YoutubeTitles({ sendTrackToCue }) {
 			}
 		}
 
-	}, [playlistTitles])
+	}, [playlistTitles, handleIntersect])
 		
 	const printPlaylistTrackClasses = (currentTrackIndex, track) => {
 		if (currentTrackIndex === track.position + 1) {

@@ -1,9 +1,42 @@
 // hooks and context
 import { usePlaylistContext } from '../../hooks/usePlaylistContext';
+import { useEffect } from 'react';
 
 function YoutubeTitles({ sendTrackToCue }) {
 	const { playlistTitles, currentTrackIndex } = usePlaylistContext()
 
+	const handleIntersect = (entries, observer) => {
+
+		entries.forEach((entry) => {
+			if (entry.isIntersecting) {
+				// can start loading new titles
+				console.log("load new titles")
+				observer.unobserve(entry.target);
+			}
+		})
+	}
+
+	useEffect(() => {
+		const playlistsList = document.querySelector(".playlist-tracks").children
+		if (playlistsList.length !== 0) {
+			let lastElement = playlistsList[playlistsList.length - 1]
+			let observer
+
+			let options = {
+				root: document.querySelector(".playlist-tracks"),
+				rootMargin: "0px",
+				threshold: 1.0,
+			}
+	
+			observer = new IntersectionObserver(handleIntersect, options);
+			observer.observe(lastElement);
+			
+			return () => {
+				observer.disconnect()
+			}
+		}
+
+	}, [playlistTitles])
 		
 	const printPlaylistTrackClasses = (currentTrackIndex, track) => {
 		if (currentTrackIndex === track.position + 1) {

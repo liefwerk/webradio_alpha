@@ -13,7 +13,7 @@ function YoutubeTitles({ sendTrackToCue }) {
 
 	const handleIntersect = useCallback((entries, observer) => {
 		entries.forEach((entry) => {
-			if (entry.isIntersecting) {
+			if (entry.isIntersecting && currentPlaylist) {
 				if (playlistTitles.length >= playlistTotal) {
 					observer.unobserve(entry.target);
 				} else {
@@ -52,7 +52,7 @@ function YoutubeTitles({ sendTrackToCue }) {
 	}, [playlistTitles, handleIntersect])
 		
 	const printPlaylistTrackClasses = (currentTrackIndex, track) => {
-		if (currentTrackIndex === track.position + 1) {
+		if (currentTrackIndex === track.position + 1 && currentPlaylist === track.playlistId) {
 			return "playlist-track playing"
 		} else if (track.title === "Deleted video") {
 			return "playlist-track deleted"
@@ -65,6 +65,7 @@ function YoutubeTitles({ sendTrackToCue }) {
 		if (currentTrackIndex === track.position + 1 || track.title === "Deleted video")
 			return
 		
+		console.log("called sendTrackToCue", trackIndex)
 		sendTrackToCue(trackIndex)
 	}
 

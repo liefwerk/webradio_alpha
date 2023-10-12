@@ -7,7 +7,7 @@ import { usePlaylistContext } from '../../hooks/usePlaylistContext'
 import { useAuthContext } from '../../hooks/useAuthContext'
 
 // components
-import YoutubeTitles from '../player/YoutubeTitles'
+import YoutubeTitles from './YoutubeTitles'
 import { IconX } from '@tabler/icons-react';
 
 function YoutubePlaylists() {
@@ -21,7 +21,6 @@ function YoutubePlaylists() {
 	useEffect(() => {
 		if (fetchedPlaylists){
 			dispatch({ type: 'ADD_PLAYLISTS', payload: fetchedPlaylists })
-			dispatch({ type: 'SELECT_PLAYLIST', payload: fetchedPlaylists[0].playlist_id })
 		}
 		
 		return () => {}
@@ -29,6 +28,7 @@ function YoutubePlaylists() {
 		
 
 	const changePlaylist = (playlistID) => {
+		console.log("called changePlaylist", playlistID)
 		dispatch({ type: 'SELECT_PLAYLIST', payload: playlistID })
 	}
 

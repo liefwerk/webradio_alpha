@@ -13,7 +13,7 @@ let videoElement = null
 let timer
 
 function Player() {
-	const { currentPlaylist, dispatch } = usePlaylistContext()
+	const { currentPlaylist, currentTrackIndex, YTPlayer, dispatch } = usePlaylistContext()
 	const [isPaused, setIsPaused] = useState(true)
 	const [playlistTracks, setPlaylistsTracks] = useState(null)
 	const [videoData, setVideoData] = useState(null)
@@ -41,7 +41,7 @@ function Player() {
 	}, [isPaused])
 
 	useEffect(() => {
-		if (videoElement) {
+		if (videoElement && currentPlaylist) {
 			setPlaylistsTracks(videoElement.target.getPlaylist())
 			getVideosTitle(currentPlaylist, function(err, response) {
 				setPlaylistsTracks(response.playlistItems)
@@ -50,13 +50,17 @@ function Player() {
 				dispatch({ type: 'ADD_PLAYLISTS_TITLE_TOTAL', payload: response.totalResults })
 			})
 		}
-	}, [currentPlaylist, dispatch])
+	}, [currentPlaylist, YTPlayer, dispatch])
 
 	const _onReady = (event) => {
 		videoElement = event;
 		dispatch({ type: 'ADD_YT_PLAYER', payload: event })
 		
-		if (!playlistTracks) {
+		if (event.target.getDuration() <= 0) {
+            console.log('Video likely to be removed');
+        }
+
+		if (!playlistTracks && currentPlaylist) {
 			setPlaylistsTracks(videoElement.target.getPlaylist())
 			getVideosTitle(currentPlaylist, function(err, response) {
 				setPlaylistsTracks(response.playlistItems)
@@ -83,6 +87,7 @@ function Player() {
 		// 2 (paused)
 		// 3 (buffering)
 		// 5 (video cued)
+		console.log(event.data)
 
 		if (videoElement) {
 
@@ -105,6 +110,15 @@ function Player() {
 				clearInterval(timer)
 			}
 		}
+	}
+
+	const _onError = (event) => {
+		console.log(event)
+		if (event.data && videoElement) {
+			// setToNextVideo()
+			console.log(videoElement.target)
+			// videoElement.target.playVideoAt(currentTrackIndex + 10)
+		} // has error
 	}
 
 	const togglePause = () => {
@@ -140,6 +154,7 @@ function Player() {
 			<div id="video-player--yt" className="video-player video-player--yt">
 				<YouTube
 					opts={ opts }
+					onError={ _onError }
 					onReady={ _onReady }
 					onPlay={ _onPlay }
 					onStateChange={ _onStateChange } />

@@ -37,7 +37,11 @@ export const getVideosTitle = (id, key, cb, ptk) => {
         .then((res) => {
 
 			let playlistItems = res.items.map((item) => {
-				return { title: item.snippet.title, position: item.snippet.position }
+				return { 
+                    title: item.snippet.title,
+                    position: item.snippet.position,
+                    playlistId: id 
+                }
 			})
 
             let response = {

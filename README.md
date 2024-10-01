@@ -7,8 +7,8 @@
 ```bash
 cd backend
 . ./venv/bin/activate
-FLASK_APP=app
-FLASK_ENV=development
+export FLASK_APP=app
+export FLASK_ENV=development
 ```
 
 ### Initialize the database and seed it
@@ -36,6 +36,16 @@ waitress-serve --p 8145 --call 'app:create_app' > log.txt 2>&1 &
 ### Kill the prod server
 
 ```bash
-ps -aux
+lsof -i tcp
 kill <PID> ## Find the PID related to the background process
+```
+
+### Run the prod react front
+
+```bash
+## If the server isn't start yet
+pm2 serve build/ 3006 --name "alfonz-front" --spa
+
+## If the server is already running
+pm2 restart alfonz-front
 ```

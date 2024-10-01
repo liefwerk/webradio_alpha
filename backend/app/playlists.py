@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 
 from .db import get_db
+from .auth import login_required
 
 blueprint = Blueprint("playlists", __name__, url_prefix="/playlists")
 
@@ -32,6 +33,7 @@ def get_playlist(user_id):
 
 
 @blueprint.route("/", methods=["POST"])
+@login_required
 def create_playlist():
     data = request.json
 
@@ -57,12 +59,33 @@ def create_playlist():
     return jsonify({"id": cursor.lastrowid}), 201
 
 
-@blueprint.route("/<int:user_id>/", methods=["PUT"])
-def update_user(user_id):
-    return {"action": f"update user {user_id}"}
+@blueprint.route("/update/<int:id>/", methods=["PUT"])
+@login_required
+def update_playlist(id):
+    data = request.json
+
+    name = data.get("name")
+    playlist_id = data.get("playlist_id")
+    
+    # fields validation array
+    fields = ["name", "playlist_id"]
+
+    db = get_db()
+
+    sql_query = "UPDATE playlist SET name=?, playlist_id=? WHERE id=?"
+    sql_values = (name, playlist_id, id)
+
+    try:
+        cursor = db.execute(sql_query, sql_values)
+        db.commit()
+    except db.IntegrityError:
+        return {"error": "There has been an error with the values you provided"}, 406
+
+    return jsonify({"update_playlist": "hello world"}), 200
 
 
-@blueprint.route("/yt/<int:playlist_id>/", methods=["DELETE"])
+@blueprint.route("/del/<int:playlist_id>/", methods=["DELETE"])
+@login_required
 def delete_playlist(playlist_id):
     
     db = get_db()

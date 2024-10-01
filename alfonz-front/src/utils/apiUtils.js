@@ -1,11 +1,10 @@
-const baseURL = 'http://127.0.0.1:5000/playlists'
+const baseURL = process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:5000' : 'http://play.natjs.fr'
 
 const headers = {
-	'Content-Type': 'application/json',
-	'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MX0.cxWxLJd70YK20JoUohi4bVS1VY2rF01ha2bTzbveJ1I'
+	'Content-Type': 'application/json'
 }
 
-export const post = (URL, body) => {
+export const getToken = (URL, body) => {
 
 	let fullURL = baseURL + URL
 	
@@ -16,10 +15,37 @@ export const post = (URL, body) => {
 			headers: headers,
 			body: JSON.stringify(body)
 		})
+		.then(res => res.json())
+		.then(res => {
+			if (!res.error)
+				resolve(res)
+			else
+				reject(res)
+		})
 	})
 }
 
-export const del = (URL) => {
+export const post = (URL, body, token) => {
+
+	let fullURL = baseURL + URL
+	return new Promise((resolve, reject) => {
+
+		fetch(fullURL, { 
+			method: 'POST',
+			headers: { ...headers, 'Authorization': `${token}` },
+			body: JSON.stringify(body)
+		})
+		.then(res => res.json())
+		.then(res => {
+			if (!res.error)
+				resolve(res)
+			else
+				reject(res)
+		})
+	})
+}
+
+export const del = (URL, token) => {
 
 	let fullURL = baseURL + URL
 	
@@ -27,7 +53,15 @@ export const del = (URL) => {
 	
 		fetch(fullURL, { 
 			method: 'DELETE',
-			headers: headers
+			headers: { ...headers, 'Authorization': `${token}` },
 		})
+		.then(res => res.json())
+		.then(res => {
+			if (!res.error)
+				resolve(res)
+			else
+				reject(res)
+		})
+
 	})
 }

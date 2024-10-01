@@ -5,11 +5,11 @@ name: Alfonz Frontend CD
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ v-react ]
+    branches: [ master ]
     paths:
       # added /null just for testing purposes, so it won't trigger on install
       # just remove /null when the files are ready for CD
-        - 'alfonz-front/null/**'
+        - 'alfonz-front/**'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -20,18 +20,19 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Deploy using ssh
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.PRIVATE_KEY }}
-        passphrase: ${{ secrets.PASSPHRASE }}
-        port: 22
-        script: |
-          cd ~/apps/webradio_alpha
-          git pull origin v-react
-          git status
-          yarn
-          yarn build
-          pm2 restart alfonz-front
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          port: 22
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            cd ~/apps/webradio_alpha
+            git pull origin master
+            git status
+            cd ./alfonz-front
+            pm2 restart alfonz-front

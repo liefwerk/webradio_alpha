@@ -9,14 +9,14 @@ const useFetch = (url, method, body) => {
 	useEffect(() => {
 		const abortCont = new AbortController();
 		const baseURL = process.env.NODE_ENV === "development" ? "http://127.0.0.1:5000/playlists" : "http://play.natjs.fr/playlists";
+		console.log(process.env.NODE_ENV)
 
 		let fullUrl = baseURL + url
 		
 		fetch(fullUrl, { 
 			method: method,
 			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MX0.cxWxLJd70YK20JoUohi4bVS1VY2rF01ha2bTzbveJ1I'
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(body)
 		},
@@ -25,7 +25,6 @@ const useFetch = (url, method, body) => {
 				if (!res.ok) { // error coming back from server
 					throw Error('could not fetch the data for that resource');
 				} 
-				console.log('fetched');
 				return res.json();
 			})
 			.then(data => {

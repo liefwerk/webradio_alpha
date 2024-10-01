@@ -5,7 +5,7 @@ name: Alfonz Backend CD
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ v-react ]
+    branches: [ master ]
     paths:
       # added /null just for testing purposes, so it won't trigger on install
       # just remove /null when the files are ready for CD
@@ -30,7 +30,7 @@ jobs:
         port: 22
         script: |
           cd ~/apps/webradio_alpha
-          git pull origin v-react
+          git pull origin master
           git status
           cd backend
           source venv/bin/activate

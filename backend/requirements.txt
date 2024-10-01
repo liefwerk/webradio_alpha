@@ -3,7 +3,7 @@ blinker==1.5
 cffi==1.15.1
 click==7.1.2
 cryptography==43.0.1
-dnspython==2.2.1
+dnspython==2.6.1
 email-validator==1.2.1
 Flask==2.2.5
 Flask-Cors==4.0.2

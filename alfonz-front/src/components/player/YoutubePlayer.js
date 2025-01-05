@@ -22,8 +22,8 @@ function Player() {
 
 	// https://developers.google.com/youtube/iframe_api_reference
 	const opts = {
-		height: "0",
-		width: "0",
+		height: "100%",
+		width: "100%",
 		playerVars: {
 			listType: 'playlist',
 			list: currentPlaylist

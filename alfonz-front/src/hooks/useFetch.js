@@ -8,7 +8,7 @@ const useFetch = (url, method, body) => {
 
 	useEffect(() => {
 		const abortCont = new AbortController();
-		const baseURL = process.env.NODE_ENV === "development" ? "http://127.0.0.1:5000/playlists" : "http://play.natjs.fr/playlists";
+		const baseURL = process.env.NODE_ENV === "development" ? "http://127.0.0.1:5000/playlists" : "https://play.natjs.fr/playlists";
 		console.log(process.env.NODE_ENV)
 
 		let fullUrl = baseURL + url

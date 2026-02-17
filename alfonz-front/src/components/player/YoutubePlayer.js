@@ -4,7 +4,6 @@ import YouTube from "react-youtube";
 
 // hooks and context
 import { usePlaylistContext } from '../../hooks/usePlaylistContext';
-import { getVideosTitle } from '../../utils/ytUtils';
 
 // components
 import PlayerControls from './PlayerControls'
@@ -13,9 +12,8 @@ let videoElement = null
 let timer
 
 function Player() {
-	const { currentPlaylist, currentTrackIndex, YTPlayer, dispatch } = usePlaylistContext()
+	const { currentPlaylist, YTPlayer, playlistTitles, dispatch, trackSwitchInProgressRef, pendingCueTrack, isCuingTrack } = usePlaylistContext()
 	const [isPaused, setIsPaused] = useState(true)
-	const [playlistTracks, setPlaylistsTracks] = useState(null)
 	const [videoData, setVideoData] = useState(null)
 	const [videoDuration, setVideoDuration] = useState(0)
 	const timeBar = useRef(null)
@@ -40,36 +38,47 @@ function Player() {
 		}
 	}, [isPaused])
 
-	useEffect(() => {
-		if (videoElement && currentPlaylist) {
-			setPlaylistsTracks(videoElement.target.getPlaylist())
-			getVideosTitle(currentPlaylist, function(err, response) {
-				setPlaylistsTracks(response.playlistItems)
-				dispatch({ type: 'ADD_PLAYLISTS_TITLES', payload: response.playlistItems })
-				dispatch({ type: 'EDIT_NEXT_PAGE_TOKEN', payload: response.nextPageToken })
-				dispatch({ type: 'ADD_PLAYLISTS_TITLE_TOTAL', payload: response.totalResults })
-			})
-		}
-	}, [currentPlaylist, YTPlayer, dispatch])
-
 	const _onReady = (event) => {
-		videoElement = event;
+		videoElement = event
 		dispatch({ type: 'ADD_YT_PLAYER', payload: event })
-		
-		if (event.target.getDuration() <= 0) {
-            console.log('Video likely to be removed');
-        }
 
-		if (!playlistTracks && currentPlaylist) {
-			setPlaylistsTracks(videoElement.target.getPlaylist())
-			getVideosTitle(currentPlaylist, function(err, response) {
-				setPlaylistsTracks(response.playlistItems)
-				dispatch({ type: 'ADD_PLAYLISTS_TITLES', payload: response.playlistItems })
-				dispatch({ type: 'EDIT_NEXT_PAGE_TOKEN', payload: response.nextPageToken })
-				dispatch({ type: 'ADD_PLAYLISTS_TITLE_TOTAL', payload: response.totalResults })
-				
-			})
-			dispatch({ type: 'ADD_CURRENT_TRACK_INDEX', payload: 1 })
+		if (!currentPlaylist) return
+
+		// Cue and play pending track when we've just switched playlist (defer so playlist is ready)
+		if (pendingCueTrack && pendingCueTrack.playlistId === currentPlaylist) {
+			if (trackSwitchInProgressRef) trackSwitchInProgressRef.current = true
+			const target = event.target
+			const position = typeof pendingCueTrack.position === 'number' ? pendingCueTrack.position : 0
+			const videoId = pendingCueTrack.videoId
+			const cueAndPlay = (retryCount = 0) => {
+				try {
+					if (!target || typeof target.getPlaylist !== 'function') return
+					const playerPlaylist = target.getPlaylist()
+					const playlistReady = Array.isArray(playerPlaylist) && playerPlaylist.length > 0
+					if (!playlistReady && retryCount < 3) {
+						setTimeout(() => cueAndPlay(retryCount + 1), 200)
+						return
+					}
+					if (playlistReady && videoId) {
+						const idx = playerPlaylist.indexOf(videoId)
+						if (idx !== -1) {
+							target.playVideoAt(idx)
+						} else {
+							target.playVideoAt(position)
+						}
+					} else {
+						target.playVideoAt(position)
+					}
+					if (typeof target.playVideo === 'function') target.playVideo()
+				} catch (err) {
+					if (retryCount < 3) setTimeout(() => cueAndPlay(retryCount + 1), 200)
+					else {
+						dispatch({ type: 'SET_CUING_TRACK', payload: false })
+						console.warn('Cue track failed:', err)
+					}
+				}
+			}
+			setTimeout(() => cueAndPlay(0), 400)
 		}
 	};
 
@@ -87,14 +96,22 @@ function Player() {
 		// 2 (paused)
 		// 3 (buffering)
 		// 5 (video cued)
-		console.log(event.data)
+		// console.log(event.data)
 
 		if (videoElement) {
 
 			if (event.data === 1) {
-				setVideoData(videoElement.target.getVideoData())
-				const index = videoElement.target.getPlaylistIndex()
-				dispatch({ type: 'ADD_CURRENT_TRACK_INDEX', payload: index + 1 })
+				if (trackSwitchInProgressRef) trackSwitchInProgressRef.current = false
+				dispatch({ type: 'CLEAR_PENDING_CUE' })
+				dispatch({ type: 'SET_CUING_TRACK', payload: false })
+				setIsPaused(false)
+				const videoData = videoElement.target.getVideoData()
+				setVideoData(videoData)
+				// Use API position for highlighting (playlist list includes private/deleted; player index does not)
+				const videoId = videoData?.video_id
+				const track = playlistTitles?.find((t) => t.videoId === videoId)
+				const displayIndex = track != null ? track.position + 1 : videoElement.target.getPlaylistIndex() + 1
+				dispatch({ type: 'ADD_CURRENT_TRACK_INDEX', payload: displayIndex })
 
 				const duration = videoElement.target.getDuration()
 				setVideoDuration(duration)
@@ -106,8 +123,17 @@ function Player() {
 				}, 1000)
 			}
 
+			if (event.data === 0 || event.data === 5) {
+				// Ended or cued: clear track-switch flag so we don't get stuck
+				if (trackSwitchInProgressRef) trackSwitchInProgressRef.current = false
+			}
+
 			if (event.data === 0 || event.data === 2 || event.data === -1) {
 				clearInterval(timer)
+				// Don't treat "paused" as user pause when we're switching to another track (playVideoAt)
+				if (!trackSwitchInProgressRef?.current) {
+					setIsPaused(true)
+				}
 			}
 		}
 	}
@@ -151,14 +177,17 @@ function Player() {
 
     return (
 		<>
-			<div id="video-player--yt" className="video-player video-player--yt">
-				<YouTube
-					opts={ opts }
-					onError={ _onError }
-					onReady={ _onReady }
-					onPlay={ _onPlay }
-					onStateChange={ _onStateChange } />
-			</div>
+			{ currentPlaylist && (
+				<div id="video-player--yt" className="video-player video-player--yt">
+					<YouTube
+						key={ currentPlaylist }
+						opts={ opts }
+						onError={ _onError }
+						onReady={ _onReady }
+						onPlay={ _onPlay }
+						onStateChange={ _onStateChange } />
+				</div>
+			) }
 			<div className="video-title">
 				{ videoData && (
 					<>
@@ -174,7 +203,8 @@ function Player() {
 				togglePause={ togglePause }
 				setToNextVideo={ setToNextVideo }
 				setToPreviousVideo={ setToPreviousVideo }
-				isPaused={ isPaused } />
+				isPaused={ isPaused }
+				isCuingTrack={ isCuingTrack } />
 		</>
 	)
 }

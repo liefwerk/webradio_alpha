@@ -43,22 +43,25 @@ function Login() {
 	}
 
     return (
-		<form className='login' onSubmit={ handleLogin }>
-			<label>
-				<input
-					value={ username }
-					onChange={ (e) => handleChangeUsername(e.target.value) }
-					placeholder="Your username" 
-					type="text" />
-			</label>
-			<label>
-				<input
-					onChange={ (e) => handleChangePassword(e.target.value) }
-					placeholder="************" 
-					type="password" />
-			</label>
-			<button type="">Login</button>
-		</form>
+		<div className="view">
+			<h1>Login</h1>	
+			<form className='login' onSubmit={ handleLogin }>
+				<label>
+					<input
+						value={ username }
+						onChange={ (e) => handleChangeUsername(e.target.value) }
+						placeholder="Your username" 
+						type="text" />
+				</label>
+				<label>
+					<input
+						onChange={ (e) => handleChangePassword(e.target.value) }
+						placeholder="************" 
+						type="password" />
+				</label>
+				<button type="">Login</button>
+			</form>
+		</div>
     );
     
 }

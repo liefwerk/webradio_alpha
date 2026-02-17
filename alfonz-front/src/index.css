@@ -113,6 +113,44 @@ a, a:visited, .navigation button {
   grid-template-rows: 75px 1fr auto 5px 65px;
 }
 
+/* Hide player area when no playlist selected */
+.App--player-hidden {
+  grid-template-rows: 75px 1fr 0 0 0;
+}
+
+.App--player-hidden .video-title,
+.App--player-hidden .timebar__wrapper,
+.App--player-hidden .player-controls {
+  overflow: hidden;
+  opacity: 0;
+  min-height: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+  transform: translate3d(0, 100%, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Slide-up animation when player appears */
+.App--player-visible .video-title,
+.App--player-visible .timebar__wrapper,
+.App--player-visible .player-controls {
+  animation: player-slide-up 0.35s ease-out forwards;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+@keyframes player-slide-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 /* Player */
 iframe, object, embed {
   max-width: 100%;
@@ -150,6 +188,20 @@ iframe, object, embed {
 
 .view {
   padding: 0 1rem;
+}
+
+.add-playlist__message {
+  margin: 0 0 1rem;
+  padding: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.add-playlist__message--success {
+  color: #6b9b6b;
+}
+
+.add-playlist__message--error {
+  color: var(--c-primary);
 }
 
 .view.playlists {
@@ -261,6 +313,7 @@ iframe, object, embed {
   background: var(--c-primary);
   display: block;
   height: 100%;
+  width: 0;
 }
 
 @media screen and (min-width: 760px) {

@@ -5,15 +5,16 @@ import { post } from '../../utils/apiUtils'
 import { useAuthContext } from '../../hooks/useAuthContext'
 
 function AddPlaylist() {
-	
+
 	const [name, setName] = useState('')
 	const [playlistID, setPlaylistID] = useState('')
+	const [message, setMessage] = useState(null) // { type: 'success' | 'error', text: string }
 
-	// context
 	const { bearerToken } = useAuthContext()
-	
+
 	const handleAddPlaylist = (e) => {
 		e.preventDefault()
+		setMessage(null)
 
 		const body = {
 			"name": name,
@@ -22,40 +23,43 @@ function AddPlaylist() {
 		}
 
 		post('/playlists/', body, bearerToken)
-			.then( res => {
-				console.log(res)
-			} )
-			.catch( err => console.log('error', err) )
-
+			.then(() => {
+				setMessage({ type: 'success', text: 'Playlist added successfully.' })
+				setName('')
+				setPlaylistID('')
+			})
+			.catch((err) => {
+				const text = err?.error || err?.message || 'Failed to add playlist.'
+				setMessage({ type: 'error', text })
+			})
 	}
 
-	const handleChangeID = (value) => {
-		setPlaylistID(value);
-	}
-
-	const handleChangeName = (value) => {
-		setName(value);
-	}
-
-    return (
-		<form className='add-playlist' onSubmit={ handleAddPlaylist }>
-			<label>
-				<input
-					// value={ data.name }
-					onChange={ (e) => handleChangeName(e.target.value) }
-					placeholder="Name of the playlist" 
-					type="text" />
-			</label>
-			<label>
-				<input
-					// value={ data.playlistID }
-					onChange={ (e) => handleChangeID(e.target.value) }
-					placeholder="ID for the playlist" 
-					type="text" />
-			</label>
-			<button type="">Add playlist</button>
-		</form>
-    );
+	return (
+		<div className="view">
+			{ message && (
+				<p className={ message.type === 'success' ? 'add-playlist__message add-playlist__message--success' : 'add-playlist__message add-playlist__message--error' }>
+					{ message.text }
+				</p>
+			) }
+			<form className='add-playlist' onSubmit={ handleAddPlaylist }>
+				<label>
+					<input
+						value={ name }
+						onChange={ (e) => setName(e.target.value) }
+						placeholder="Name of the playlist"
+						type="text" />
+				</label>
+				<label>
+					<input
+						value={ playlistID }
+						onChange={ (e) => setPlaylistID(e.target.value) }
+						placeholder="ID for the playlist"
+						type="text" />
+				</label>
+				<button type="submit">Add playlist</button>
+			</form>
+		</div>
+	);
     
 }
 

@@ -8,7 +8,7 @@
 cd backend
 . ./venv/bin/activate
 export FLASK_APP=app
-export FLASK_ENV=development
+export FLASK_DEBUG=True
 ```
 
 ### Initialize the database and seed it

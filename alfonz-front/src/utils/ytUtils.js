@@ -40,7 +40,8 @@ export const getVideosTitle = (id, key, cb, ptk) => {
 				return { 
                     title: item.snippet.title,
                     position: item.snippet.position,
-                    playlistId: id 
+                    playlistId: id,
+                    videoId: item.snippet.resourceId?.videoId ?? null
                 }
 			})
 

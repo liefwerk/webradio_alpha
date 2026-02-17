@@ -1,11 +1,22 @@
-import { createContext, useReducer } from 'react'
+import { createContext, useReducer, useRef } from 'react'
 
 export const PlaylistContext = createContext()
 
 export const playlistReducer = (state, action) => {
 	switch (action.type) {
 		case 'SELECT_PLAYLIST':
-			return { ...state, currentPlaylist: action.payload }
+			return { ...state, selectedPlaylist: action.payload }
+		case 'CUE_TRACK':
+			return {
+				...state,
+				currentPlaylist: action.payload.playlistId,
+				currentTrackIndex: null,
+				pendingCueTrack: { playlistId: action.payload.playlistId, videoId: action.payload.videoId, position: action.payload.position }
+			}
+		case 'CLEAR_PENDING_CUE':
+			return { ...state, pendingCueTrack: null }
+		case 'SET_CUING_TRACK':
+			return { ...state, isCuingTrack: action.payload }
 		case 'ADD_PLAYLISTS':
 			return { ...state, playlists: action.payload }
 		case 'ADD_PLAYLISTS_TITLES':
@@ -32,6 +43,9 @@ export const playlistReducer = (state, action) => {
 export const PlaylistContextProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(playlistReducer, { 
 		currentPlaylist: null,
+		selectedPlaylist: null,
+		pendingCueTrack: null,
+		isCuingTrack: false,
 		playlists: null,
 		playlistTitles: null,
 		currentTrackIndex: null,
@@ -39,9 +53,10 @@ export const PlaylistContextProvider = ({ children }) => {
 		nextPageToken: null,
 		playlistTotal: null
 	})
+	const trackSwitchInProgressRef = useRef(false)
 
 	return (
-		<PlaylistContext.Provider value={{ ...state, dispatch }}>
+		<PlaylistContext.Provider value={{ ...state, dispatch, trackSwitchInProgressRef }}>
 			{ children }
 		</PlaylistContext.Provider>
 	)

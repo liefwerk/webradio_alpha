@@ -84,8 +84,8 @@ def add_playlists():
             "playlist_type": "youtube",
         },
         {
-            "name": "1.99e3",
-            "playlist_id": "PLy0eCs87EghQbyv35bKGwgbk7fzbNNjsU",
+            "name": "LAPTOP CHILL",
+            "playlist_id": "PLGo4WhVb-_D8-SYmLNrH-AytwLK1eD9s6",
             "user_id": None,
             "playlist_type": "youtube",
         },

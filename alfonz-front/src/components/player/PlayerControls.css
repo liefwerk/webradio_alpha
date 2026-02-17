@@ -3,7 +3,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top: solid 1px var(--c-light);
 }
 
 .player-controls__button {
@@ -20,4 +19,17 @@
 .player-controls__button svg {
     min-width: 1rem;
     height: 100%;
+}
+
+.player-controls__button:disabled {
+    cursor: default;
+}
+
+.player-controls__spinner {
+    animation: player-controls-spin 0.8s linear infinite;
+}
+
+@keyframes player-controls-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }

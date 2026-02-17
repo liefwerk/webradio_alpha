@@ -12,11 +12,15 @@ let videoElement = null
 let timer
 
 function Player() {
-	const { currentPlaylist, YTPlayer, playlistTitles, dispatch, trackSwitchInProgressRef, pendingCueTrack, isCuingTrack } = usePlaylistContext()
+	const { currentPlaylist, playlistTitles, dispatch, trackSwitchInProgressRef, pendingCueTrack, isCuingTrack } = usePlaylistContext()
 	const [isPaused, setIsPaused] = useState(true)
 	const [videoData, setVideoData] = useState(null)
 	const [videoDuration, setVideoDuration] = useState(0)
 	const timeBar = useRef(null)
+	const transitioningToNextRef = useRef(false)
+	const youtubeRef = useRef(null)
+	const playNextScheduledRef = useRef(false)
+	const cueAndPlayTimeoutRef = useRef(null)
 
 	// https://developers.google.com/youtube/iframe_api_reference
 	const opts = {
@@ -30,6 +34,8 @@ function Player() {
 
 	useEffect(() => {
 		if (videoElement) {
+			// Don't pause during ended → next track transition (would stop auto-advance)
+			if (isPaused && transitioningToNextRef.current) return
 			if (isPaused) {
 				videoElement.target.pauseVideo();
 			} else {
@@ -37,6 +43,16 @@ function Player() {
 			}
 		}
 	}, [isPaused])
+
+	// Clear cue timeout on unmount so we don't call a destroyed player
+	useEffect(() => {
+		return () => {
+			if (cueAndPlayTimeoutRef.current) {
+				clearTimeout(cueAndPlayTimeoutRef.current)
+				cueAndPlayTimeoutRef.current = null
+			}
+		}
+	}, [])
 
 	const _onReady = (event) => {
 		videoElement = event
@@ -47,38 +63,70 @@ function Player() {
 		// Cue and play pending track when we've just switched playlist (defer so playlist is ready)
 		if (pendingCueTrack && pendingCueTrack.playlistId === currentPlaylist) {
 			if (trackSwitchInProgressRef) trackSwitchInProgressRef.current = true
-			const target = event.target
 			const position = typeof pendingCueTrack.position === 'number' ? pendingCueTrack.position : 0
 			const videoId = pendingCueTrack.videoId
 			const cueAndPlay = (retryCount = 0) => {
-				try {
-					if (!target || typeof target.getPlaylist !== 'function') return
-					const playerPlaylist = target.getPlaylist()
-					const playlistReady = Array.isArray(playerPlaylist) && playerPlaylist.length > 0
-					if (!playlistReady && retryCount < 3) {
-						setTimeout(() => cueAndPlay(retryCount + 1), 200)
-						return
-					}
-					if (playlistReady && videoId) {
-						const idx = playerPlaylist.indexOf(videoId)
-						if (idx !== -1) {
-							target.playVideoAt(idx)
-						} else {
-							target.playVideoAt(position)
-						}
+				const target = videoElement?.target
+				if (!target || typeof target.getPlaylist !== 'function') {
+					if (retryCount < 3) {
+						cueAndPlayTimeoutRef.current = setTimeout(() => cueAndPlay(retryCount + 1), 200)
 					} else {
-						target.playVideoAt(position)
-					}
-					if (typeof target.playVideo === 'function') target.playVideo()
-				} catch (err) {
-					if (retryCount < 3) setTimeout(() => cueAndPlay(retryCount + 1), 200)
-					else {
 						dispatch({ type: 'SET_CUING_TRACK', payload: false })
-						console.warn('Cue track failed:', err)
+					}
+					return
+				}
+				const isPlayerDestroyed = (err) =>
+					err && (String(err.message || '').includes('this.g') || String(err.message || '').includes("can't access property"))
+				const runCue = (playerPlaylist) => {
+					const list = Array.isArray(playerPlaylist) ? playerPlaylist : []
+					const playlistReady = list.length > 0
+					const t = videoElement?.target
+					if (!t) return
+					try {
+						if (playlistReady && videoId) {
+							const idx = list.indexOf(videoId)
+							if (idx !== -1) {
+								t.playVideoAt(idx)
+							} else {
+								t.playVideoAt(position)
+							}
+						} else {
+							t.playVideoAt(position)
+						}
+						if (typeof t.playVideo === 'function') t.playVideo()
+					} catch (err) {
+						if (!isPlayerDestroyed(err) && retryCount < 3) {
+							cueAndPlayTimeoutRef.current = setTimeout(() => cueAndPlay(retryCount + 1), 200)
+						} else {
+							dispatch({ type: 'SET_CUING_TRACK', payload: false })
+							if (!isPlayerDestroyed(err)) console.warn('Cue track failed:', err)
+						}
+					}
+				}
+				try {
+					const pl = target.getPlaylist()
+					if (pl != null && typeof pl.then === 'function') {
+						pl.then(runCue).catch((err) => {
+							if (!isPlayerDestroyed(err) && retryCount < 3) {
+								cueAndPlayTimeoutRef.current = setTimeout(() => cueAndPlay(retryCount + 1), 200)
+							} else {
+								dispatch({ type: 'SET_CUING_TRACK', payload: false })
+								if (!isPlayerDestroyed(err)) console.warn('Cue track failed:', err)
+							}
+						})
+					} else {
+						runCue(pl)
+					}
+				} catch (err) {
+					if (!isPlayerDestroyed(err) && retryCount < 3) {
+						cueAndPlayTimeoutRef.current = setTimeout(() => cueAndPlay(retryCount + 1), 200)
+					} else {
+						dispatch({ type: 'SET_CUING_TRACK', payload: false })
+						if (!isPlayerDestroyed(err)) console.warn('Cue track failed:', err)
 					}
 				}
 			}
-			setTimeout(() => cueAndPlay(0), 400)
+			cueAndPlayTimeoutRef.current = setTimeout(() => cueAndPlay(0), 500)
 		}
 	};
 
@@ -96,11 +144,13 @@ function Player() {
 		// 2 (paused)
 		// 3 (buffering)
 		// 5 (video cued)
-		// console.log(event.data)
+		console.log(event.data)
 
 		if (videoElement) {
 
 			if (event.data === 1) {
+				transitioningToNextRef.current = false
+				playNextScheduledRef.current = false
 				if (trackSwitchInProgressRef) trackSwitchInProgressRef.current = false
 				dispatch({ type: 'CLEAR_PENDING_CUE' })
 				dispatch({ type: 'SET_CUING_TRACK', payload: false })
@@ -117,21 +167,57 @@ function Player() {
 				setVideoDuration(duration)
 
 				clearInterval(timer)
+				const target = videoElement.target
 				timer = setInterval(() => {
-					let currentTime = Math.floor(videoElement.target.getCurrentTime())
-					timeBar.current.style.width = Math.floor((currentTime / duration) * 100) + "%"
+					try {
+						const ct = target.getCurrentTime()
+						const handleTime = (currentTime) => {
+							const sec = Math.floor(Number(currentTime))
+							if (timeBar.current && duration > 0) {
+								timeBar.current.style.width = Math.floor((sec / duration) * 100) + "%"
+							}
+							// Fallback: ended/onEnd often don't fire in playlist embed; detect when at end
+							const nearEnd = duration > 0 && sec >= Math.max(0, duration - 1)
+							if (nearEnd) {
+								clearInterval(timer)
+								schedulePlayNext(target)
+							}
+						}
+						if (ct != null && typeof ct.then === 'function') {
+							ct.then(handleTime).catch(() => {})
+						} else {
+							handleTime(ct)
+						}
+					} catch (e) {
+						// ignore
+					}
 				}, 1000)
 			}
 
+			if (event.data === 0) {
+				// Don't set isPaused(false): effect would call playVideo() on the ended video
+				schedulePlayNext(event.target)
+			}
 			if (event.data === 0 || event.data === 5) {
 				// Ended or cued: clear track-switch flag so we don't get stuck
 				if (trackSwitchInProgressRef) trackSwitchInProgressRef.current = false
 			}
 
+			// Next track cued (state 5): ensure it plays in case we didn't come from state 0
+			if (event.data === 5) {
+				setIsPaused(false)
+				try {
+					videoElement.target.playVideo()
+				} catch (e) {
+					// ignore
+				}
+			}
+
 			if (event.data === 0 || event.data === 2 || event.data === -1) {
 				clearInterval(timer)
 				// Don't treat "paused" as user pause when we're switching to another track (playVideoAt)
-				if (!trackSwitchInProgressRef?.current) {
+				// Don't set paused on ended (0) — next track will cue (5) and we keep playing
+				if (!trackSwitchInProgressRef?.current && event.data !== 0) {
 					setIsPaused(true)
 				}
 			}
@@ -149,6 +235,21 @@ function Player() {
 
 	const togglePause = () => {
 		setIsPaused(!isPaused)
+	}
+
+	// Shared: when current video ends, advance to next (used by onStateChange(0) and onEnd)
+	const schedulePlayNext = (player) => {
+		if (playNextScheduledRef.current || !player) return
+		playNextScheduledRef.current = true
+		transitioningToNextRef.current = true
+		const playNext = () => {
+			playNextScheduledRef.current = false
+			try {
+				if (typeof player.nextVideo === 'function') player.nextVideo()
+				if (typeof player.playVideo === 'function') player.playVideo()
+			} catch (e) {}
+		}
+		setTimeout(playNext, 250)
 	}
 
 	const setToNextVideo = () => {
@@ -180,11 +281,13 @@ function Player() {
 			{ currentPlaylist && (
 				<div id="video-player--yt" className="video-player video-player--yt">
 					<YouTube
+						ref={ youtubeRef }
 						key={ currentPlaylist }
 						opts={ opts }
 						onError={ _onError }
 						onReady={ _onReady }
 						onPlay={ _onPlay }
+						onEnd={ (e) => schedulePlayNext(e?.target) }
 						onStateChange={ _onStateChange } />
 				</div>
 			) }

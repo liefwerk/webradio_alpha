@@ -26,18 +26,22 @@ flask run
 
 ## Production
 
-### Run the prod server
+### Run the prod backend
 
 ```bash
-source ./venv/bin/activate
-waitress-serve --p 8145 --call 'app:create_app' > log.txt 2>&1 &
+cd backend
+## If the server isn't started yet
+pm2 start ./venv/bin/waitress-serve --name "alfonz-back" -- --host=127.0.0.1 --port=8145 --call 'app:create_app'
+pm2 save
+
+## If the server is already running
+pm2 restart alfonz-back
 ```
 
-### Kill the prod server
-
-```bash
-lsof -i tcp
-kill <PID> ## Find the PID related to the background process
+### Check backend logs and kill server
+```
+pm2 logs alfonz-back
+pm2 stop alfonz-back
 ```
 
 ### Run the prod react front

@@ -2,6 +2,9 @@
 
 ## Development
 
+TODO
+- [ ] run both front and back through docker
+
 ### Launch the development server
 
 ```bash
